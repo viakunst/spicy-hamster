@@ -47,7 +47,13 @@ class GeefGeldController extends AbstractController
         return $this->renderForm('geef_geld/new.html.twig', [
             'form' => $form,
         ]);
+
+        // return $this->renderForm('layout.html.twig', [
+        //     'form' => $form,
+        // ]);
     }
+
+    
 
     public function index(): Response
     {
