@@ -1,5 +1,5 @@
 // Styles
-require('./style/main.scss');
+require('../styles/main.scss');
 //import './styles/main.scss';
 
 // Dependencies

@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Verzoek;
 use App\Form\ClasseGeldType;
+use App\Template\Annotation\MenuItem;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -13,7 +14,9 @@ use Doctrine\Persistence\ManagerRegistry;
 class GeefGeldController extends AbstractController
 {
     /**
+     * @MenuItem(title="GeefGeld", menu ="admin")
      * @Route("/geef/geld", name="geef_geld")
+     * 
      */
     public function new(Request $request, ManagerRegistry $doctrine): Response
     {

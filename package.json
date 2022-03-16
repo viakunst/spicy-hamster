@@ -18,5 +18,12 @@
         "dev": "encore dev",
         "watch": "encore dev --watch",
         "build": "encore production --progress"
+    },
+    "dependencies": {
+        "foundation-sites": "^6.7.3",
+        "jquery": "^3.6.0",
+        "select2": "^4.1.0-rc.0"
     }
+
+
 }
