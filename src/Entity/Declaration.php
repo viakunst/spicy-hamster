@@ -2,21 +2,21 @@
 
 namespace App\Entity;
 
-use App\Repository\VerzoekRepository;
+use App\Repository\DeclarationRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
- * @ORM\Entity(repositoryClass=VerzoekRepository::class)
+ * @ORM\Entity(repositoryClass=DeclarationRepository::class)
  * @Vich\Uploadable
  */
-class Verzoek
+class Declaration
 {
     /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
+     * @ORM\Id()
+     * @ORM\GeneratedValue(strategy="UUID")
+     * @ORM\Column(type="guid")
      */
     private $id;
 

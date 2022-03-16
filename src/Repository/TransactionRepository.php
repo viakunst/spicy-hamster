@@ -2,25 +2,25 @@
 
 namespace App\Repository;
 
-use App\Entity\Transactie;
+use App\Entity\Transaction;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @method Transactie|null find($id, $lockMode = null, $lockVersion = null)
- * @method Transactie|null findOneBy(array $criteria, array $orderBy = null)
- * @method Transactie[]    findAll()
- * @method Transactie[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Transaction|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Transaction|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Transaction[]    findAll()
+ * @method Transaction[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class TransactieRepository extends ServiceEntityRepository
+class TransactionRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Transactie::class);
+        parent::__construct($registry, Transaction::class);
     }
 
     // /**
-    //  * @return Transactie[] Returns an array of Transactie objects
+    //  * @return Transaction[] Returns an array of Transaction objects
     //  */
     /*
     public function findByExampleField($value)
@@ -37,7 +37,7 @@ class TransactieRepository extends ServiceEntityRepository
     */
 
     /*
-    public function findOneBySomeField($value): ?Transactie
+    public function findOneBySomeField($value): ?Transaction
     {
         return $this->createQueryBuilder('t')
             ->andWhere('t.exampleField = :val')

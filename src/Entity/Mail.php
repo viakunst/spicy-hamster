@@ -13,17 +13,16 @@ use Doctrine\ORM\Mapping as ORM;
 class Mail
 {
     /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
+     * @ORM\Id()
+     * @ORM\GeneratedValue(strategy="UUID")
+     * @ORM\Column(type="guid")
      */
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=LokaalPersoon::class, inversedBy="mails")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\Column(type="string", length=255)
      */
-    private $Persoon;
+    private $Account;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -46,13 +45,13 @@ class Mail
     private $ZendTijd;
 
     /**
-     * @ORM\OneToMany(targetEntity=Ontvanger::class, mappedBy="Mail")
+     * @ORM\OneToMany(targetEntity=Reciever::class, mappedBy="Mail")
      */
-    private $ontvangers;
+    private $Recievers;
 
     public function __construct()
     {
-        $this->ontvangers = new ArrayCollection();
+        $this->Recievers = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -60,14 +59,14 @@ class Mail
         return $this->id;
     }
 
-    public function getPersoon(): ?LokaalPersoon
+    public function getAccount(): ?string
     {
-        return $this->Persoon;
+        return $this->Account;
     }
 
-    public function setPersoon(?LokaalPersoon $Persoon): self
+    public function setAccount(string $Account): self
     {
-        $this->Persoon = $Persoon;
+        $this->Account = $Account;
 
         return $this;
     }
@@ -121,29 +120,29 @@ class Mail
     }
 
     /**
-     * @return Collection|Ontvanger[]
+     * @return Collection|Reciever[]
      */
-    public function getOntvangers(): Collection
+    public function getRecievers(): Collection
     {
-        return $this->ontvangers;
+        return $this->Recievers;
     }
 
-    public function addOntvanger(Ontvanger $ontvanger): self
+    public function addReciever(Reciever $Reciever): self
     {
-        if (!$this->ontvangers->contains($ontvanger)) {
-            $this->ontvangers[] = $ontvanger;
-            $ontvanger->setMail($this);
+        if (!$this->Recievers->contains($Reciever)) {
+            $this->Recievers[] = $Reciever;
+            $Reciever->setMail($this);
         }
 
         return $this;
     }
 
-    public function removeOntvanger(Ontvanger $ontvanger): self
+    public function removeReciever(Reciever $Reciever): self
     {
-        if ($this->ontvangers->removeElement($ontvanger)) {
+        if ($this->Recievers->removeElement($Reciever)) {
             // set the owning side to null (unless already changed)
-            if ($ontvanger->getMail() === $this) {
-                $ontvanger->setMail(null);
+            if ($Reciever->getMail() === $this) {
+                $Reciever->setMail(null);
             }
         }
 

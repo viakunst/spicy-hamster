@@ -2,32 +2,31 @@
 
 namespace App\Entity;
 
-use App\Repository\TransactieRepository;
+use App\Repository\TransactionRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=TransactieRepository::class)
+ * @ORM\Entity(repositoryClass=TransactionRepository::class)
  */
-class Transactie
+class Transaction
 {
     /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
+     * @ORM\Id()
+     * @ORM\GeneratedValue(strategy="UUID")
+     * @ORM\Column(type="guid")
      */
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=LokaalPersoon::class, inversedBy="transacties")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\Column(type="string", length=255)
      */
-    private $LokaalPersoon;
+    private $Account;
 
     /**
-     * @ORM\ManyToOne(targetEntity=TransactieGroep::class, inversedBy="transacties")
+     * @ORM\ManyToOne(targetEntity=TransactionSet::class, inversedBy="transactions")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $TransactieGroep;
+    private $TransactionSet;
 
     /**
      * @ORM\Column(type="boolean")
@@ -44,26 +43,26 @@ class Transactie
         return $this->id;
     }
 
-    public function getLokaalPersoon(): ?LokaalPersoon
+    public function getAccount(): ?string
     {
-        return $this->LokaalPersoon;
+        return $this->Account;
     }
 
-    public function setLokaalPersoon(?LokaalPersoon $LokaalPersoon): self
+    public function setAccount(string $Account): self
     {
-        $this->LokaalPersoon = $LokaalPersoon;
+        $this->Account = $Account;
 
         return $this;
     }
 
-    public function getTransactieGroep(): ?TransactieGroep
+    public function getTransactionSet(): ?TransactionSet
     {
-        return $this->TransactieGroep;
+        return $this->TransactionSet;
     }
 
-    public function setTransactieGroep(?TransactieGroep $TransactieGroep): self
+    public function setTransactionSet(?TransactionSet $TransactionSet): self
     {
-        $this->TransactieGroep = $TransactieGroep;
+        $this->TransactionSet = $TransactionSet;
 
         return $this;
     }

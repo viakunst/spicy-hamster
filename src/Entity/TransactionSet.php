@@ -2,20 +2,20 @@
 
 namespace App\Entity;
 
-use App\Repository\TransactieGroepRepository;
+use App\Repository\TransactionSetRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=TransactieGroepRepository::class)
+ * @ORM\Entity(repositoryClass=TransactionSetRepository::class)
  */
-class TransactieGroep
+class TransactionSet
 {
     /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
+     * @ORM\Id()
+     * @ORM\GeneratedValue(strategy="UUID")
+     * @ORM\Column(type="guid")
      */
     private $id;
 
@@ -35,9 +35,9 @@ class TransactieGroep
     private $Datum;
 
     /**
-     * @ORM\OneToMany(targetEntity=Transactie::class, mappedBy="TransactieGroep")
+     * @ORM\OneToMany(targetEntity=Transaction::class, mappedBy="TransactionSet")
      */
-    private $transacties;
+    private $transactions;
 
     public function __construct()
     {
@@ -86,29 +86,29 @@ class TransactieGroep
     }
 
     /**
-     * @return Collection|Transactie[]
+     * @return Collection|Transaction[]
      */
-    public function getTransacties(): Collection
+    public function getTransactions(): Collection
     {
-        return $this->transacties;
+        return $this->transactions;
     }
 
-    public function addTransacty(Transactie $transacty): self
+    public function addTransacty(Transaction $transacty): self
     {
-        if (!$this->transacties->contains($transacty)) {
-            $this->transacties[] = $transacty;
-            $transacty->setTransactieGroep($this);
+        if (!$this->transactions->contains($transacty)) {
+            $this->transactions[] = $transacty;
+            $transacty->setTransactionSet($this);
         }
 
         return $this;
     }
 
-    public function removeTransacty(Transactie $transacty): self
+    public function removeTransacty(Transaction $transacty): self
     {
-        if ($this->transacties->removeElement($transacty)) {
+        if ($this->transactions->removeElement($transacty)) {
             // set the owning side to null (unless already changed)
-            if ($transacty->getTransactieGroep() === $this) {
-                $transacty->setTransactieGroep(null);
+            if ($transacty->getTransactionSet() === $this) {
+                $transacty->setTransactionSet(null);
             }
         }
 

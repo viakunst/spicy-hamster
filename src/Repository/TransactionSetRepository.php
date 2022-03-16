@@ -2,25 +2,25 @@
 
 namespace App\Repository;
 
-use App\Entity\TransactieGroep;
+use App\Entity\TransactionSet;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @method TransactieGroep|null find($id, $lockMode = null, $lockVersion = null)
- * @method TransactieGroep|null findOneBy(array $criteria, array $orderBy = null)
- * @method TransactieGroep[]    findAll()
- * @method TransactieGroep[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method TransactionSet|null find($id, $lockMode = null, $lockVersion = null)
+ * @method TransactionSet|null findOneBy(array $criteria, array $orderBy = null)
+ * @method TransactionSet[]    findAll()
+ * @method TransactionSet[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class TransactieGroepRepository extends ServiceEntityRepository
+class TransactionSetRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, TransactieGroep::class);
+        parent::__construct($registry, TransactionSet::class);
     }
 
     // /**
-    //  * @return TransactieGroep[] Returns an array of TransactieGroep objects
+    //  * @return TransactionSet[] Returns an array of TransactionSet objects
     //  */
     /*
     public function findByExampleField($value)
@@ -37,7 +37,7 @@ class TransactieGroepRepository extends ServiceEntityRepository
     */
 
     /*
-    public function findOneBySomeField($value): ?TransactieGroep
+    public function findOneBySomeField($value): ?TransactionSet
     {
         return $this->createQueryBuilder('t')
             ->andWhere('t.exampleField = :val')

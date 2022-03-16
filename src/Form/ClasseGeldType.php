@@ -2,7 +2,7 @@
 
 namespace App\Form;
 
-use App\Entity\Verzoek;
+use App\Entity\Declaration;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -31,7 +31,7 @@ class ClasseGeldType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Verzoek::class,
+            'data_class' => Declaration::class,
         ]);
     }
 }

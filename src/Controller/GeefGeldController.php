@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Entity\Verzoek;
+use App\Entity\Declaration;
 use App\Form\ClasseGeldType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,7 +18,7 @@ class GeefGeldController extends AbstractController
     public function new(Request $request, ManagerRegistry $doctrine): Response
     {
         // creates a munnie object and initializes some data for this example
-        $munnie = new Verzoek();
+        $munnie = new Declaration();
         $munnie->setNaam('Arnie Geldbaas');
         $munnie->setIBAN('NL12GELD1234567890');
         $munnie->setMail('Pooier@arnieB.vk');
