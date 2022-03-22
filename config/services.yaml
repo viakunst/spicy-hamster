@@ -4,6 +4,14 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
+    locale: 'en'
+    # Adds a environment variables even if OpenID Connect is not used.
+    # This allows you to run cache:warmup even if your
+    # environment variables are not available.
+    # You should not need to change this value.
+    env(OIDC_ID): ''
+    env(OIDC_SECRET): ''
+    env(OIDC_ADDRESS): ''
 
 services:
     # default configuration for services in *this* file
@@ -23,3 +31,74 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+    # controllers are imported separately to make sure services can be injected
+    # as action arguments even if you don't extend any base controller class
+    App\Controller\:
+        resource: '../src/Controller/'
+        tags: ['controller.service_arguments']
+
+    # add more service definitions when explicit configuration is needed
+    # please note that last definitions always *replace* previous ones
+    #Editted
+
+    Welp\IcalBundle\Factory\Factory:
+      alias: welp_ical.factory
+
+
+    App\Template\AnnotationMenuExtension:
+        class: App\Template\AnnotationMenuExtension
+        arguments: ["App\\Controller", "Controller", "%kernel.project_dir%", "@annotation_reader"]
+
+    App\Log\Doctrine\EntityEventListener:
+        tags:
+            - { name: doctrine.event_listener, event: onFlush }
+
+    App\EventListener\DoctrineTablePrefixListener:
+        arguments: ["hamster_"]
+        tags:
+            - { name: doctrine.event_listener, event: loadClassMetadata }
+
+    App\Template\MenuBuilder:
+        arguments:
+            - !tagged app.menu_extension
+
+    _instanceof:
+        App\Template\MenuExtensionInterface:
+            tags: ['app.menu_extension']
+
+    #
+    # Kopied from kiwi and commented out
+    #
+
+    # Drenso\OidcBundle\OidcClient:
+    #     arguments:
+    #         $wellKnownUrl: '%env(SECURE_SCHEME)%://%env(OIDC_ADDRESS)%/.well-known/openid-configuration'
+    #         $clientId: '%env(OIDC_ID)%'
+    #         $clientSecret: '%env(OIDC_SECRET)%'
+    #         $redirectRoute: 'app_login_check'
+    
+    # security.authentication.provider.oidc:
+    #     class: Drenso\OidcBundle\Security\Authentication\Provider\OidcProvider
+    #     arguments:
+    #         - ''
+    #         - '@security.user_checker'
+    #         - '@security.token_storage'
+    #         - '@logger'
+
+    # security.authentication.listener.oidc:
+    #     class: Drenso\OidcBundle\Security\Firewall\OidcListener
+    #     arguments:
+    #         - '@security.token_storage'
+    #         - '@security.authentication.manager'
+    #         - '@security.authentication.session_strategy'
+    #         - '@security.http_utils'
+    #         - ''
+    #         - ''
+    #         - ''
+    #         - { }
+    #         - '@logger'
+    #         - '@Drenso\OidcBundle\OidcClient'
+
+    App\GraphQL\Query:
+        public: true

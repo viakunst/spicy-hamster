@@ -96,6 +96,11 @@
         "symfony": {
             "allow-contrib": false,
             "require": "5.3.*"
+        },
+        "hooks": {
+            "pre-commit": [
+                ".hooks/pre-commit"
+            ]
         }
     }
 }
