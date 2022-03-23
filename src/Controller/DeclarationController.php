@@ -10,7 +10,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Persistence\ManagerRegistry;
 
-class GeefGeldController extends AbstractController
+class DeclarationController extends AbstractController
 {
     /**
      * @Route("/geef/geld", name="geef_geld")
@@ -52,7 +52,7 @@ class GeefGeldController extends AbstractController
     public function index(): Response
     {
         return $this->render('geef_geld/index.html.twig', [
-            'controller_name' => 'GeefGeldController',
+            'controller_name' => 'DeclarationController',
         ]);
     }
 }

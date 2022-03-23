@@ -23,10 +23,10 @@ class Transaction
     private $Account;
 
     /**
-     * @ORM\ManyToOne(targetEntity=TransactionSet::class, inversedBy="transactions")
+     * @ORM\ManyToOne(targetEntity=TransactionGroup::class, inversedBy="transactions")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $TransactionSet;
+    private $TransactionGroup;
 
     /**
      * @ORM\Column(type="boolean")
@@ -55,14 +55,14 @@ class Transaction
         return $this;
     }
 
-    public function getTransactionSet(): ?TransactionSet
+    public function getTransactionGroup(): ?TransactionGroup
     {
-        return $this->TransactionSet;
+        return $this->TransactionGroup;
     }
 
-    public function setTransactionSet(?TransactionSet $TransactionSet): self
+    public function setTransactionGroup(?TransactionGroup $TransactionGroup): self
     {
-        $this->TransactionSet = $TransactionSet;
+        $this->TransactionGroup = $TransactionGroup;
 
         return $this;
     }

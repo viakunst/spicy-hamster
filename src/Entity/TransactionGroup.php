@@ -2,15 +2,15 @@
 
 namespace App\Entity;
 
-use App\Repository\TransactionSetRepository;
+use App\Repository\TransactionGroupRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=TransactionSetRepository::class)
+ * @ORM\Entity(repositoryClass=TransactionGroupRepository::class)
  */
-class TransactionSet
+class TransactionGroup
 {
     /**
      * @ORM\Id()
@@ -35,7 +35,7 @@ class TransactionSet
     private $Datum;
 
     /**
-     * @ORM\OneToMany(targetEntity=Transaction::class, mappedBy="TransactionSet")
+     * @ORM\OneToMany(targetEntity=Transaction::class, mappedBy="TransactionGroup")
      */
     private $transactions;
 
@@ -97,7 +97,7 @@ class TransactionSet
     {
         if (!$this->transactions->contains($transacty)) {
             $this->transactions[] = $transacty;
-            $transacty->setTransactionSet($this);
+            $transacty->setTransactionGroup($this);
         }
 
         return $this;
@@ -107,8 +107,8 @@ class TransactionSet
     {
         if ($this->transactions->removeElement($transacty)) {
             // set the owning side to null (unless already changed)
-            if ($transacty->getTransactionSet() === $this) {
-                $transacty->setTransactionSet(null);
+            if ($transacty->getTransactionGroup() === $this) {
+                $transacty->setTransactionGroup(null);
             }
         }
 
