@@ -2,25 +2,25 @@
 
 namespace App\Repository;
 
-use App\Entity\Verzoek;
+use App\Entity\Declaration;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @method Verzoek|null find($id, $lockMode = null, $lockVersion = null)
- * @method Verzoek|null findOneBy(array $criteria, array $orderBy = null)
- * @method Verzoek[]    findAll()
- * @method Verzoek[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Declaration|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Declaration|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Declaration[]    findAll()
+ * @method Declaration[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class VerzoekRepository extends ServiceEntityRepository
+class DeclarationRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Verzoek::class);
+        parent::__construct($registry, Declaration::class);
     }
 
     // /**
-    //  * @return Verzoek[] Returns an array of Verzoek objects
+    //  * @return Declaration[] Returns an array of Declaration objects
     //  */
     /*
     public function findByExampleField($value)
@@ -37,7 +37,7 @@ class VerzoekRepository extends ServiceEntityRepository
     */
 
     /*
-    public function findOneBySomeField($value): ?Verzoek
+    public function findOneBySomeField($value): ?Declaration
     {
         return $this->createQueryBuilder('v')
             ->andWhere('v.exampleField = :val')

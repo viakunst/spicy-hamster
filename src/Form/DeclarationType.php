@@ -2,14 +2,14 @@
 
 namespace App\Form;
 
-use App\Entity\Verzoek;
+use App\Entity\Declaration;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Vich\UploaderBundle\Form\Type\VichImageType;
 
-class ClasseGeldType extends AbstractType
+class DeclarationType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -31,7 +31,7 @@ class ClasseGeldType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Verzoek::class,
+            'data_class' => Declaration::class,
         ]);
     }
 }
