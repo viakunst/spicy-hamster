@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Declaration;
-use App\Form\ClasseGeldType;
+use App\Form\DeclarationType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -29,7 +29,7 @@ class DeclarationController extends AbstractController
         $munnie->setOpmerking("");
         $munnie->setAkkoord(False);
 
-        $form = $this->createForm(ClasseGeldType::class, $munnie);
+        $form = $this->createForm(DeclarationType::class, $munnie);
         
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
