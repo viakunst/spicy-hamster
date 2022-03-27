@@ -4,11 +4,11 @@ namespace App\Controller;
 
 use App\Entity\Declaration;
 use App\Form\DeclarationType;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\HttpFoundation\Request;
-use Doctrine\Persistence\ManagerRegistry;
 
 class DeclarationController extends AbstractController
 {
@@ -24,13 +24,13 @@ class DeclarationController extends AbstractController
         $munnie->setMail('Pooier@arnieB.vk');
         $munnie->setGeld(420.69);
         $munnie->setItem('Gezond verstand');
-        $munnie->setReason("Heeft bestuur nog niet");
+        $munnie->setReason('Heeft bestuur nog niet');
         $munnie->setCommissie(['Feestco', 'AcCie maar eigenlijk Aco', 'webco met mooie broek']);
-        $munnie->setOpmerking("");
-        $munnie->setAkkoord(False);
+        $munnie->setOpmerking('');
+        $munnie->setAkkoord(false);
 
         $form = $this->createForm(DeclarationType::class, $munnie);
-        
+
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             // $form->getData() holds the submitted values
@@ -43,7 +43,7 @@ class DeclarationController extends AbstractController
             $entityManager->persist($task);
             $entityManager->flush();
         }
-        
+
         return $this->renderForm('geef_geld/new.html.twig', [
             'form' => $form,
         ]);
@@ -52,8 +52,6 @@ class DeclarationController extends AbstractController
         //     'form' => $form,
         // ]);
     }
-
-    
 
     public function index(): Response
     {

@@ -53,7 +53,6 @@ class Declaration
     /**
      * @ORM\Column(type="string", length=255)
      */
-
     private $opmerking;
 
     /**
@@ -181,9 +180,9 @@ class Declaration
 
     /**
      * NOTE: This is not a mapped field of entity metadata, just a simple property.
-     * 
+     *
      * @Vich\UploadableField(mapping="products", fileNameProperty="imageName", size="imageSize")
-     * 
+     *
      * @var File|null
      */
     private $imageFile;
@@ -243,7 +242,7 @@ class Declaration
     {
         return $this->imageName;
     }
-    
+
     public function setImageSize(?int $imageSize): void
     {
         $this->imageSize = $imageSize;

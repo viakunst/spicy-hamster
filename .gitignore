@@ -30,3 +30,9 @@
 npm-debug.log
 yarn-error.log
 ###< symfony/webpack-encore-bundle ###
+
+###> custom ###
+/public/uploads/
+Thumbs.db
+/phpstan.neon
+###< custom ###
