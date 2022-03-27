@@ -20,7 +20,7 @@ class TransactionGroup
     private $id;
 
     /**
-     * @ORM\Column(type="int")
+     * @ORM\Column(type="integer")
      */
     private $amount;
 
@@ -30,7 +30,7 @@ class TransactionGroup
     private $title;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="text")
      */
     private $description;
 

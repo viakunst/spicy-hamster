@@ -51,12 +51,12 @@ class Statement
     private $group = [];
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="text")
      */
     private $comment;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="text")
      */
     private $feedback;
 
@@ -66,7 +66,7 @@ class Statement
     private $status;
 
     /**
-     * @ORM\Column(type="int")
+     * @ORM\Column(type="integer")
      */
     private $amount;
 
