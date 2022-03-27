@@ -23,10 +23,17 @@
         </testsuite>
     </testsuites>
 
+    <logging>
+        <junit outputFile="./var/reports/phpunit.xml"/>
+    </logging>
+
     <coverage processUncoveredFiles="true">
         <include>
             <directory suffix=".php">src</directory>
         </include>
+        <report>
+            <clover outputFile="./var/reports/phpunit.coverage.xml"/>
+        </report>
     </coverage>
 
     <listeners>
