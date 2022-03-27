@@ -3,7 +3,7 @@
 namespace App\Entity;
 
 use App\Entity\Person\Person;
-use App\Repository\TransactionRepository;
+use App\Repository\TransactionRepository\TransactionRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -92,8 +92,4 @@ class Transaction
 
         return $this;
     }
-
-
-
-
 }
