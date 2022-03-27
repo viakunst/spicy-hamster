@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Entity\Mail;
+namespace App\Tests\Entity;
 
 use App\Entity\Mail\Mail;
 use App\Entity\Mail\Recipient;
