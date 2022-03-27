@@ -22,7 +22,7 @@ class Transaction
      * @ORM\ManyToOne(targetEntity="App\Entity\Person\Person")
      * @ORM\JoinColumn(name="person_id", referencedColumnName="id")
      */
-    private Person $person;
+    private ?Person $person;
 
     /**
      * @ORM\ManyToOne(targetEntity=TransactionGroup::class, inversedBy="transactions")
@@ -40,7 +40,7 @@ class Transaction
     /**
      * @ORM\Column(type="text", nullable=true)
      */
-    private string $comment;
+    private ?string $comment;
 
     public function getId(): string
     {
