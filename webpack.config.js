@@ -14,15 +14,11 @@ Encore
     // only needed for CDN's or sub-directory deploy
     //.setManifestKeyPrefix('build/')
 
-
-
-    //copied from kiwi
-    .copyFiles({
-        from: './assets/image',
-        to: 'image/[path][name].[hash:8].[ext]',
-        pattern: /\.(png|jpg|jpeg)$/
-    })
-
+    // .copyFiles({
+    //     from: './assets/image',
+    //     to: 'image/[path][name].[hash:8].[ext]',
+    //     pattern: /\.(png|jpg|jpeg)$/
+    // })
 
     /*
      * ENTRY CONFIG
@@ -30,9 +26,8 @@ Encore
      * Each entry will result in one JavaScript file (e.g. app.js)
      * and one CSS file (e.g. app.css) if your JavaScript imports CSS.
      */
-    .addEntry('main', './assets/script/main.js')
+    .addEntry('app', './assets/script/index.tsx')
 
-    //From encore installl but disabled in Kiwi
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
     //.enableStimulusBridge('./assets/controllers.json')
 
@@ -68,21 +63,15 @@ Encore
 
 
     //Copied from Kiwi
-    .configureTerserPlugin((options) => {
-        options.terserOptions = {
-            compress: {
-                inline: false // fixes bug with compressing assets/polyfill.js in production
-            }
-        }
-    })
+    // .configureTerserPlugin()
 
     // enables Sass/SCSS support
-    .enableSassLoader(function (options) {
-        options.sassOptions.includePaths = ['./node_modules/foundation-sites/scss'];
-    })
+    // .enableSassLoader(function (options) {
+    //     options.sassOptions.includePaths = ['./node_modules/foundation-sites/scss'];
+    // })
 
     // enable PostCSS
-    .enablePostCssLoader()
+    // .enablePostCssLoader()
 
     // .configureWatchOptions(function(watchOptions) {
     //     // enable polling and check for changes every 250ms
@@ -92,13 +81,13 @@ Encore
 
 
     // enables Sass/SCSS support
-    //.enableSassLoader()
+    // .enableSassLoader()
 
     // uncomment if you use TypeScript
-    //.enableTypeScriptLoader()
+    .enableTypeScriptLoader()
 
     // uncomment if you use React
-    //.enableReactPreset()
+    // .enableReactPreset()
 
     // uncomment to get integrity="..." attributes on your script & link tags
     // requires WebpackEncoreBundle 1.4 or higher
