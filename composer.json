@@ -1,6 +1,6 @@
 {
     "type": "project",
-    "license": "proprietary",
+    "license": "GPL-3.0-only",
     "minimum-stability": "stable",
     "prefer-stable": true,
     "require": {
@@ -9,12 +9,13 @@
         "ext-iconv": "*",
         "composer/package-versions-deprecated": "1.11.99.4",
         "doctrine/annotations": "^1.0",
+        "doctrine/dbal": "2.13.*",
         "doctrine/doctrine-bundle": "^2.4",
         "doctrine/doctrine-migrations-bundle": "3.*",
-        "doctrine/dbal": "2.13.*",
         "doctrine/orm": "^2.10",
         "phpdocumentor/reflection-docblock": "^5.3",
         "sensio/framework-extra-bundle": "^6.1",
+        "symfony/apache-pack": "^1.0",
         "symfony/asset": "5.4.*",
         "symfony/console": "5.4.*",
         "symfony/dotenv": "5.4.*",
@@ -40,12 +41,25 @@
         "symfony/twig-bundle": "5.4.*",
         "symfony/validator": "5.4.*",
         "symfony/web-link": "5.4.*",
+        "symfony/webpack-encore-bundle": "^1.13",
         "symfony/yaml": "5.4.*",
         "twig/extra-bundle": "^2.12|^3.0",
         "twig/twig": "^2.12|^3.0",
         "vich/uploader-bundle": "^1.18"
     },
     "require-dev": {
+        "ext-sqlite3": "*",
+        "ext-xdebug": "*",
+        "dama/doctrine-test-bundle": "^6.7",
+        "doctrine/doctrine-fixtures-bundle": "^3.4",
+        "friendsofphp/php-cs-fixer": "^3.6",
+        "liip/test-fixtures-bundle": "^2.2",
+        "phpstan/extension-installer": "^1.1",
+        "phpstan/phpstan": "^1.4",
+        "phpstan/phpstan-doctrine": "^1.2",
+        "phpstan/phpstan-phpunit": "^1.0",
+        "phpstan/phpstan-strict-rules": "^1.1",
+        "phpstan/phpstan-symfony": "^1.1",
         "phpunit/phpunit": "^9.5",
         "symfony/browser-kit": "5.4.*",
         "symfony/css-selector": "5.4.*",
@@ -60,7 +74,13 @@
         "preferred-install": {
             "*": "dist"
         },
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "ocramius/package-versions": true,
+            "symfony/flex": true,
+            "phpstan/extension-installer": true,
+            "symfony/runtime": true
+        }
     },
     "autoload": {
         "psr-4": {
@@ -83,10 +103,23 @@
             "assets:install %PUBLIC_DIR%": "symfony-cmd"
         },
         "post-install-cmd": [
+            "php .hooks/install.php",
             "@auto-scripts"
         ],
         "post-update-cmd": [
             "@auto-scripts"
+        ],
+        "test": [
+            "php bin/phpunit --testdox"
+        ],
+        "lint": [
+            "php-cs-fixer fix src --verbose --dry-run --show-progress=none"
+        ],
+        "fix": [
+            "php-cs-fixer fix src"
+        ],
+        "analyse": [
+            "./vendor/bin/phpstan analyse --memory-limit 2G"
         ]
     },
     "conflict": {

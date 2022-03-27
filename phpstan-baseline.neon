@@ -1,0 +1,232 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Parameter \\#1 \\$geld of method App\\\\Entity\\\\Declaration\\:\\:setGeld\\(\\) expects string, float given\\.$#"
+			count: 1
+			path: src/Controller/DeclarationController.php
+
+		-
+			message: "#^Parameter \\#1 \\$object of method Doctrine\\\\Persistence\\\\ObjectManager\\:\\:persist\\(\\) expects object, mixed given\\.$#"
+			count: 1
+			path: src/Controller/DeclarationController.php
+
+		-
+			message: "#^Method App\\\\Entity\\\\Declaration\\:\\:getCommissie\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Entity/Declaration.php
+
+		-
+			message: "#^Method App\\\\Entity\\\\Declaration\\:\\:setCommissie\\(\\) has parameter \\$commissie with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Entity/Declaration.php
+
+		-
+			message: "#^Property App\\\\Entity\\\\Declaration\\:\\:\\$IBAN has no type specified\\.$#"
+			count: 1
+			path: src/Entity/Declaration.php
+
+		-
+			message: "#^Property App\\\\Entity\\\\Declaration\\:\\:\\$akkoord has no type specified\\.$#"
+			count: 1
+			path: src/Entity/Declaration.php
+
+		-
+			message: "#^Property App\\\\Entity\\\\Declaration\\:\\:\\$commissie has no type specified\\.$#"
+			count: 1
+			path: src/Entity/Declaration.php
+
+		-
+			message: "#^Property App\\\\Entity\\\\Declaration\\:\\:\\$geld has no type specified\\.$#"
+			count: 1
+			path: src/Entity/Declaration.php
+
+		-
+			message: "#^Property App\\\\Entity\\\\Declaration\\:\\:\\$id has no type specified\\.$#"
+			count: 1
+			path: src/Entity/Declaration.php
+
+		-
+			message: "#^Property App\\\\Entity\\\\Declaration\\:\\:\\$imageName type mapping mismatch\\: property can contain string\\|null but database expects string\\.$#"
+			count: 1
+			path: src/Entity/Declaration.php
+
+		-
+			message: "#^Property App\\\\Entity\\\\Declaration\\:\\:\\$imageSize type mapping mismatch\\: property can contain int\\|null but database expects int\\.$#"
+			count: 1
+			path: src/Entity/Declaration.php
+
+		-
+			message: "#^Property App\\\\Entity\\\\Declaration\\:\\:\\$item has no type specified\\.$#"
+			count: 1
+			path: src/Entity/Declaration.php
+
+		-
+			message: "#^Property App\\\\Entity\\\\Declaration\\:\\:\\$mail has no type specified\\.$#"
+			count: 1
+			path: src/Entity/Declaration.php
+
+		-
+			message: "#^Property App\\\\Entity\\\\Declaration\\:\\:\\$naam has no type specified\\.$#"
+			count: 1
+			path: src/Entity/Declaration.php
+
+		-
+			message: "#^Property App\\\\Entity\\\\Declaration\\:\\:\\$opmerking has no type specified\\.$#"
+			count: 1
+			path: src/Entity/Declaration.php
+
+		-
+			message: "#^Property App\\\\Entity\\\\Declaration\\:\\:\\$reason has no type specified\\.$#"
+			count: 1
+			path: src/Entity/Declaration.php
+
+		-
+			message: "#^Property App\\\\Entity\\\\Declaration\\:\\:\\$updatedAt type mapping mismatch\\: property can contain DateTimeInterface\\|null but database expects DateTimeInterface\\.$#"
+			count: 1
+			path: src/Entity/Declaration.php
+
+		-
+			message: "#^Method App\\\\Entity\\\\Mail\\:\\:getRecievers\\(\\) return type with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#"
+			count: 1
+			path: src/Entity/Mail.php
+
+		-
+			message: "#^Property App\\\\Entity\\\\Mail\\:\\:\\$Account has no type specified\\.$#"
+			count: 1
+			path: src/Entity/Mail.php
+
+		-
+			message: "#^Property App\\\\Entity\\\\Mail\\:\\:\\$Inhoud has no type specified\\.$#"
+			count: 1
+			path: src/Entity/Mail.php
+
+		-
+			message: "#^Property App\\\\Entity\\\\Mail\\:\\:\\$Recievers has no type specified\\.$#"
+			count: 1
+			path: src/Entity/Mail.php
+
+		-
+			message: "#^Property App\\\\Entity\\\\Mail\\:\\:\\$Titel has no type specified\\.$#"
+			count: 1
+			path: src/Entity/Mail.php
+
+		-
+			message: "#^Property App\\\\Entity\\\\Mail\\:\\:\\$Verzender has no type specified\\.$#"
+			count: 1
+			path: src/Entity/Mail.php
+
+		-
+			message: "#^Property App\\\\Entity\\\\Mail\\:\\:\\$ZendTijd has no type specified\\.$#"
+			count: 1
+			path: src/Entity/Mail.php
+
+		-
+			message: "#^Property App\\\\Entity\\\\Mail\\:\\:\\$id has no type specified\\.$#"
+			count: 1
+			path: src/Entity/Mail.php
+
+		-
+			message: "#^Property App\\\\Entity\\\\Reciever\\:\\:\\$Account has no type specified\\.$#"
+			count: 1
+			path: src/Entity/Reciever.php
+
+		-
+			message: "#^Property App\\\\Entity\\\\Reciever\\:\\:\\$Mail has no type specified\\.$#"
+			count: 1
+			path: src/Entity/Reciever.php
+
+		-
+			message: "#^Property App\\\\Entity\\\\Reciever\\:\\:\\$id has no type specified\\.$#"
+			count: 1
+			path: src/Entity/Reciever.php
+
+		-
+			message: "#^Property App\\\\Entity\\\\Transaction\\:\\:\\$Account has no type specified\\.$#"
+			count: 1
+			path: src/Entity/Transaction.php
+
+		-
+			message: "#^Property App\\\\Entity\\\\Transaction\\:\\:\\$Opmerking has no type specified\\.$#"
+			count: 1
+			path: src/Entity/Transaction.php
+
+		-
+			message: "#^Property App\\\\Entity\\\\Transaction\\:\\:\\$TransactionGroup has no type specified\\.$#"
+			count: 1
+			path: src/Entity/Transaction.php
+
+		-
+			message: "#^Property App\\\\Entity\\\\Transaction\\:\\:\\$Voltooid has no type specified\\.$#"
+			count: 1
+			path: src/Entity/Transaction.php
+
+		-
+			message: "#^Property App\\\\Entity\\\\Transaction\\:\\:\\$id has no type specified\\.$#"
+			count: 1
+			path: src/Entity/Transaction.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Entity\\\\TransactionGroup\\:\\:\\$transacties\\.$#"
+			count: 1
+			path: src/Entity/TransactionGroup.php
+
+		-
+			message: "#^Method App\\\\Entity\\\\TransactionGroup\\:\\:getTransactions\\(\\) return type with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#"
+			count: 1
+			path: src/Entity/TransactionGroup.php
+
+		-
+			message: "#^Property App\\\\Entity\\\\TransactionGroup\\:\\:\\$Bedrag has no type specified\\.$#"
+			count: 1
+			path: src/Entity/TransactionGroup.php
+
+		-
+			message: "#^Property App\\\\Entity\\\\TransactionGroup\\:\\:\\$Datum has no type specified\\.$#"
+			count: 1
+			path: src/Entity/TransactionGroup.php
+
+		-
+			message: "#^Property App\\\\Entity\\\\TransactionGroup\\:\\:\\$activiteit_naam has no type specified\\.$#"
+			count: 1
+			path: src/Entity/TransactionGroup.php
+
+		-
+			message: "#^Property App\\\\Entity\\\\TransactionGroup\\:\\:\\$id has no type specified\\.$#"
+			count: 1
+			path: src/Entity/TransactionGroup.php
+
+		-
+			message: "#^Property App\\\\Entity\\\\TransactionGroup\\:\\:\\$transactions has no type specified\\.$#"
+			count: 1
+			path: src/Entity/TransactionGroup.php
+
+		-
+			message: "#^Class App\\\\Repository\\\\DeclarationRepository extends generic class Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Repository\\\\ServiceEntityRepository but does not specify its types\\: TEntityClass$#"
+			count: 1
+			path: src/Repository/DeclarationRepository.php
+
+		-
+			message: "#^Class App\\\\Repository\\\\MailRepository extends generic class Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Repository\\\\ServiceEntityRepository but does not specify its types\\: TEntityClass$#"
+			count: 1
+			path: src/Repository/MailRepository.php
+
+		-
+			message: "#^Class App\\\\Repository\\\\RecieverRepository extends generic class Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Repository\\\\ServiceEntityRepository but does not specify its types\\: TEntityClass$#"
+			count: 1
+			path: src/Repository/RecieverRepository.php
+
+		-
+			message: "#^Class App\\\\Repository\\\\TransactionGroupRepository extends generic class Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Repository\\\\ServiceEntityRepository but does not specify its types\\: TEntityClass$#"
+			count: 1
+			path: src/Repository/TransactionGroupRepository.php
+
+		-
+			message: "#^Class App\\\\Repository\\\\TransactionRepository extends generic class Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Repository\\\\ServiceEntityRepository but does not specify its types\\: TEntityClass$#"
+			count: 1
+			path: src/Repository/TransactionRepository.php
+
+		-
+			message: "#^Call to function method_exists\\(\\) with 'Symfony\\\\\\\\Component\\\\\\\\Dotenv\\\\\\\\Dotenv' and 'bootEnv' will always evaluate to true\\.$#"
+			count: 1
+			path: tests/bootstrap.php
+

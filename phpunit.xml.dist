@@ -23,10 +23,17 @@
         </testsuite>
     </testsuites>
 
+    <logging>
+        <junit outputFile="./var/reports/phpunit.xml"/>
+    </logging>
+
     <coverage processUncoveredFiles="true">
         <include>
             <directory suffix=".php">src</directory>
         </include>
+        <report>
+            <clover outputFile="./var/reports/phpunit.coverage.xml"/>
+        </report>
     </coverage>
 
     <listeners>
@@ -34,9 +41,8 @@
     </listeners>
 
     <!-- Run `composer require symfony/panther` before enabling this extension -->
-    <!--
     <extensions>
-        <extension class="Symfony\Component\Panther\ServerExtension" />
+        <!--<extension class="Symfony\Component\Panther\ServerExtension" />-->
+        <extension class="DAMA\DoctrineTestBundle\PHPUnit\PHPUnitExtension" />
     </extensions>
-    -->
 </phpunit>

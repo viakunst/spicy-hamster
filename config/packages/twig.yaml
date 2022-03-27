@@ -1,6 +1,12 @@
+#Editted
+parameters:
+    env(ORG_NAME): 'Hamster'
+    env(PROFILE_URL): ''
+
 twig:
     default_path: '%kernel.project_dir%/templates'
-
+    globals:
+        org: '%env(ORG_NAME)%'
 when@test:
     twig:
         strict_variables: true
