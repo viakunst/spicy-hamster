@@ -128,7 +128,7 @@ export default {
   // setupFiles: [],
 
   // A list of paths to modules that run some code to configure or set up the testing framework before each test
-  // setupFilesAfterEnv: [],
+  "setupFilesAfterEnv": ["<rootDir>/jest.setup.ts"],
 
   // The number of seconds after which a test is considered as slow and reported as such in the results.
   // slowTestThreshold: 5,
@@ -172,7 +172,10 @@ export default {
   // timers: "real",
 
   // A map from regular expressions to paths to transformers
-  // transform: undefined,
+  transform: {
+    "^.+\\.[t|j]sx?$": "babel-jest",
+    ".+\\.(css|styl|less|sass|scss|png|jpg|svg|ttf|woff|woff2)$": "jest-transform-stub",
+  },
 
   // An array of regexp pattern strings that are matched against all source file paths, matched files will skip transformation
   // transformIgnorePatterns: [

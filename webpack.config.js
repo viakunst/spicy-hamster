@@ -14,11 +14,11 @@ Encore
     // only needed for CDN's or sub-directory deploy
     //.setManifestKeyPrefix('build/')
 
-    // .copyFiles({
-    //     from: './assets/image',
-    //     to: 'image/[path][name].[hash:8].[ext]',
-    //     pattern: /\.(png|jpg|jpeg)$/
-    // })
+    .copyFiles({
+        from: './assets',
+        to: 'image/[path][name].[hash:8].[ext]',
+        pattern: /\.(png|jpg|jpeg|svg)$/
+    })
 
     /*
      * ENTRY CONFIG
@@ -29,7 +29,7 @@ Encore
     .addEntry('app', './assets/script/index.tsx')
 
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
-    //.enableStimulusBridge('./assets/controllers.json')
+    // .enableStimulusBridge('./assets/controllers.json')
 
     // When enabled, Webpack "splits" your files into smaller pieces for greater optimization.
     .splitEntryChunks()
@@ -51,43 +51,17 @@ Encore
     // enables hashed filenames (e.g. app.abc123.css)
     .enableVersioning(Encore.isProduction())
 
-    .configureBabel((config) => {
-        config.plugins.push('@babel/plugin-proposal-class-properties');
-    })
-
-    // enables @babel/preset-env polyfills
-    .configureBabelPresetEnv((config) => {
-        config.useBuiltIns = 'usage';
-        config.corejs = 3;
-    })
-
-
-    //Copied from Kiwi
-    // .configureTerserPlugin()
-
-    // enables Sass/SCSS support
-    // .enableSassLoader(function (options) {
-    //     options.sassOptions.includePaths = ['./node_modules/foundation-sites/scss'];
-    // })
-
     // enable PostCSS
-    // .enablePostCssLoader()
-
-    // .configureWatchOptions(function(watchOptions) {
-    //     // enable polling and check for changes every 250ms
-    //     // polling is useful when running Encore inside a Virtual Machine
-    //     watchOptions.poll = 250;
-    // })
-
+    .enablePostCssLoader()
 
     // enables Sass/SCSS support
-    // .enableSassLoader()
+    .enableSassLoader()
 
     // uncomment if you use TypeScript
     .enableTypeScriptLoader()
 
     // uncomment if you use React
-    // .enableReactPreset()
+    .enableReactPreset()
 
     // uncomment to get integrity="..." attributes on your script & link tags
     // requires WebpackEncoreBundle 1.4 or higher
