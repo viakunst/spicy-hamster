@@ -1,83 +1,127 @@
 <?php
 
-namespace App\Entity;
+namespace App\Entity\Statement;
 
-use App\Repository\DeclarationRepository;
+use App\Repository\Statement\StatementRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
- * @ORM\Entity(repositoryClass=DeclarationRepository::class)
+ * @ORM\Entity(repositoryClass=StatementRepository::class)
  * @Vich\Uploadable
  */
-class Declaration
+class Statement
 {
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue(strategy="UUID")
      * @ORM\Column(type="guid")
      */
-    private $id;
+    private string $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $naam;
+    private string $name;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $IBAN;
+    private string $IBAN;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $mail;
+    private string $mail;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $item;
+    private string $item;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $reason;
+    private string $reason;
 
     /**
      * @ORM\Column(type="simple_array")
+     *
+     * @var string[]
      */
-    private $commissie = [];
+    private $group = [];
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="text")
      */
-    private $opmerking;
+    private string $comment;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="text")
      */
-    private $akkoord;
+    private string $feedback;
 
     /**
-     * @ORM\Column(type="decimal", precision=6, scale=2)
+     * @ORM\Column(type="string")
      */
-    private $geld;
+    private string $status;
 
-    public function getId(): ?int
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private int $amount;
+
+    /**
+     * NOTE: This is not a mapped field of entity metadata, just a simple property.
+     *
+     * @Vich\UploadableField(mapping="products", fileNameProperty="imageName", size="imageSize")
+     *
+     * @var File|null
+     */
+    private $imageFile;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     *
+     * @var string|null
+     */
+    private $imageName;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     *
+     * @var int|null
+     */
+    private $imageSize;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     *
+     * @var \DateTimeInterface|null
+     */
+    private $updatedAt;
+
+    public function getId(): ?string
     {
         return $this->id;
     }
 
-    public function getNaam(): ?string
+    public function setId(string $id): self
     {
-        return $this->naam;
+        $this->id = $id;
+
+        return $this;
     }
 
-    public function setNaam(string $naam): self
+    public function getName(): ?string
     {
-        $this->naam = $naam;
+        return $this->name;
+    }
+
+    public function setName(string $name): self
+    {
+        $this->name = $name;
 
         return $this;
     }
@@ -130,83 +174,71 @@ class Declaration
         return $this;
     }
 
-    public function getCommissie(): ?array
+    /**
+     * @return string[]
+     */
+    public function getGroup()
     {
-        return $this->commissie;
+        return $this->group;
     }
 
-    public function setCommissie(array $commissie): self
+    /**
+     * @param string[] $group
+     */
+    public function setGroup($group): self
     {
-        $this->commissie = $commissie;
+        $this->group = $group;
 
         return $this;
     }
 
-    public function getOpmerking(): ?string
+    public function getComment(): ?string
     {
-        return $this->opmerking;
+        return $this->comment;
     }
 
-    public function setOpmerking(?string $opmerking): self
+    public function setComment(string $comment): self
     {
-        $this->opmerking = $opmerking;
+        $this->comment = $comment;
 
         return $this;
     }
 
-    public function getAkkoord(): ?bool
+    public function getFeedback(): ?string
     {
-        return $this->akkoord;
+        return $this->feedback;
     }
 
-    public function setAkkoord(bool $akkoord): self
+    public function setFeedback(string $feedback): self
     {
-        $this->akkoord = $akkoord;
+        $this->feedback = $feedback;
 
         return $this;
     }
 
-    public function getGeld(): ?string
+    public function getStatus(): ?string
     {
-        return $this->geld;
+        return $this->status;
     }
 
-    public function setGeld(string $geld): self
+    public function setStatus(string $status): self
     {
-        $this->geld = $geld;
+        $this->status = $status;
 
         return $this;
     }
 
-    /**
-     * NOTE: This is not a mapped field of entity metadata, just a simple property.
-     *
-     * @Vich\UploadableField(mapping="products", fileNameProperty="imageName", size="imageSize")
-     *
-     * @var File|null
-     */
-    private $imageFile;
+    public function getAmount(): ?int
+    {
+        return $this->amount;
+    }
 
-    /**
-     * @ORM\Column(type="string")
-     *
-     * @var string|null
-     */
-    private $imageName;
+    public function setAmount(int $amount): self
+    {
+        $this->amount = $amount;
 
-    /**
-     * @ORM\Column(type="integer")
-     *
-     * @var int|null
-     */
-    private $imageSize;
-
-    /**
-     * @ORM\Column(type="datetime")
-     *
-     * @var \DateTimeInterface|null
-     */
-    private $updatedAt;
+        return $this;
+    }
 
     /**
      * If manually uploading a file (i.e. not using Symfony Form) ensure an instance

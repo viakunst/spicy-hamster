@@ -1,26 +1,28 @@
 <?php
 
-namespace App\Repository;
+namespace App\Repository\Statement;
 
-use App\Entity\Declaration;
+use App\Entity\Statement\Statement;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @method Declaration|null find($id, $lockMode = null, $lockVersion = null)
- * @method Declaration|null findOneBy(array $criteria, array $orderBy = null)
- * @method Declaration[]    findAll()
- * @method Declaration[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @extends ServiceEntityRepository<Statement>
+ *
+ * @method Statement|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Statement|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Statement[]    findAll()
+ * @method Statement[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class DeclarationRepository extends ServiceEntityRepository
+class StatementRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Declaration::class);
+        parent::__construct($registry, Statement::class);
     }
 
     // /**
-    //  * @return Declaration[] Returns an array of Declaration objects
+    //  * @return Statement[] Returns an array of Statement objects
     //  */
     /*
     public function findByExampleField($value)
