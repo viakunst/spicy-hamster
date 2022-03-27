@@ -44,23 +44,33 @@ jobs:
     - name: Build JS dependencies
       run: yarn build
 
-    - name: Run linter
+    - name: Run frontend linter
+      run: yarn lint:quiet
+
+    - name: Run backend linter
       run: composer lint
 
-    - name: Run unit/functional tests
+    - name: Run frontend linter
+      run: yarn test:coverage
+
+    - name: Run backend tests
       run: composer test
 
     - name: Warmup dev cache
       run: php bin/console cache:warmup --env=dev
       
-    - name: Run static code analyser
+    - name: Run static code analyser on backend
       run: composer analyse
+      
+    - name: Run static code analyser on frontend
+      run: yarn analyse
 
     - name: fix code coverage paths
       working-directory: ./var/reports
       run: |
         sed -i 's/\/home\/runner\/work\/spicy-hamster\/spicy-hamster\//\/github\/workspace\//g' phpunit.xml
         sed -i 's/\/home\/runner\/work\/spicy-hamster\/spicy-hamster\//\/github\/workspace\//g' phpunit.coverage.xml
+        sed -i 's/\/home\/runner\/work\/spicy-hamster\/spicy-hamster\//\/github\/workspace\//g' lcov.info
 
     - name: SonarCloud Scan
       uses: sonarsource/sonarcloud-github-action@master

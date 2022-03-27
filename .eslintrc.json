@@ -1,0 +1,22 @@
+{
+    "plugins": [
+      "import",
+      "react",
+      "react-hooks",
+      "@typescript-eslint"
+    ],
+    "extends": [
+      "eslint:recommended",
+      "plugin:react/recommended",
+      "plugin:@typescript-eslint/recommended",
+      "airbnb",
+      "airbnb-typescript"
+    ],
+    "parserOptions": {
+        "project": "./tsconfig.json"
+    },
+    "rules": {
+        "react/jsx-one-expression-per-line": "off",
+        "linebreak-style": 0
+    }
+}
