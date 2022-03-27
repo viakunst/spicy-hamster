@@ -1,4 +1,3 @@
-
 ###> symfony/framework-bundle ###
 /.env.local
 /.env.local.php
@@ -23,6 +22,11 @@
 /.php-cs-fixer.php
 /.php-cs-fixer.cache
 ###< friendsofphp/php-cs-fixer ###
+###> custom ###
+/public/uploads/
+Thumbs.db
+/phpstan.neon
+###< custom ###
 
 ###> symfony/webpack-encore-bundle ###
 /node_modules/
@@ -30,9 +34,3 @@
 npm-debug.log
 yarn-error.log
 ###< symfony/webpack-encore-bundle ###
-
-###> custom ###
-/public/uploads/
-Thumbs.db
-/phpstan.neon
-###< custom ###
