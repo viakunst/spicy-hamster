@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "413cc4b3165d293e7e7f919c15dfa71c",
+    "content-hash": "e29d43419220f1ad212b3d842d26002d",
     "packages": [
         {
             "name": "composer/package-versions-deprecated",
@@ -1812,6 +1812,150 @@
                 }
             ],
             "time": "2022-03-14T12:44:37+00:00"
+        },
+        {
+            "name": "murtukov/php-code-generator",
+            "version": "v0.1.6",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/murtukov/php-code-generator.git",
+                "reference": "89b6063daa42870bc08e4ce6e670f2ae62634bba"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/murtukov/php-code-generator/zipball/89b6063daa42870bc08e4ce6e670f2ae62634bba",
+                "reference": "89b6063daa42870bc08e4ce6e670f2ae62634bba",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "php": ">=7.4"
+            },
+            "require-dev": {
+                "phpstan/phpstan": "^0.12.58",
+                "phpunit/phpunit": "^9.4.3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Murtukov\\PHPCodeGenerator\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Timur Murtukov",
+                    "email": "murtukov@gmail.com"
+                }
+            ],
+            "description": "A library to generate php code",
+            "support": {
+                "issues": "https://github.com/murtukov/php-code-generator/issues",
+                "source": "https://github.com/murtukov/php-code-generator/tree/v0.1.6"
+            },
+            "time": "2021-05-04T16:39:00+00:00"
+        },
+        {
+            "name": "overblog/graphql-bundle",
+            "version": "v0.14.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/overblog/GraphQLBundle.git",
+                "reference": "a77a31483a725963892523b02960434a0a61c924"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/overblog/GraphQLBundle/zipball/a77a31483a725963892523b02960434a0a61c924",
+                "reference": "a77a31483a725963892523b02960434a0a61c924",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "murtukov/php-code-generator": "^0.1.5",
+                "php": ">=7.4",
+                "phpdocumentor/reflection-docblock": "^5.2",
+                "psr/log": "^1.0 || ^2.0 || ^3.0",
+                "symfony/config": "^4.4.30 || ^5.3.7",
+                "symfony/dependency-injection": "^4.4.30 || ^5.3.7",
+                "symfony/event-dispatcher": "^4.4 || ^5.3",
+                "symfony/expression-language": "^4.4 || ^5.3",
+                "symfony/framework-bundle": "^4.4.30 || ^5.3.7",
+                "symfony/http-foundation": "^4.4.30 || ^5.3.7",
+                "symfony/http-kernel": "^4.4 || ^5.3",
+                "symfony/options-resolver": "^4.4 || ^5.3",
+                "symfony/property-access": "^4.4 || ^5.3",
+                "webonyx/graphql-php": ">=14.5"
+            },
+            "conflict": {
+                "phpdocumentor/type-resolver": "<1.4.0",
+                "react/promise": "<2.8"
+            },
+            "require-dev": {
+                "doctrine/annotations": "^1.13",
+                "doctrine/orm": "^2.5",
+                "monolog/monolog": "^1.26.1",
+                "phpstan/extension-installer": "^1.0",
+                "phpstan/phpstan": "^0.12.58",
+                "phpstan/phpstan-phpunit": "^0.12.11",
+                "phpstan/phpstan-symfony": "^0.12.6",
+                "phpunit/phpunit": "^9.5.10",
+                "react/promise": "^2.5",
+                "symfony/asset": "^4.4 || ^5.3",
+                "symfony/browser-kit": "^4.4 || ^5.3",
+                "symfony/console": "^4.4.30 || ^5.3",
+                "symfony/css-selector": "^4.4 || ^5.3",
+                "symfony/dom-crawler": "^4.4.30 || ^5.3.7",
+                "symfony/finder": "^4.4.30 || ^5.3.7",
+                "symfony/monolog-bundle": "^3.7",
+                "symfony/phpunit-bridge": "^6.0",
+                "symfony/process": "^4.4.30 || ^5.3.7",
+                "symfony/routing": "^4.4 || ^5.3.7",
+                "symfony/security-bundle": "^4.4 || ^5.3",
+                "symfony/validator": "^4.4.30 || ^5.3.7",
+                "symfony/var-dumper": "^4.4.30 || ^5.3.7",
+                "symfony/yaml": "^4.4 || ^5.3",
+                "twig/twig": "^2.10|^3.0"
+            },
+            "suggest": {
+                "nelmio/cors-bundle": "For more flexibility when using CORS prefight",
+                "overblog/graphiql-bundle": "If you want to use graphiQL.",
+                "react/promise": "To use ReactPHP promise adapter",
+                "symfony/translation": "If you want validation error messages to be translated."
+            },
+            "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.14-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Overblog\\GraphQLBundle\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Overblog",
+                    "homepage": "http://www.over-blog.com"
+                }
+            ],
+            "description": "This bundle provides tools to build a GraphQL server in your Symfony App.",
+            "keywords": [
+                "Relay",
+                "graphql"
+            ],
+            "support": {
+                "issues": "https://github.com/overblog/GraphQLBundle/issues",
+                "source": "https://github.com/overblog/GraphQLBundle/tree/v0.14.1"
+            },
+            "time": "2021-12-21T09:55:56+00:00"
         },
         {
             "name": "phpdocumentor/reflection-common",
@@ -7938,6 +8082,72 @@
                 "source": "https://github.com/webmozarts/assert/tree/1.10.0"
             },
             "time": "2021-03-09T10:59:23+00:00"
+        },
+        {
+            "name": "webonyx/graphql-php",
+            "version": "v14.11.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/webonyx/graphql-php.git",
+                "reference": "ffa431c0821821839370a68dab3c2597c06bf7f0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/webonyx/graphql-php/zipball/ffa431c0821821839370a68dab3c2597c06bf7f0",
+                "reference": "ffa431c0821821839370a68dab3c2597c06bf7f0",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "ext-mbstring": "*",
+                "php": "^7.1 || ^8"
+            },
+            "require-dev": {
+                "amphp/amp": "^2.3",
+                "doctrine/coding-standard": "^6.0",
+                "nyholm/psr7": "^1.2",
+                "phpbench/phpbench": "^1.2",
+                "phpstan/extension-installer": "^1.0",
+                "phpstan/phpstan": "0.12.82",
+                "phpstan/phpstan-phpunit": "0.12.18",
+                "phpstan/phpstan-strict-rules": "0.12.9",
+                "phpunit/phpunit": "^7.2 || ^8.5",
+                "psr/http-message": "^1.0",
+                "react/promise": "2.*",
+                "simpod/php-coveralls-mirror": "^3.0",
+                "squizlabs/php_codesniffer": "3.5.4"
+            },
+            "suggest": {
+                "psr/http-message": "To use standard GraphQL server",
+                "react/promise": "To leverage async resolving on React PHP platform"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "GraphQL\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "A PHP port of GraphQL reference implementation",
+            "homepage": "https://github.com/webonyx/graphql-php",
+            "keywords": [
+                "api",
+                "graphql"
+            ],
+            "support": {
+                "issues": "https://github.com/webonyx/graphql-php/issues",
+                "source": "https://github.com/webonyx/graphql-php/tree/v14.11.5"
+            },
+            "funding": [
+                {
+                    "url": "https://opencollective.com/webonyx-graphql-php",
+                    "type": "open_collective"
+                }
+            ],
+            "time": "2022-01-24T11:13:31+00:00"
         }
     ],
     "packages-dev": [
@@ -8680,6 +8890,72 @@
                 "source": "https://github.com/nikic/PHP-Parser/tree/v4.13.2"
             },
             "time": "2021-11-30T19:35:32+00:00"
+        },
+        {
+            "name": "overblog/graphiql-bundle",
+            "version": "v0.2.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/overblog/GraphiQLBundle.git",
+                "reference": "3161762574dcc6b264e1b6046e5fd2769e4e87c4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/overblog/GraphiQLBundle/zipball/3161762574dcc6b264e1b6046e5fd2769e4e87c4",
+                "reference": "3161762574dcc6b264e1b6046e5fd2769e4e87c4",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.6",
+                "symfony/framework-bundle": "^3.4 || ^4.0 || ^5.0",
+                "symfony/twig-bundle": "^3.4 || ^4.0 || ^5.0"
+            },
+            "require-dev": {
+                "overblog/graphql-bundle": ">=0.9",
+                "phpunit/phpunit": "^5.7 || ^6.0",
+                "sensio/framework-extra-bundle": "^3.0 || ^4.0 || ^5.0",
+                "symfony/browser-kit": "^3.4 || ^4.0 || ^5.0",
+                "symfony/templating": "^3.4 || ^4.0 || ^5.0",
+                "symfony/yaml": "^3.4 || ^4.0 || ^5.0"
+            },
+            "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.1-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Overblog\\GraphiQLBundle\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Renato Mefi",
+                    "email": "renato@mefi.in"
+                },
+                {
+                    "name": "Overblog",
+                    "homepage": "http://www.over-blog.com"
+                }
+            ],
+            "description": "Symfony GraphiQLBundle makes possible to render the UI into your symfony project",
+            "keywords": [
+                "graphiql",
+                "graphql"
+            ],
+            "support": {
+                "issues": "https://github.com/overblog/GraphiQLBundle/issues",
+                "source": "https://github.com/overblog/GraphiQLBundle/tree/master"
+            },
+            "time": "2020-02-03T16:17:50+00:00"
         },
         {
             "name": "phar-io/manifest",
