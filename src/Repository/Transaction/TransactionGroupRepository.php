@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Repository;
+namespace App\Repository\Transaction;
 
 use App\Entity\TransactionGroup;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
