@@ -6,6 +6,8 @@ use App\Entity\Mail\Mail;
 use App\Entity\Mail\Recipient;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class MailService
@@ -18,7 +20,7 @@ class MailService
 
     private $params;
 
-    public function __construct(\Swift_Mailer $mailer, EntityManagerInterface $em, TokenStorageInterface $tokenStorage, ParameterBagInterface $params)
+    public function __construct(MailerInterface $mailer, EntityManagerInterface $em, TokenStorageInterface $tokenStorage, ParameterBagInterface $params)
     {
         $this->mailer = $mailer;
         $this->em = $em;
@@ -53,11 +55,12 @@ class MailService
             }
         }
 
-        $message = (new \Swift_Message($title))
-            ->setFrom($from)
-            ->setTo($addresses)
-            ->setBody($body, 'text/html')
-            ->addPart($body_plain, 'text/plain')
+        $email = (new Email())
+            ->from($from)
+            ->to($addresses)
+            ->subject($title)
+            ->html($body)
+            ->text($body_plain)
         ;
 
         $content = json_encode([
@@ -66,7 +69,7 @@ class MailService
         ]);
 
         foreach ($attachments as $attachment) {
-            $message->attach($attachment);
+            $email->attach($attachment);
         }
 
         $msgEntity = new Mail();
@@ -91,7 +94,7 @@ class MailService
 
         $this->em->flush();
 
-        $this->mailer->send($message);
+        $this->mailer->send($email);
     }
 
     private function getUser()
