@@ -17,46 +17,55 @@ class TransactionGroup
      * @ORM\GeneratedValue(strategy="UUID")
      * @ORM\Column(type="guid")
      */
-    private $id;
+    private string $id;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $amount;
+    private int $amount;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $title;
+    private string $title;
 
     /**
      * @ORM\Column(type="text")
      */
-    private $description;
+    private string $description;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    private $date;
+    private \DateTime $date;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $IBAN;
+    private string $IBAN;
 
     /**
      * @ORM\OneToMany(targetEntity=Transaction::class, mappedBy="TransactionGroup")
+     *
+     * @var Collection<int,Transaction>
      */
     private $transactions;
 
     public function __construct()
     {
-        $this->transacties = new ArrayCollection();
+        $this->transactions = new ArrayCollection();
     }
 
-    public function getId(): ?int
+    public function getId(): string
     {
         return $this->id;
+    }
+
+    public function setId(string $id): self
+    {
+        $this->id = $id;
+
+        return $this;
     }
 
     public function getAmount(): ?int
@@ -100,7 +109,7 @@ class TransactionGroup
         return $this->date;
     }
 
-    public function setDate(\DateTimeInterface $date): self
+    public function setDate(\DateTime $date): self
     {
         $this->date = $date;
 
@@ -120,7 +129,7 @@ class TransactionGroup
     }
 
     /**
-     * @return Collection|Transaction[]
+     * @return Collection<int,Transaction>
      */
     public function getTransactions(): Collection
     {
@@ -142,7 +151,7 @@ class TransactionGroup
         if ($this->transactions->removeElement($transaction)) {
             // set the owning side to null (unless already changed)
             if ($transaction->getTransactionGroup() === $this) {
-                $transaction->setTransactionGroup(null);
+                // $transaction->setTransactionGroup(null);
             }
         }
 

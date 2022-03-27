@@ -16,33 +16,42 @@ class Transaction
      * @ORM\GeneratedValue(strategy="UUID")
      * @ORM\Column(type="guid")
      */
-    private $id;
+    private string $id;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Person\Person")
      * @ORM\JoinColumn(name="person_id", referencedColumnName="id")
      */
-    private $person;
+    private Person $person;
 
     /**
      * @ORM\ManyToOne(targetEntity=TransactionGroup::class, inversedBy="transactions")
      * @ORM\JoinColumn(nullable=false)
+     *
+     * @var TransactionGroup
      */
     private $transactionGroup;
 
     /**
      * @ORM\Column(type="string")
      */
-    private $status;
+    private string $status;
 
     /**
      * @ORM\Column(type="text", nullable=true)
      */
-    private $comment;
+    private string $comment;
 
-    public function getId(): ?int
+    public function getId(): string
     {
         return $this->id;
+    }
+
+    public function setId(string $id): self
+    {
+        $this->id = $id;
+
+        return $this;
     }
 
     public function getPerson(): ?Person
@@ -50,7 +59,7 @@ class Transaction
         return $this->person;
     }
 
-    public function setPerson(?Person $person): self
+    public function setPerson(Person $person): self
     {
         $this->person = $person;
 
@@ -62,7 +71,7 @@ class Transaction
         return $this->transactionGroup;
     }
 
-    public function setTransactionGroup(?TransactionGroup $transactionGroup): self
+    public function setTransactionGroup(TransactionGroup $transactionGroup): self
     {
         $this->transactionGroup = $transactionGroup;
 
@@ -86,7 +95,7 @@ class Transaction
         return $this->comment;
     }
 
-    public function setComment(?string $comment): self
+    public function setComment(string $comment): self
     {
         $this->comment = $comment;
 

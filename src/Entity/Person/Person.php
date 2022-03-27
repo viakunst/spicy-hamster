@@ -14,32 +14,32 @@ class Person
      * @ORM\GeneratedValue(strategy="UUID")
      * @ORM\Column(type="guid")
      */
-    private $id;
+    private string $id;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
      */
-    private $sub;
+    private string $sub;
 
     /**
      * @ORM\Column(type="string", length=180)
      */
-    private $email;
+    private string $email;
 
     /**
      * @ORM\Column(type="string", length=180)
      */
-    private $givenName;
+    private string $givenName;
 
     /**
      * @ORM\Column(type="string", length=180)
      */
-    private $familyName;
+    private string $familyName;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $address;
+    private string $address;
 
     public function getId(): ?string
     {
@@ -48,7 +48,7 @@ class Person
 
     public function getSub(): ?string
     {
-        return (string) $this->sub;
+        return $this->sub;
     }
 
     public function setSub(string $sub): self
@@ -60,7 +60,7 @@ class Person
 
     public function getEmail(): ?string
     {
-        return (string) $this->email;
+        return $this->email;
     }
 
     public function setEmail(string $email): self
@@ -75,7 +75,7 @@ class Person
      * Note that this value isn't loaded by doctrine, but is provided
      * by the parent Person instance.
      */
-    public function getUsername(): string
+    public function getUsername(): ?string
     {
         return $this->getEmail();
     }
@@ -117,8 +117,6 @@ class Person
 
     /**
      * Set name.
-     *
-     * @param string $name
      */
     public function setGivenName(string $givenName): self
     {
@@ -139,8 +137,6 @@ class Person
 
     /**
      * Set name.
-     *
-     * @param string $name
      */
     public function setFamilyName(string $familyName): self
     {
@@ -151,7 +147,7 @@ class Person
 
     public function getAdress(): ?string
     {
-        return (string) $this->address;
+        return $this->address;
     }
 
     public function setAdress(string $address): self

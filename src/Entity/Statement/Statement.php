@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Entity;
+namespace App\Entity\Statement;
 
 use App\Repository\Statement\StatementRepository;
 use Doctrine\ORM\Mapping as ORM;
@@ -18,57 +18,59 @@ class Statement
      * @ORM\GeneratedValue(strategy="UUID")
      * @ORM\Column(type="guid")
      */
-    private $id;
+    private string $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $name;
+    private string $name;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $IBAN;
+    private string $IBAN;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $mail;
+    private string $mail;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $item;
+    private string $item;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $reason;
+    private string $reason;
 
     /**
      * @ORM\Column(type="simple_array")
+     *
+     * @var string[]
      */
     private $group = [];
 
     /**
      * @ORM\Column(type="text")
      */
-    private $comment;
+    private string $comment;
 
     /**
      * @ORM\Column(type="text")
      */
-    private $feedback;
+    private string $feedback;
 
     /**
      * @ORM\Column(type="string")
      */
-    private $status;
+    private string $status;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $amount;
+    private int $amount;
 
     /**
      * NOTE: This is not a mapped field of entity metadata, just a simple property.
@@ -80,29 +82,36 @@ class Statement
     private $imageFile;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=true)
      *
      * @var string|null
      */
     private $imageName;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable=true)
      *
      * @var int|null
      */
     private $imageSize;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", nullable=true)
      *
      * @var \DateTimeInterface|null
      */
     private $updatedAt;
 
-    public function getId(): ?int
+    public function getId(): ?string
     {
         return $this->id;
+    }
+
+    public function setId(string $id): self
+    {
+        $this->id = $id;
+
+        return $this;
     }
 
     public function getName(): ?string
@@ -165,12 +174,18 @@ class Statement
         return $this;
     }
 
-    public function getGroup(): ?array
+    /**
+     * @return string[]
+     */
+    public function getGroup()
     {
         return $this->group;
     }
 
-    public function setGroup(array $group): self
+    /**
+     * @param string[] $group
+     */
+    public function setGroup($group): self
     {
         $this->group = $group;
 
@@ -182,7 +197,7 @@ class Statement
         return $this->comment;
     }
 
-    public function setComment(?string $comment): self
+    public function setComment(string $comment): self
     {
         $this->comment = $comment;
 
@@ -194,7 +209,7 @@ class Statement
         return $this->feedback;
     }
 
-    public function setFeedback(?string $feedback): self
+    public function setFeedback(string $feedback): self
     {
         $this->feedback = $feedback;
 

@@ -15,17 +15,21 @@ class Recipient
      * @ORM\GeneratedValue(strategy="UUID")
      * @ORM\Column(type="guid")
      */
-    private $id;
+    private string $id;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Person\Person")
      * @ORM\JoinColumn(name="person_id", referencedColumnName="id")
+     *
+     * @var Person|null
      */
     private $person;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Mail\Mail", inversedBy="recipients")
      * @ORM\JoinColumn(name="mail", referencedColumnName="id")
+     *
+     * @var Mail|null
      */
     private $mail;
 

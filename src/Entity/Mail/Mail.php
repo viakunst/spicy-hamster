@@ -3,6 +3,7 @@
 namespace App\Entity\Mail;
 
 use App\Entity\Person\Person;
+use DateTime;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -16,38 +17,40 @@ class Mail
      * @ORM\GeneratedValue(strategy="UUID")
      * @ORM\Column(type="guid")
      */
-    private $id;
+    private string $id;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Person\Person")
      * @ORM\JoinColumn(name="person_id", referencedColumnName="id")
      */
-    private $person;
+    private ?Person $person;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Mail\Recipient", mappedBy="mail")
+     *
+     * @var Collection<int,Recipient>
      */
     private $recipients;
 
     /**
      * @ORM\Column(type="string")
      */
-    private $title;
+    private string $title;
 
     /**
      * @ORM\Column(type="text")
      */
-    private $content;
+    private string $content;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $sender;
+    private string $sender;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    private $sentAt;
+    private DateTime $sentAt;
 
     public function getId(): ?string
     {
@@ -93,9 +96,9 @@ class Mail
     /**
      * Get price options.
      *
-     * @return Collection|Recipient[]
+     * @return Collection<int,Recipient>
      */
-    public function getRecipients(): Collection
+    public function getRecipients()
     {
         return $this->recipients;
     }
@@ -140,7 +143,7 @@ class Mail
         return $this->sentAt;
     }
 
-    public function setSentAt(\DateTimeInterface $sentAt): self
+    public function setSentAt(DateTime $sentAt): self
     {
         $this->sentAt = $sentAt;
 

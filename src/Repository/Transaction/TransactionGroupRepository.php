@@ -7,6 +7,8 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
+ * @extends ServiceEntityRepository<TransactionGroup>
+ *
  * @method TransactionGroup|null find($id, $lockMode = null, $lockVersion = null)
  * @method TransactionGroup|null findOneBy(array $criteria, array $orderBy = null)
  * @method TransactionGroup[]    findAll()
