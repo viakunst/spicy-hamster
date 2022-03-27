@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Entity;
+namespace App\Entity\Transaction;
 
 use App\Entity\Person\Person;
 use App\Repository\TransactionRepository\TransactionRepository;

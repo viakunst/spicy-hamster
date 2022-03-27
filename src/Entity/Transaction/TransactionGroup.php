@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Entity;
+namespace App\Entity\Transaction;
 
 use App\Repository\TransactionRepository\TransactionGroupRepository;
 use Doctrine\Common\Collections\ArrayCollection;
