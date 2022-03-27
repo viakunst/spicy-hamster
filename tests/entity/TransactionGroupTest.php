@@ -112,8 +112,12 @@ class TransactionGroupTest extends TestCase
 
     public function testSetDesctiption(): void
     {
-        /* @todo This test is incomplete. */
-        $this::markTestIncomplete();
+        $expected = '42';
+        $property = (new ReflectionClass(TransactionGroup::class))
+            ->getProperty('description');
+        $property->setAccessible(true);
+        $this->transactionGroup->setDesctiption($expected);
+        $this::assertSame($expected, $property->getValue($this->transactionGroup));
     }
 
     public function testGetDate(): void
@@ -138,14 +142,22 @@ class TransactionGroupTest extends TestCase
 
     public function testGetIBAN(): void
     {
-        /* @todo This test is incomplete. */
-        $this::markTestIncomplete();
+        $expected = '32';
+        $property = (new ReflectionClass(TransactionGroup::class))
+            ->getProperty('IBAN');
+        $property->setAccessible(true);
+        $property->setValue($this->transactionGroup, $expected);
+        $this::assertSame($expected, $this->transactionGroup->getIBAN());
     }
 
     public function testSetIBAN(): void
     {
-        /* @todo This test is incomplete. */
-        $this::markTestIncomplete();
+        $expected = '42';
+        $property = (new ReflectionClass(TransactionGroup::class))
+            ->getProperty('IBAN');
+        $property->setAccessible(true);
+        $this->transactionGroup->setIBAN($expected);
+        $this::assertSame($expected, $property->getValue($this->transactionGroup));
     }
 
     public function testGetTransactions(): void

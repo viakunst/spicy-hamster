@@ -91,20 +91,45 @@ class PersonTest extends TestCase
 
     public function testGetUsername(): void
     {
-        /* @todo This test is incomplete. */
-        $this::markTestIncomplete();
+        $expected = '42';
+        $property = (new ReflectionClass(Person::class))
+            ->getProperty('email');
+        $property->setAccessible(true);
+        $property->setValue($this->person, $expected);
+        $this::assertSame($expected, $this->person->getUsername());
     }
 
     public function testGetName(): void
     {
-        /* @todo This test is incomplete. */
-        $this::markTestIncomplete();
+        $expected = '42';
+
+        $property = (new ReflectionClass(Person::class))
+            ->getProperty('givenName');
+        $property->setAccessible(true);
+        $property->setValue($this->person, $expected);
+
+        $property2 = (new ReflectionClass(Person::class))
+            ->getProperty('familyName');
+        $property2->setAccessible(true);
+        $property2->setValue($this->person, $expected);
+
+        $this::assertSame(\trim($expected.' '.$expected), $this->person->getName());
     }
 
     public function testSetName(): void
     {
-        /* @todo This test is incomplete. */
-        $this::markTestIncomplete();
+        $expected = '42';
+        $property = (new ReflectionClass(Person::class))
+            ->getProperty('givenName');
+        $property->setAccessible(true);
+        $this->person->setName($expected);
+
+        $property2 = (new ReflectionClass(Person::class))
+            ->getProperty('familyName');
+        $property2->setAccessible(true);
+        $property2->setValue($this->person, '');
+
+        $this::assertSame($expected, $property->getValue($this->person));
     }
 
     public function testGetGivenName(): void
@@ -147,15 +172,23 @@ class PersonTest extends TestCase
         $this::assertSame($expected, $property->getValue($this->person));
     }
 
-    public function testGetAdress(): void
+    public function testGetAddress(): void
     {
-        /* @todo This test is incomplete. */
-        $this::markTestIncomplete();
+        $expected = '42';
+        $property = (new ReflectionClass(Person::class))
+            ->getProperty('address');
+        $property->setAccessible(true);
+        $property->setValue($this->person, $expected);
+        $this::assertSame($expected, $this->person->getAddress());
     }
 
-    public function testSetAdress(): void
+    public function testSetAddress(): void
     {
-        /* @todo This test is incomplete. */
-        $this::markTestIncomplete();
+        $expected = '42';
+        $property = (new ReflectionClass(Person::class))
+            ->getProperty('address');
+        $property->setAccessible(true);
+        $this->person->setAddress($expected);
+        $this::assertSame($expected, $property->getValue($this->person));
     }
 }

@@ -145,12 +145,12 @@ class Person
         return $this;
     }
 
-    public function getAdress(): ?string
+    public function getAddress(): ?string
     {
         return $this->address;
     }
 
-    public function setAdress(string $address): self
+    public function setAddress(string $address): self
     {
         $this->address = $address;
 
