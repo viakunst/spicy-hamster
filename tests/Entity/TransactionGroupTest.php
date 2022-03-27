@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Entity;
+namespace App\Tests\Entity;
 
 use App\Entity\Transaction\TransactionGroup;
 use DateTime;
