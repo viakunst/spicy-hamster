@@ -28,11 +28,9 @@ class DatetimeScalar
     }
 
     /**
-     * @param \GraphQL\Language\AST\Node $valueNode
-     *
-     * @return string
+     * @return \DateTime
      */
-    public static function parseLiteral($valueNode)
+    public static function parseLiteral(CustomScalarNode $valueNode)
     {
         return new \DateTime($valueNode->value);
     }
