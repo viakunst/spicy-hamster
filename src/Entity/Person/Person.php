@@ -3,9 +3,12 @@
 namespace App\Entity\Person;
 
 use Doctrine\ORM\Mapping as ORM;
+use Overblog\GraphQLBundle\Annotation as GQL;
 
 /**
  * @ORM\Entity
+ * @GQL\Type
+ * @GQL\Description("A local copy of a person who has registered transactions or statements.")
  */
 class Person
 {
