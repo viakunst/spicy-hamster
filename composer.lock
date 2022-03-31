@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e29d43419220f1ad212b3d842d26002d",
+    "content-hash": "748260b2b873442d284b224519857fb3",
     "packages": [
         {
             "name": "composer/package-versions-deprecated",
@@ -11535,5 +11535,5 @@
         "ext-sqlite3": "*",
         "ext-xdebug": "*"
     },
-    "plugin-api-version": "2.2.0"
+    "plugin-api-version": "2.0.0"
 }
