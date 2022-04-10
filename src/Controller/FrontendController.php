@@ -9,7 +9,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class FrontendController extends AbstractController
 {
     /**
-     * @Route("/")
+     * @Route("/{route}", requirements={"route"=".*"}, priority=99)
      */
     public function indexAction(): Response
     {
