@@ -1,11 +1,13 @@
 import React from 'react';
-import Button from 'vk-style/dist/Interaction/Button';
-import Grid from 'vk-style/dist/Layout/Grid';
-import Header from 'vk-style/dist/Text/Header';
-import Note from 'vk-style/dist/Text/Note';
-import Text from 'vk-style/dist/Text/Text';
-import Title from 'vk-style/dist/Text/Title';
-import Value from 'vk-style/dist/Visualisation/Value';
+import {
+  Button,
+  Grid,
+  Header,
+  Note,
+  Text,
+  Title,
+  Value,
+} from 'vk-style';
 import './App.css';
 
 interface Props {
