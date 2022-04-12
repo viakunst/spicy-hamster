@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { gql, GraphQLClient } from 'graphql-request';
 import { usePersonsQuery } from './Api/Backend';
 

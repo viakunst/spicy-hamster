@@ -43,6 +43,12 @@ jobs:
   
     - name: Install JS dependencies
       run: yarn install --network-concurrency 1
+
+    - name: Generate GraphQL schema
+      run: php bin/console graphql:dump-schema
+      
+    - name: Generate JS API bindings
+      run: yarn generate
     
     - name: Build JS dependencies
       run: yarn build
@@ -53,7 +59,7 @@ jobs:
     - name: Run backend linter
       run: composer lint
 
-    - name: Run frontend linter
+    - name: Run frontend tests
       run: yarn test:coverage
 
     - name: Run backend tests

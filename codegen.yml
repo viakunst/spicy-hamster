@@ -4,7 +4,7 @@ config:
   fetcher: graphql-request
 generates:
   assets/script/Api/Backend.tsx:
-    schema: "http://localhost:8000/api/graphql/"
+    schema: "var/schema.json"
     plugins:
       - "typescript"
       - "typescript-operations"
