@@ -17,4 +17,6 @@ return [
     Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle::class => ['test' => true],
     Liip\TestFixturesBundle\LiipTestFixturesBundle::class => ['test' => true],
     Symfony\WebpackEncoreBundle\WebpackEncoreBundle::class => ['all' => true],
+    Overblog\GraphQLBundle\OverblogGraphQLBundle::class => ['all' => true],
+    Overblog\GraphiQLBundle\OverblogGraphiQLBundle::class => ['dev' => true],
 ];

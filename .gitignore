@@ -26,6 +26,7 @@
 /public/uploads/
 Thumbs.db
 /phpstan.neon
+/assets/script/Api/
 ###< custom ###
 
 ###> symfony/webpack-encore-bundle ###

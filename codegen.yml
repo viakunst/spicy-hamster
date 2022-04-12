@@ -1,0 +1,11 @@
+overwrite: true
+documents: 'assets/**/*.graphql'
+config:
+  fetcher: graphql-request
+generates:
+  assets/script/Api/Backend.tsx:
+    schema: "var/schema.json"
+    plugins:
+      - "typescript"
+      - "typescript-operations"
+      - "typescript-react-query"

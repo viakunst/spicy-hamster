@@ -15,10 +15,10 @@ jobs:
     
     strategy:
       matrix:
-        node-version: [12.x]
+        node-version: [14.x]
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
       with:
         fetch-depth: '0'
       
@@ -29,7 +29,7 @@ jobs:
         extensions: xdebug
       
     - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
+      uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
       
@@ -37,9 +37,18 @@ jobs:
       run: composer install --prefer-dist --no-progress --optimize-autoloader
       env:
         APP_ENV: test
+    
+    - name: Clear JS dependencies cache
+      run: yarn cache clean
   
     - name: Install JS dependencies
-      run: yarn install
+      run: yarn install --network-concurrency 1
+
+    - name: Generate GraphQL schema
+      run: php bin/console graphql:dump-schema
+      
+    - name: Generate JS API bindings
+      run: yarn generate
     
     - name: Build JS dependencies
       run: yarn build
@@ -50,7 +59,7 @@ jobs:
     - name: Run backend linter
       run: composer lint
 
-    - name: Run frontend linter
+    - name: Run frontend tests
       run: yarn test:coverage
 
     - name: Run backend tests

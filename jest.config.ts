@@ -93,7 +93,7 @@ export default {
   // notifyMode: "failure-change",
 
   // A preset that is used as a base for Jest's configuration
-  // preset: undefined,
+  preset: 'ts-jest',
 
   // Run tests from one or more projects
   // projects: undefined,
@@ -173,7 +173,6 @@ export default {
 
   // A map from regular expressions to paths to transformers
   transform: {
-    "^.+\\.[t|j]sx?$": "babel-jest",
     ".+\\.(css|styl|less|sass|scss|png|jpg|svg|ttf|woff|woff2)$": "jest-transform-stub",
   },
 
