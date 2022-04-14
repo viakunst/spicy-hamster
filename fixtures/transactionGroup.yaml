@@ -1,0 +1,9 @@
+#fixtures/transactionGroup
+
+App\Entity\Transaction\TransactionGroup:
+  transactionGroup_1:
+    id: 'id1'
+    amount: '5'
+    title: 'betaal'
+    date: <dateTimeBetween('1980-10-10', '1980-10-10')>
+    IBAN: 'INGB 1111 1111 1111'

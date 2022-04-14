@@ -1,0 +1,10 @@
+# fixtures/person
+
+App\Entity\Person\Person:
+  person_1:
+    email: 'person@hotmail.com'
+    givenName: 'jong'
+    familyName: 'gozer'
+    sub: '1111-2222'
+    address: 'straat ergens 1, utrecht'
+

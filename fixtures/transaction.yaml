@@ -1,0 +1,9 @@
+#fixtures/transaction
+
+App\Entity\Transaction\Transaction:
+  transaction_1:
+    id: 'id1'
+    person: '@person_1'
+    transactionGroup: '@transactionGroup_1'
+    status: 'niet betaald'
+    comment: 'exp'
