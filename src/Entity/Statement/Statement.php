@@ -46,11 +46,11 @@ class Statement
     private string $reason;
 
     /**
-     * @ORM\Column(type="simple_array")
+     * @ORM\Column(name="`groups`", type="simple_array")
      *
      * @var string[]
      */
-    private $group = [];
+    private $groups = [];
 
     /**
      * @ORM\Column(type="text")
@@ -177,17 +177,17 @@ class Statement
     /**
      * @return string[]
      */
-    public function getGroup()
+    public function getGroups()
     {
-        return $this->group;
+        return $this->groups;
     }
 
     /**
-     * @param string[] $group
+     * @param string[] $groups
      */
-    public function setGroup($group): self
+    public function setGroups($groups): self
     {
-        $this->group = $group;
+        $this->groups = $groups;
 
         return $this;
     }

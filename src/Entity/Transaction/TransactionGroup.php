@@ -30,9 +30,9 @@ class TransactionGroup
     private string $title;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="string", length=255)
      */
-    private string $description;
+    public string $description;
 
     /**
      * @ORM\Column(type="datetime")

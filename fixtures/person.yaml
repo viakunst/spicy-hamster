@@ -2,6 +2,7 @@
 
 App\Entity\Person\Person:
   person_1:
+    id: 'id1'
     email: 'person@hotmail.com'
     givenName: 'jong'
     familyName: 'gozer'

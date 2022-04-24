@@ -46,6 +46,13 @@ class Person
         return $this->id;
     }
 
+    public function setId(string $id): self
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
     /**
      * @GQL\Field(type="String!")
      * @GQL\Description("The subject identifier of the person.")
