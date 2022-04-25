@@ -9,6 +9,8 @@ use Overblog\GraphQLBundle\Annotation as GQL;
  * @GQL\Type
  * @GQL\Description("Person")
  * @ORM\Entity
+ * @GQL\Type
+ * @GQL\Description("A local copy of a person who has registered transactions or statements.")
  */
 class Person
 {
