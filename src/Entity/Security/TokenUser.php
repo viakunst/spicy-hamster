@@ -11,7 +11,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * @GQL\Description("Current user info.")
  * @ORM\Entity(repositoryClass=AwsUserRepository::class)
  */
-class AwsUser implements UserInterface
+class TokenUser implements UserInterface
 {
     /**
      * @ORM\Id()

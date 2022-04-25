@@ -2,30 +2,25 @@
 
 namespace App\Security;
 
-use App\Entity\Security\AwsUser;
-use App\Providers\Aws\RemoteUserServiceInterface;
+use App\Entity\Security\TokenUser;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
-class AwsUserProvider implements UserProviderInterface
+class TokenUserProvider implements UserProviderInterface
 {
-    public const ADMIN_ACCESS = 'admin';
-    public const USER_ACCESS = 'user';
-    public const NO_ACCESS = 'none';
+    private TokenUserServiceInterface $tokenUserService;
 
-    private RemoteUserServiceInterface $awsService;
-
-    public function __construct(RemoteUserServiceInterface $rum)
+    public function __construct(TokenUserServiceInterface $tokenUserService)
     {
-        $this->awsService = $rum;
+        $this->tokenUserService = $tokenUserService;
     }
 
     public function loadUserByIdentifier(string $identifier): UserInterface
     {
-        $user = new AwsUser($identifier);
+        $user = new TokenUser($identifier);
 
-        $this->awsService->populateUser($user);
-        $this->awsService->populateRoles($user);
+        $this->tokenUserService->populateUser($user);
+        $this->tokenUserService->populateRoles($user);
         // var_dump($user);
 
         return $user;
@@ -43,7 +38,7 @@ class AwsUserProvider implements UserProviderInterface
      */
     public function supportsClass(string $class)
     {
-        if ('App\Entity\Security\AwsUser' == $class) {
+        if ('App\Entity\Security\TokenUser' == $class) {
             return true;
         }
 

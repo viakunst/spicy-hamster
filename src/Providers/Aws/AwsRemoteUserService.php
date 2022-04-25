@@ -2,19 +2,20 @@
 
 namespace App\Providers\Aws;
 
-use App\Entity\Security\AwsUser;
+use App\Entity\Security\TokenUser;
+use App\Security\TokenUserServiceInterface;
 
 /**
  * This class fills in the gaps in the userclass.
  */
-class AwsRemoteUserService implements RemoteUserServiceInterface
+class AwsRemoteUserService implements TokenUserServiceInterface
 {
-    public function isAuthorized(AwsUser $user): bool
+    public function isAuthorized(TokenUser $user): bool
     {
         return false;
     }
 
-    public function populateRoles(AwsUser $user): void
+    public function populateRoles(TokenUser $user): void
     {
         if ('adminToken' == $user->getToken()) {
             $user->setRoles(['ROLE_USER', 'ROLE_ADMIN']);
@@ -25,7 +26,7 @@ class AwsRemoteUserService implements RemoteUserServiceInterface
         }
     }
 
-    public function populateUser(AwsUser $user): void
+    public function populateUser(TokenUser $user): void
     {
         $user->setEmail('mail@user.com');
     }

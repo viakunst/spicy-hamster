@@ -3,7 +3,7 @@
 namespace App\GraphQL;
 
 use App\Entity\Person\Person;
-use App\Entity\Security\AwsUser;
+use App\Entity\Security\TokenUser;
 use Doctrine\ORM\EntityManagerInterface;
 use Overblog\GraphQLBundle\Annotation as GQL;
 use Symfony\Component\Security\Core\Security;
@@ -49,7 +49,7 @@ class Query
      * @GQL\Field(type="AwsUser")
      * @GQL\Description("The currently authenticated user.")
      */
-    public function user(): ?AwsUser
+    public function user(): ?TokenUser
     {
         return $this->sec->getUser();
     }
