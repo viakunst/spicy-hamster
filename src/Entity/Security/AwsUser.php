@@ -1,23 +1,44 @@
 <?php
 
-// src/Entity/User.php
-
 namespace App\Entity\Security;
 
-use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Doctrine\ORM\Mapping as ORM;
+use Overblog\GraphQLBundle\Annotation as GQL;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
- * In memory user class only. It does not persits.
+ * @GQL\Type
+ * @GQL\Description("Current user info.")
+ * @ORM\Entity(repositoryClass=AwsUserRepository::class)
  */
 class AwsUser implements UserInterface
 {
+    /**
+     * @ORM\Id()
+     * @ORM\GeneratedValue(strategy="UUID")
+     * @ORM\Column(type="guid")
+     */
     private $id;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     * @GQL\Field(type="String")
+     * @GQL\Description("Access Token")
+     */
     private $token;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     * @GQL\Field(type="String")
+     * @GQL\Description("Email")
+     */
     private $email;
 
+    /**
+     * @ORM\Column(type="json")
+     * @GQL\Field(type="[String]")
+     * @GQL\Description("Roles of user")
+     */
     private $roles = [];
 
     public function __construct($token)

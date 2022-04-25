@@ -11,12 +11,18 @@ class AwsRemoteUserService implements RemoteUserServiceInterface
 {
     public function isAuthorized(AwsUser $user): bool
     {
-        return true;
+        return false;
     }
 
     public function populateRoles(AwsUser $user): void
     {
-        $user->setRoles(['ROLE_USER']);
+        if ('adminToken' == $user->getToken()) {
+            $user->setRoles(['ROLE_USER', 'ROLE_ADMIN']);
+        }
+
+        if ('userToken' == $user->getToken()) {
+            $user->setRoles(['ROLE_USER']);
+        }
     }
 
     public function populateUser(AwsUser $user): void

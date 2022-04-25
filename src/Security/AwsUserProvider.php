@@ -25,12 +25,15 @@ class AwsUserProvider implements UserProviderInterface
         $user = new AwsUser($identifier);
 
         $this->awsService->populateUser($user);
+        $this->awsService->populateRoles($user);
+        // var_dump($user);
 
         return $user;
     }
 
     public function refreshUser(UserInterface $user)
     {
+        return $user;
     }
 
     /**

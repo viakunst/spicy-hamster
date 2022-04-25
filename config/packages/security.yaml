@@ -8,8 +8,10 @@ security:
         # used to reload user from session & other features (e.g. switch_user)
         app_user_provider:
             entity:
-                class: App\Entity\AwsUser
+                class: App\Entity\Security\AwsUser
                 property: 'token'
+        aws_user_provider:
+            id: App\Security\AwsUserProvider
 
     firewalls:
         dev:
@@ -17,7 +19,7 @@ security:
             security: false
         main:
             lazy: true
-            provider: app_user_provider
+            provider: aws_user_provider
             custom_authenticators:
                 - App\Security\ApiTokenAuthenticator
 

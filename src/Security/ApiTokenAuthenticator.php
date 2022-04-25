@@ -22,12 +22,12 @@ class ApiTokenAuthenticator extends AbstractAuthenticator
      */
     public function supports(Request $request): ?bool
     {
-        return $request->headers->has('X-AUTH-TOKEN');
+        return $request->headers->has('Authorization');
     }
 
     public function authenticate(Request $request): Passport
     {
-        $apiToken = $request->headers->get('X-AUTH-TOKEN');
+        $apiToken = $request->headers->get('Authorization');
         if (null === $apiToken) {
             // The token header was empty, authentication fails with HTTP Status
             // Code 401 "Unauthorized"
@@ -35,10 +35,24 @@ class ApiTokenAuthenticator extends AbstractAuthenticator
         }
 
         return new SelfValidatingPassport(new UserBadge($apiToken));
+
+        // function ($userIdentifier) {
+        //    return $this->userRepository->findOneBy(['email' => $userIdentifier]);
+        // })
     }
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
+        $data = [
+            // you may want to customize or obfuscate the message first
+            'message' => 'scu',
+
+            // or to translate this message
+            // $this->translator->trans($exception->getMessageKey(), $exception->getMessageData())
+        ];
+
+        // return new JsonResponse($data, Response::HTTP_UNAUTHORIZED);
+
         // on success, let the request continue
         return null;
     }
