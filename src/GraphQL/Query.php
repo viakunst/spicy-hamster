@@ -25,7 +25,6 @@ class Query
     /**
      * @GQL\Field(type="[Person]")
      * @GQL\Description("All persons stored in the database.")
-     * @GQL\Access("isAuthenticated()")
      *
      * @return Person[]
      */

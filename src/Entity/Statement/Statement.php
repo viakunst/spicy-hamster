@@ -4,10 +4,13 @@ namespace App\Entity\Statement;
 
 use App\Repository\Statement\StatementRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Overblog\GraphQLBundle\Annotation as GQL;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
+ * @GQL\Type
+ * @GQL\Description("Statement on what is owned from the organisation.")
  * @ORM\Entity(repositoryClass=StatementRepository::class)
  * @Vich\Uploadable
  */
@@ -114,6 +117,10 @@ class Statement
         return $this;
     }
 
+    /**
+     * @GQL\Field(type="String!")
+     * @GQL\Description("The name of the Statement.")
+     */
     public function getName(): ?string
     {
         return $this->name;

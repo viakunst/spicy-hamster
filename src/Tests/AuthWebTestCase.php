@@ -37,4 +37,14 @@ class AuthWebTestCase extends WebTestCase
 
         unset($this->client);
     }
+
+    protected function login(): void
+    {
+        // Stateless
+    }
+
+    protected function logout(): void
+    {
+        // Stateless
+    }
 }

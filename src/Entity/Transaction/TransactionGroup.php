@@ -6,8 +6,11 @@ use App\Repository\TransactionRepository\TransactionGroupRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Overblog\GraphQLBundle\Annotation as GQL;
 
 /**
+ * @GQL\Type
+ * @GQL\Description("Contains the common info of transactions.")
  * @ORM\Entity(repositoryClass=TransactionGroupRepository::class)
  */
 class TransactionGroup
@@ -21,6 +24,8 @@ class TransactionGroup
 
     /**
      * @ORM\Column(type="integer")
+     * @GQL\Field(type="Integer")
+     * @GQL\Description("The amount of money in cents.")
      */
     private int $amount;
 

@@ -3,8 +3,11 @@
 namespace App\Entity\Person;
 
 use Doctrine\ORM\Mapping as ORM;
+use Overblog\GraphQLBundle\Annotation as GQL;
 
 /**
+ * @GQL\Type
+ * @GQL\Description("Person")
  * @ORM\Entity
  */
 class Person

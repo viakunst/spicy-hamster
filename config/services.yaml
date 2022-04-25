@@ -20,6 +20,15 @@ services:
             - '../src/Entity/'
             - '../src/Kernel.php'
             - '../src/Tests/'
+    
+    App\Providers\Aws\AwsRemoteUserService:
+        class: App\Providers\Aws\AwsRemoteUserService
+        arguments: []
+
+    App\Providers\Aws\RemoteUserServiceInterface: '@App\Providers\Aws\AwsRemoteUserService'
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+    App\GraphQL\Query:
+        public: true
