@@ -30,7 +30,7 @@ class Transaction
 
     /**
      * @ORM\ManyToOne(targetEntity=TransactionGroup::class, inversedBy="transactions")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(name="transaction_group_id", nullable=false)
      *
      * @var TransactionGroup
      */
