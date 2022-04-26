@@ -4,10 +4,13 @@ namespace App\Entity\Statement;
 
 use App\Repository\Statement\StatementRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Overblog\GraphQLBundle\Annotation as GQL;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
+ * @GQL\Type
+ * @GQL\Description("Statement on what is owned from the organisation.")
  * @ORM\Entity(repositoryClass=StatementRepository::class)
  * @Vich\Uploadable
  */
@@ -46,11 +49,11 @@ class Statement
     private string $reason;
 
     /**
-     * @ORM\Column(type="simple_array")
+     * @ORM\Column(name="`groups`", type="simple_array")
      *
      * @var string[]
      */
-    private $group = [];
+    private $groups = [];
 
     /**
      * @ORM\Column(type="text")
@@ -114,6 +117,10 @@ class Statement
         return $this;
     }
 
+    /**
+     * @GQL\Field(type="String!")
+     * @GQL\Description("The name of the Statement.")
+     */
     public function getName(): ?string
     {
         return $this->name;
@@ -177,17 +184,17 @@ class Statement
     /**
      * @return string[]
      */
-    public function getGroup()
+    public function getGroups()
     {
-        return $this->group;
+        return $this->groups;
     }
 
     /**
-     * @param string[] $group
+     * @param string[] $groups
      */
-    public function setGroup($group): self
+    public function setGroups($groups): self
     {
-        $this->group = $group;
+        $this->groups = $groups;
 
         return $this;
     }
