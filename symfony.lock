@@ -121,6 +121,9 @@
     "egulias/email-validator": {
         "version": "3.1.2"
     },
+    "fakerphp/faker": {
+        "version": "v1.19.0"
+    },
     "friendsofphp/php-cs-fixer": {
         "version": "3.6",
         "recipe": {
@@ -136,6 +139,19 @@
     "friendsofphp/proxy-manager-lts": {
         "version": "v1.0.5"
     },
+    "hautelook/alice-bundle": {
+        "version": "2.10",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "2.2",
+            "ref": "c84e4f2b9d7f436d7d52e8369230b393367607ec"
+        },
+        "files": [
+            "./config/packages/hautelook_alice.yaml",
+            "./fixtures/.gitignore"
+        ]
+    },
     "jms/metadata": {
         "version": "2.6.1"
     },
@@ -148,11 +164,52 @@
     "monolog/monolog": {
         "version": "2.3.5"
     },
+    "murtukov/php-code-generator": {
+        "version": "v0.1.6"
+    },
     "myclabs/deep-copy": {
         "version": "1.10.2"
     },
+    "nelmio/alice": {
+        "version": "3.9",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "3.3",
+            "ref": "42b52d2065dc3fde27912d502c18ca1926e35ae2"
+        },
+        "files": [
+            "./config/packages/nelmio_alice.yaml"
+        ]
+    },
     "nikic/php-parser": {
         "version": "v4.13.1"
+    },
+    "overblog/graphiql-bundle": {
+        "version": "0.2",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "master",
+            "version": "0.1",
+            "ref": "96d185c63491cd15c1570f6243ec1808f4462970"
+        },
+        "files": [
+            "config/routes/dev/graphiql.yaml"
+        ]
+    },
+    "overblog/graphql-bundle": {
+        "version": "0.14",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "master",
+            "version": "0.12",
+            "ref": "b122f3bfcfc0706c617a74afa8510af4799810f6"
+        },
+        "files": [
+            "config/graphql/types/.gitignore",
+            "config/packages/graphql.yaml",
+            "config/routes/graphql.yaml"
+        ]
     },
     "phar-io/manifest": {
         "version": "2.0.3"
@@ -686,6 +743,15 @@
     "symfony/yaml": {
         "version": "v5.3.6"
     },
+    "theofidry/alice-data-fixtures": {
+        "version": "1.5",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "1.0",
+            "ref": "fe5a50faf580eb58f08ada2abe8afbd2d4941e05"
+        }
+    },
     "theseer/tokenizer": {
         "version": "1.2.1"
     },
@@ -709,5 +775,8 @@
     },
     "webmozart/assert": {
         "version": "1.10.0"
+    },
+    "webonyx/graphql-php": {
+        "version": "v14.11.5"
     }
 }

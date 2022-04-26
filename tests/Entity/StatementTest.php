@@ -152,23 +152,23 @@ class StatementTest extends TestCase
         $this::assertSame($expected, $property->getValue($this->statement));
     }
 
-    public function testGetGroup(): void
+    public function testGetGroups(): void
     {
         $expected = [];
         $property = (new ReflectionClass(Statement::class))
-            ->getProperty('group');
+            ->getProperty('groups');
         $property->setAccessible(true);
         $property->setValue($this->statement, $expected);
-        $this::assertSame($expected, $this->statement->getGroup());
+        $this::assertSame($expected, $this->statement->getGroups());
     }
 
-    public function testSetGroup(): void
+    public function testSetGroups(): void
     {
         $expected = [];
         $property = (new ReflectionClass(Statement::class))
-            ->getProperty('group');
+            ->getProperty('groups');
         $property->setAccessible(true);
-        $this->statement->setGroup($expected);
+        $this->statement->setGroups($expected);
         $this::assertSame($expected, $property->getValue($this->statement));
     }
 

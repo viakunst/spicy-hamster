@@ -3,9 +3,12 @@
 namespace App\Entity\Person;
 
 use Doctrine\ORM\Mapping as ORM;
+use Overblog\GraphQLBundle\Annotation as GQL;
 
 /**
  * @ORM\Entity
+ * @GQL\Type
+ * @GQL\Description("A local copy of a person who has registered transactions or statements.")
  */
 class Person
 {
@@ -46,6 +49,17 @@ class Person
         return $this->id;
     }
 
+    public function setId(string $id): self
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
+    /**
+     * @GQL\Field(type="String!")
+     * @GQL\Description("The subject identifier of the person.")
+     */
     public function getSub(): ?string
     {
         return $this->sub;
@@ -58,6 +72,10 @@ class Person
         return $this;
     }
 
+    /**
+     * @GQL\Field(type="String!")
+     * @GQL\Description("The e-mail address of the person.")
+     */
     public function getEmail(): ?string
     {
         return $this->email;
@@ -82,6 +100,9 @@ class Person
 
     /**
      * Get name.
+     *
+     * @GQL\Field(type="String!")
+     * @GQL\Description("The subject identifier of the person.")
      *
      * @return string
      */
@@ -108,6 +129,9 @@ class Person
     /**
      * Get name.
      *
+     * @GQL\Field(type="String!")
+     * @GQL\Description("The given name of the person.")
+     *
      * @return string
      */
     public function getGivenName(): ?string
@@ -128,6 +152,9 @@ class Person
     /**
      * Get name.
      *
+     * @GQL\Field(type="String!")
+     * @GQL\Description("The family name of the person.")
+     *
      * @return string
      */
     public function getFamilyName(): ?string
@@ -145,6 +172,10 @@ class Person
         return $this;
     }
 
+    /**
+     * @GQL\Field(type="String!")
+     * @GQL\Description("The address of the person.")
+     */
     public function getAddress(): ?string
     {
         return $this->address;
