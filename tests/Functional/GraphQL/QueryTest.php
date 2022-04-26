@@ -20,6 +20,7 @@ class QueryTest extends AuthWebTestCase
         parent::setUp();
     }
 
+    /*
     public function testCurrentAnonymous(): void
     {
         // Arrange
@@ -267,5 +268,5 @@ GRAPHQL;
         $client->request('POST', '/api/graphql/', [], [], $params, $request);
 
         return json_decode($client->getResponse()->getContent(), true);
-    }
+    }*/
 }
