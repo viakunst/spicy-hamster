@@ -139,6 +139,9 @@
     "jms/metadata": {
         "version": "2.6.1"
     },
+    "jumbojett/openid-connect-php": {
+        "version": "v0.9.5"
+    },
     "laminas/laminas-code": {
         "version": "4.4.3"
     },
@@ -153,6 +156,9 @@
     },
     "nikic/php-parser": {
         "version": "v4.13.1"
+    },
+    "paragonie/random_compat": {
+        "version": "v9.99.100"
     },
     "phar-io/manifest": {
         "version": "2.0.3"
@@ -171,6 +177,9 @@
     },
     "phpdocumentor/type-resolver": {
         "version": "1.5.1"
+    },
+    "phpseclib/phpseclib": {
+        "version": "2.0.37"
     },
     "phpspec/prophecy": {
         "version": "1.14.0"
