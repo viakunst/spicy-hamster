@@ -116,7 +116,7 @@ class TransactionGroupTest extends TestCase
         $property = (new ReflectionClass(TransactionGroup::class))
             ->getProperty('description');
         $property->setAccessible(true);
-        $this->transactionGroup->setDesctiption($expected);
+        $this->transactionGroup->setDescription($expected);
         $this::assertSame($expected, $property->getValue($this->transactionGroup));
     }
 

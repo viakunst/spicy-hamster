@@ -5,9 +5,13 @@ namespace App\Entity\Transaction;
 use App\Entity\Person\Person;
 use App\Repository\TransactionRepository\TransactionRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Overblog\GraphQLBundle\Annotation as GQL;
 
 /**
+ * @GQL\Type
+ * @GQL\Description("Transaction from the organisation.")
  * @ORM\Entity(repositoryClass=TransactionRepository::class)
+ * @ORM\Table(name="`Transaction`")
  */
 class Transaction
 {
@@ -26,7 +30,7 @@ class Transaction
 
     /**
      * @ORM\ManyToOne(targetEntity=TransactionGroup::class, inversedBy="transactions")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(name="transaction_group_id", nullable=false)
      *
      * @var TransactionGroup
      */
@@ -39,6 +43,8 @@ class Transaction
 
     /**
      * @ORM\Column(type="text", nullable=true)
+     * @GQL\Field(type="String!")
+     * @GQL\Description("Comment on transaction.")
      */
     private ?string $comment;
 
