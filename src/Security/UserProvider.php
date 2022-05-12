@@ -45,15 +45,23 @@ class UserProvider implements UserProviderInterface
 
         // build user from userinfo data
         $user = new TokenUser();
-        $user
-            ->setToken($identifier)
-            ->setSub($info->sub)
-            ->setName($info->name)
-            ->setEmail($info->email)
-        ;
+        $user->setToken($identifier);
 
-        if ($this->adminRepository->find($info->sub)) {
-            $user->setRoles(['ROLE_ADMIN']);
+        if (!is_array($info)) {
+            throw new \Exception();
+        }
+
+        if (isset($info['sub'])) {
+            $user->setSub($info['sub']);
+            if (null != $this->adminRepository->find($info['sub'])) {
+                $user->setRoles(['ROLE_ADMIN']);
+            }
+        }
+        if (isset($info['name'])) {
+            $user->setName($info['name']);
+        }
+        if (isset($info['email'])) {
+            $user->setEmail($info['email']);
         }
 
         return $user;
@@ -84,7 +92,11 @@ class UserProvider implements UserProviderInterface
             throw new UnsupportedUserException(sprintf('Invalid user class "%s".', get_class($user)));
         }
 
-        return $this->loadUserByIdentifier($user->getToken());
+        if (null != $user->getToken()) {
+            return $this->loadUserByIdentifier($user->getToken());
+        }
+
+        return $user;
     }
 
     /**
