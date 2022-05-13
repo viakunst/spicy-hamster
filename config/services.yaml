@@ -4,6 +4,9 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
+    env(OIDC_ID): ''
+    env(OIDC_SECRET): ''
+    env(OIDC_ADDRESS): ''
 
 services:
     # default configuration for services in *this* file
@@ -23,3 +26,8 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+    Jumbojett\OpenIDConnectClient:
+        arguments:
+            $provider_url: '%env(SECURE_SCHEME)%://%env(OIDC_ADDRESS)%'
+            $client_id: '%env(OIDC_ID)%'
+            $client_secret: '%env(OIDC_SECRET)%'
