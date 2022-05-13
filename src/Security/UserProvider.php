@@ -47,21 +47,23 @@ class UserProvider implements UserProviderInterface
         $user = new TokenUser();
         $user->setToken($identifier);
 
-        if (!is_array($info)) {
-            throw new \Exception();
+        if (!is_object($info)) {
+            var_dump($info);
+            throw new \Exception('InfoError');
         }
 
-        if (isset($info['sub'])) {
-            $user->setSub($info['sub']);
-            if (null != $this->adminRepository->find($info['sub'])) {
+        if (property_exists($info, 'sub')) {
+            $user->setSub($info->sub);
+            if (null != $this->adminRepository->find($info->sub)) {
                 $user->setRoles(['ROLE_ADMIN']);
             }
         }
-        if (isset($info['name'])) {
-            $user->setName($info['name']);
+
+        if (property_exists($info, 'name')) {
+            $user->setName($info->name);
         }
-        if (isset($info['email'])) {
-            $user->setEmail($info['email']);
+        if (property_exists($info, 'email')) {
+            $user->setEmail($info->email);
         }
 
         return $user;
