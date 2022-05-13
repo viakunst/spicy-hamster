@@ -144,6 +144,8 @@ class TokenUserTest extends TestCase
             ->getProperty('roles');
         $property->setAccessible(true);
         $property->setValue($this->user, $expected);
+        $expected = ['42', '43', 'ROLE_USER'];
+
         $this::assertSame($expected, $this->user->getRoles());
     }
 
