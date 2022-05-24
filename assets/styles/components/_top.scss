@@ -1,0 +1,166 @@
+@use "vars";
+
+@mixin header_inherit_background {
+    background-color: vars.$orange;
+    @each $name, $color in vars.all_colors() {
+        header.#{$name} ~ main & {
+            background-color: $color;
+        }
+    }
+}
+
+@mixin circle_bg($position, $color) {
+    background: radial-gradient(circle farthest-side at $position, $color, $color 99.98%, transparent 100%);
+}
+
+.top {
+    position: relative;
+    z-index: 50;
+
+    @each $name, $color in vars.all_colors() {
+        header.#{$name} ~ main & img {
+            border-color: $color;
+        }
+    }
+
+    // content
+    h1 {
+        background: none;
+        line-height: 1;
+
+        & + * {
+            padding-top: .4rem;
+
+            @include breakpoint(medium) {
+                padding-top: 1.4rem;
+            }
+        }
+    }
+
+    picture + * {
+        margin-top: 1rem;
+    }
+
+    @include breakpoint(medium) {
+        > .content {
+            & > * {
+                @include grid-column-size(5);
+                @include grid-column-gutter;
+                float: left;
+                padding-right: 1rem;
+                margin-bottom: 3rem;
+            }
+
+            & > picture {
+                @include grid-column-size(7);
+                float: right;
+            }
+
+            & > :only-child {
+                @include grid-column-size(12);
+                padding-left: calc(#{grid-column(1)} + 1rem);
+                padding-right: calc(#{grid-column(1)} + 1rem);
+            }
+            
+            & > picture:first-child {
+                width: 100%;
+                float: none;
+            }
+        }
+    }
+
+    @include breakpoint(large) {
+        > .content {
+            .layout.has_sidebar & {
+                & > :only-child {
+                    padding-left: 1rem;
+                    padding-right: calc(#{grid-column(6)} + 1rem);
+                }
+            }
+
+            & > :only-child {
+                padding-left: calc(#{grid-column(2)} + 1rem);
+                padding-right: calc(#{grid-column(5)} + 1rem);
+            }
+        }
+    }
+    
+
+    // circle
+    > .content {
+        width: grid-column(12);
+        
+        > :first-child:not(picture), > picture {
+            position: relative;
+            display: block;
+
+            @include breakpoint(large) {
+                min-height: 150px;
+            }
+        }
+
+        > :first-child::after, > picture::before {
+            content: '\A';
+            width: 100vw;
+            height: 300vw;
+            display: block;
+            margin: 0 -1rem;
+            position: absolute;
+            left: 0;
+            z-index: -5;
+
+            @include breakpoint(medium) {
+                margin: 0;
+                left: min(0px, -50vw + #{$grid-row-width / 2});
+            }
+        }
+
+        > :first-child::after {
+            bottom: -2rem;
+
+            @include circle_bg(40% 0, vars.$orange);
+            @each $name, $color in vars.all_colors() {
+                header.#{$name} ~ main & {
+                    @include circle_bg(40% 0, $color);
+                }
+            }
+        }
+
+        > picture:first-child {
+            img {
+                width: 100%;
+                object-fit: cover;
+                max-height: 50vh;
+
+                @include breakpoint(medium) {
+                    border-radius: 4rem;
+                }
+            }
+
+            &::after {
+                bottom: 30%;
+            }
+        }
+
+        > picture::before {
+            bottom: 30%;
+
+            @include circle_bg(110% 0, vars.$orange);
+            @each $name, $color in vars.all_colors() {
+                header.#{$name} ~ main & {
+                    @include circle_bg(110% 0, $color);
+                }
+            }
+
+            @include breakpoint(medium) {
+                display: none;
+            }
+        }
+
+        @include breakpoint(large) {
+            > p, > div:not(.container) {
+                font-size: vars.$text-xl;
+            }
+        }
+    }
+}

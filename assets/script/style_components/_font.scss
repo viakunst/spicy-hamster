@@ -1,0 +1,126 @@
+@use "vars";
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+
+h1, h2, h3, .heading {
+    line-height: 1.8;
+    display: inline;
+    background-repeat: no-repeat;
+    background-position: 0 1.15em;
+    box-decoration-break: clone;
+    background-size: 100% 10px;
+    padding-bottom: 10px;
+    background-image: url("image/Heading Line-orange.svg");
+    @each $name, $color in vars.all_colors() {
+        .#{$name} & {
+            background-image: url("image/Heading Line-#{$name}.svg");        
+        }
+    }
+}
+
+h2 {
+    background-size: 100% 6px;
+    padding-bottom: 6px;
+    background-image: url("image/ScribbleSecondary-orange.svg");
+    @each $name, $color in vars.all_colors() {
+        .#{$name} & {
+            background-image: url("image/ScribbleSecondary-#{$name}.svg");        
+        }
+    }
+}
+
+h3, .heading {
+    line-height: 2.2;
+    background-size: 100% 15px;
+    padding-bottom: 15px;
+    background-image: url("image/ScribbleTertiary-orange.svg");
+    @each $name, $color in vars.all_colors() {
+        .#{$name} & {
+            background-image: url("image/ScribbleTertiary-#{$name}.svg");        
+        }
+    }
+}
+
+ul {
+    margin-left: .75rem;
+
+    li {
+        padding-left: .5rem;
+
+        &::marker {
+            color: vars.$orange;
+            font-size: 75%;
+            padding-right: 50%;
+
+            @each $name, $color in vars.all_colors() {
+                .#{$name} & {
+                    color: $color;
+                }
+            }
+        }
+    }
+
+    &.check li {
+        position: relative;
+        padding-left: 1.25rem;
+        
+        &::marker {
+            color: transparent;
+        }
+
+        &::before {
+            position: absolute;
+            display: block;
+            content: '\A';
+            mask-image: url("image/Checkmark.svg");
+            mask-repeat: no-repeat;
+            top: .25rem;
+            left: -.75rem;
+            width: 20px;
+            height: 20px;
+            background-color: vars.$orange;
+
+            @each $name, $color in vars.all_colors() {
+                .#{$name} & {
+                    background-color: $color;
+                }
+            }
+        }
+    }
+}
+
+a {
+    color: vars.$black;
+    text-decoration-color: vars.$text-gray;
+    text-decoration: none;
+
+    &:not(.button):not(.navigate) {
+        background-image: linear-gradient(to bottom, vars.$orange, vars.$orange);
+        background-repeat: no-repeat;
+        background-size: 100% 3px;
+        background-position: 0 1.15em;
+        box-decoration-break: clone;
+
+        header &, footer &, .layout.has_sidebar > aside & {
+            background-image: none;
+        }
+
+        .layout.has_sidebar > aside & {
+            text-decoration: underline;
+        }
+    }
+}
+
+small {
+    display: block;
+    font-size: .75rem;
+
+    &, * {
+        color: vars.$text-gray;
+    }
+
+    a:not(.button):not(.navigate) {
+        background: none;
+        text-decoration: underline;
+    }
+}

@@ -1,0 +1,116 @@
+@use "./../vars";
+@use "../button/button";
+
+label.textbox {
+    display: block;
+    font-weight: bold;
+    padding-left: 1.5rem;
+    margin-bottom: .5rem;
+}
+
+input[type="text"], 
+input[type="date"], 
+input[type="tel"], 
+input[type="email"], 
+textarea
+{
+    @include button.content-box();
+    @include button.button-hover();
+    font-size: vars.$text-xl;
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+    margin-bottom: 1rem;
+    width: 100%;
+
+    @include breakpoint(medium) {
+        margin-bottom: 1.5rem;
+    }
+
+    @each $name, $color in vars.all_colors() {
+        &.#{$name}, .#{$name} & {
+            border-color: $color;
+        }
+    }
+}
+
+input[type="checkbox"], input[type="radio"] {
+    display: none;
+    $parents: &;
+
+    + label {
+        position: relative;
+
+        &::before {
+            position: absolute;
+            display: block;
+            content: '\A';
+            border: vars.$orange solid .25rem;
+            border-radius: .5rem;
+            width: 1.5rem;
+            height: 1.5rem;
+            top: 0;
+            left: 0;
+
+            @at-root input[type="checkbox"]:checked + label::after, input[type="radio"]:checked + label::after {
+                position: absolute;
+                display: block;
+                content: '\A';
+                width: 1.5rem;
+                height: 1.5rem;
+                top: 0;
+                left: .3rem;
+                background-color: vars.$black;
+                mask-image: url('image/Checkmark.svg');
+                mask-repeat: no-repeat;
+            }
+        }
+
+        display: block;
+        padding-left: 2.5rem;
+        padding-bottom: .5rem;
+    }
+}
+
+input[type="radio"] + label {
+    padding-bottom: 1rem;
+    font-weight: bold;
+
+    &::before {
+        border-radius: .75rem;
+    }
+}
+
+input[type="submit"],
+input[type="button"]
+{
+    margin-bottom: 1rem;
+}
+
+@include breakpoint(medium) {
+    .half {
+        width: 50%;
+        float: left;
+        padding-right: 1rem;
+
+        + .half {
+            padding-left: 1rem;
+            padding-right: 0;
+
+            + * {
+                clear: both;
+            }
+        }
+    }
+}
+
+@include breakpoint(large) {
+    input[type="submit"],
+    input[type="button"]
+    {
+        font-size: vars.$text-xl;
+    }
+}
+
+textarea {
+    resize: vertical;
+}

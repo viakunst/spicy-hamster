@@ -1,0 +1,27 @@
+@use 'vars';
+
+main {
+    img:not(.noborder), .image {
+        border-radius: 2rem;
+        border-width: .5rem;
+        border-style: solid;
+    }
+
+    .image img {
+        border: none;
+        border-radius: 0;
+    }
+}
+
+img:not(.noborder), .image {
+    border-color: vars.$orange;
+    background-color: vars.$orange;
+}
+
+@each $name, $color in vars.all_extra_colors() {
+    .#{$name} img:not(.noborder), img:not(.noborder).#{$name},
+    .#{$name} .image, .image.#{$name} {
+        border-color: $color;
+        background-color: $color;
+    }
+}

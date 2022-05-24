@@ -1,0 +1,73 @@
+@use "vars";
+
+@mixin bd-size($size) {
+    &::before {
+        top: $size;
+        bottom: $size;
+        left: $size;
+        right: $size;
+    }
+
+    &.bd-left::before {
+        left: $size - 15%;
+        right: $size + 15%;
+    }
+
+    &.bd-right::before {
+        left: $size + 15%;
+        right: $size - 15%;
+    }
+}
+
+@mixin backdrop {
+    position: relative;
+    display: block;
+    z-index: 2;
+
+    &::before {
+        position: absolute;
+        display: block;
+        content: '\A';
+        mask-repeat: no-repeat;
+        mask-size: contain;
+        mask-position: center;
+        top: 0;
+        bottom: 0;
+        left: -35%;
+        right: -35%;
+        margin: auto;
+        background-color: vars.$orange;
+        z-index: -1;
+    }
+
+    @include breakpoint(small only) {
+        .double &.item:nth-of-type(2n+1)::before {
+            top: -15%;
+            bottom: 35%;
+        }
+
+        .double &.item:nth-of-type(2n)::before {
+            top: 35%;
+            bottom: -15%;
+        }
+    }
+
+    @include breakpoint(medium) {
+        @include bd-size(-15%);
+
+        &.bd-small {
+            @include bd-size(0);
+        }
+
+        &.bd-large {
+            @include bd-size(-30%);
+        }
+    }
+
+    @each $name, $color in vars.all_colors() {
+        .#{$name} &::before, &.#{$name}::before {
+            background-color: $color;
+        }
+    }
+
+}

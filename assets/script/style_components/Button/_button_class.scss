@@ -1,0 +1,22 @@
+
+@use "button" as b;
+@use "./../vars";
+
+
+button, .button, [type="submit"], [type="button"] {
+  @include b.button;
+  background-color: vars.$white;
+  border-color: vars.$white;
+  cursor: pointer;
+
+  @each $name, $color in vars.all_colors() {
+      &.#{$name}, .#{$name} & {
+          background-color: $color;
+          border-color: $color;
+
+          @include vars.hover {
+              background-color: vars.$white;
+          }
+      }
+  }
+}

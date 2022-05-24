@@ -1,0 +1,189 @@
+@use "vars";
+
+@mixin dot($border-width, $circle-size)
+{
+    display: block;
+    content: '\A';
+    width: $circle-size + 2 * $border-width;
+    height: $circle-size + 2 * $border-width;
+    border: solid $border-width vars.$white;
+    border-radius: 100%;
+    background-color: vars.$orange;
+}
+
+.root .history {
+    $border-width: .25rem;
+    $circle-size: 2rem;
+
+    margin-left: ($circle-size - $border-width) / 2;
+    padding-right: ($circle-size - $border-width) / 2;
+    padding-left: 1rem + ($circle-size - $border-width) / 2;
+    border-left: dotted $border-width vars.$orange;
+
+    .date {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 1rem;
+
+        &::before {
+            @include dot($border-width, $circle-size);
+            margin-left: -1rem - $circle-size - $border-width;
+            float: left;
+        }
+    }
+
+    > img, picture {
+        margin-bottom: 1rem;
+    }
+
+    h3 {
+        font-size: 1.4rem;
+        background: none;
+        line-height: 1.15;
+    }
+
+    + .history {
+        margin-top: -2rem;
+    }
+
+    @include breakpoint(medium) {
+        .date, .content, picture {
+            width: calc(#{grid-column(10)} - #{1rem + ($circle-size - $border-width) / 2});
+            padding-right: 2rem;
+        }
+
+        &.has_image {
+            .date, .content, picture {
+                @include grid-column-size(6);
+            }
+
+            picture {
+                float: right;
+                padding-right: 0;
+                margin-top: -3rem
+            }
+        }
+
+
+        + .history {
+            margin-top: -4rem;
+        }
+    }
+
+    @include breakpoint(large) {
+        &:not(.navigate) {
+            @include wide;
+        }
+        
+        height: 250px;
+        border-left: none;
+        padding-left: 0;
+        padding-right: 0;
+        position: relative;
+        display: flex;
+        align-items: center;
+        margin-top: -4rem;
+
+        &::after {
+            @include dot($border-width, $circle-size);
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: grid-column(1);
+            right: 0;
+            margin: auto;
+        }
+
+        .date, .content, &.has_image picture {
+            @include grid-column-size(5);
+            @include grid-column-gutter;
+            
+            margin-left: grid-column(1);
+        }
+
+        .date {
+            &::before {
+                display: none;
+            }
+
+            text-align: left;
+            font-size: 1.6rem;
+            order: 1;
+        }
+
+        &.has_image {
+            .date {
+                position: absolute;
+                margin-left: 0;
+                font-size: 1rem;
+                right: 50%;
+                bottom: calc(50% + 1rem);
+            }
+
+            .content {
+                transform: translateY(calc(50% - .8rem));
+            }
+
+            picture {
+                margin-left: grid-column(1);
+                margin-top: 0;
+                order: 1;
+            }
+        }
+
+        + .history {
+            position: relative;
+            margin-top: -2rem;
+
+            &::before {
+                background-repeat: no-repeat;
+                display: block;
+                content: '\A';
+                position: absolute;
+                margin: 0 auto;
+                right: 0;
+                left: 0;
+                width: 100px;
+                height: 214px;
+                top: calc(-214px + 5.5rem);
+                background-image: url("image/HistoryPath1.svg");
+            }
+        }
+
+        &:nth-last-of-type(2n+1) {
+            &::after {
+                right: grid-column(1);
+                left: 0;
+            }
+
+            .date {
+                margin-left: 0;
+                text-align: right;
+                order: 0;
+            }
+
+            &.has_image {
+                .date {
+                    text-align: left;
+                    right: unset;
+                    left: 50%;
+                }
+
+                picture {
+                    margin-left: 0;
+                    order: 1;
+                }
+            }
+    
+            .content {
+                order: 1;
+            }
+
+            + .history::before {
+                width: 105px;
+                background-image: url("image/HistoryPath2.svg");
+            }
+        }
+
+    }
+}

@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-  Button,
   Grid,
   Header,
   Note,
@@ -8,7 +7,10 @@ import {
   Title,
   Value,
 } from 'vk-style';
-import './App.css';
+
+import Button from './style_components/Button/Button';
+
+import './App.scss';
 
 interface Props {
   // eslint-disable-next-line react/require-default-props
@@ -80,8 +82,11 @@ function DebitorsOverview() {
   return (
     <>
       <Header>Acties</Header>
-      <>
+      <div className="yellow">
         <Button>Importeren uit Kiwi</Button>
+      </div>
+      <>
+
         <Button>Handmatig toevoegen</Button>
         <Button>Betalingen verwerken</Button>
         <Button>Facturen verzenden</Button>

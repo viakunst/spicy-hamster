@@ -1,0 +1,34 @@
+@use "vars";
+
+.calendar {
+    h2 {
+        background-size: 100% 10px;
+        padding-bottom: 10px;
+        background-image: url("image/Heading Line-orange.svg");
+
+        @each $name, $color in vars.all_colors() {
+            @at-root .#{$name} .calendar h2, .calendar.#{$name} h2, .calendar .#{$name} h2 {
+                background-image: url("image/Heading Line-#{$name}.svg");        
+            }
+        }
+    }
+
+    .item {
+        span {
+            font-weight: bold;
+
+            @each $name, $color in vars.all_colors() {
+                @at-root &.#{$name}, .calendar.#{$name} .item span, .calendar .item.#{$name} span {
+                    color: $color;
+                }
+            }
+        }
+
+    }
+
+    @include breakpoint(large) {
+        .item span {
+            font-size: vars.$text-xl;
+        }
+    }
+}

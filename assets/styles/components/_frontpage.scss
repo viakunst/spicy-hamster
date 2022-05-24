@@ -1,0 +1,130 @@
+@use "vars";
+@use "button";
+
+main {
+    .top.frontpage {
+        h1 {
+            .underline {
+                background-repeat: no-repeat;
+                background-image: url("image/ScribbleHome.svg");
+                background-position: 0 1.15em;
+                background-size: 100% 15px;
+                box-decoration-break: clone;
+                padding-bottom: 15px;
+                display: inline;
+                line-height: 1.8;
+            }
+        }
+
+        .content {
+            .cta {
+                margin-top: 1rem;
+                display: block;
+            }
+        }
+
+        .message {
+            display: inline-block;
+            margin: 1rem -1rem;
+            padding: 0 1rem;
+            color: black;
+            position: relative;
+            border-image: url('image/ScribbleMessage.svg') 20 stretch;
+            border-top: 10px solid vars.$orange;
+            border-bottom: 10px solid vars.$orange;
+            font-weight: bold;
+            width: 100vw;
+            background: none;
+
+            span {
+                display: block;
+                float: left;
+                margin: 1rem 0;
+                width: calc(100% - 3rem); 
+            }
+
+            .button {
+                width: 2rem;
+                font-size: 1rem;
+                top: 0;
+                bottom: 0;
+                right: 1rem;
+                margin: auto 0;
+                position: absolute;
+            }
+
+            img {
+                position: absolute;
+                top: -25px;
+                left: .5rem;
+                width: 48px;
+                height: 48px;
+                background-color: vars.$white;
+                padding: .5rem;
+                border-radius: 24px;
+            }
+        }
+
+        @include breakpoint(medium) {
+            h1 {
+                @include grid-column-gutter;
+                width: grid-column(7);
+                margin-right: grid-column(5);
+            }
+
+            .content {
+                picture + * {
+                    margin-top: 2rem;
+                }
+
+                &:empty::before, > :not(picture):first-child::after {
+                    background: url('image/TopBG Home.svg');
+                    background-position: bottom;
+                    bottom: -14rem;
+                }
+            }
+
+            .message {
+                @include grid-column-size(7);
+                float: right;
+                margin: 0;
+            }
+        }
+
+        @include breakpoint(large) {
+            .message {
+                width: initial;
+                position: absolute;
+                right: 0;
+                top: 0;
+                background-image: url('image/AnnouncementBG.svg');
+                background-repeat: no-repeat;
+                background-position: center;
+                background-size: unset;
+                border: none;
+                padding: 30px;
+                overflow: hidden;
+                height: 110px;
+                width: 490px;
+
+                span {
+                    display: inline-block;
+                    width: calc(100% - 9rem); 
+                    margin: 0;
+                }
+
+                img {
+                    position: static;
+                    width: initial;
+                    height: initial;
+                    background: none;
+                    float: left;
+                }
+
+                .button {
+                    right: 60px;
+                }
+            }
+        }
+    }
+}

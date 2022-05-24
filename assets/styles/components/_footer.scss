@@ -1,0 +1,101 @@
+@use "vars";
+
+main::after {
+    background-repeat: no-repeat;
+    background-image: url("image/FooterBG.svg");
+    background-position: 25% 0;
+    display: block;
+    content: '\A';
+    height: 100px;
+    margin-top: -2rem;
+
+    @include breakpoint(medium) {
+        height: 110px;
+    }
+
+    @include breakpoint(large) {
+        height: 125px;
+        background-position: 40% 0;
+    }
+}
+
+footer {
+    padding-bottom: 1rem;
+
+    p, .logo, .social {
+        @include grid-column(12);
+    }
+
+    p, .menu {
+        margin-bottom: 1rem;
+    }
+
+    .menu {
+        @include grid-column(6);
+
+        a {
+            display: block;
+            text-decoration: none;
+        }
+    }
+
+    .logo img {
+        height: 2rem;
+        width: auto;
+    }
+
+    .menu.social {
+        text-align: right;
+
+        &:last-child:not(:first-child) {
+            clear: both;
+        }
+
+        a {
+            display: inline;
+        }
+    }
+
+    @include breakpoint(medium) {
+        p, .logo, .social {
+            @include grid-column(10);
+            margin-left: grid-column(1);
+            margin-right: grid-column(1);
+        }
+
+        .menu {
+            @include grid-column(5);
+            
+            &:first-of-type {
+                margin-left: grid-column(1);
+            }
+
+            &:last-of-type {
+                margin-right: grid-column(1);
+            }
+
+            &.social:last-child:not(:first-child) {
+                clear: none;
+            }
+        }
+    }
+
+    @include breakpoint(large) {
+        padding-bottom: 2rem;
+
+        p, .logo, .social, .menu, .menu:first-of-type, .menu:last-of-type {
+            margin-left: 0;
+            margin-right: 0;
+        }
+
+        p {
+            width: grid-column(4);
+            margin-right: grid-column(2);
+        }
+
+        .menu, .menu.social {
+            width: grid-column(2);
+            text-align: left;
+        }
+    }
+}

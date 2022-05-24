@@ -1,0 +1,52 @@
+@use "vars";
+@import "backdrop";
+
+main .layout.has_sidebar > aside {
+    // &:first-of-type > :first-of-type {
+    //     @include backdrop;
+    //     &::before {
+    //         mask-image: url("image/BG3.svg");
+    //     }
+
+    //     @each $name, $color in vars.all_colors() {
+    //         &.#{$name}::before {
+    //             background-color: $color;
+    //         }
+    //     }
+    // }
+
+    @include breakpoint(large) {
+        &:first-of-type {
+            margin-top: -8rem;
+            position: relative;
+
+            > :first-of-type {
+                > .heading:first-of-type {
+                    background-size: 100% 10px;
+                    padding-bottom: 10px;
+                    background-image: url("image/Heading Line-orange.svg");
+    
+                }
+
+                @each $name, $color in vars.all_colors() {
+                    &.#{$name} > .heading:first-of-type, > .heading:first-of-type.#{$name} {
+                        background-image: url("image/Heading Line-#{$name}.svg");        
+                    }
+                }
+            }
+
+            &:before {
+                background-repeat: no-repeat;
+                background-image: url("image/SidebarBG.svg");
+                display: block;
+                width: 774px;
+                height: 200px;
+                content: '\A';
+                position: absolute;
+                z-index: -50;
+                left: -275px;
+                top: -95px;
+            }
+        }
+    }
+}

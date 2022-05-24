@@ -1,0 +1,144 @@
+@use "vars";
+@use "button";
+
+.root .double {
+    .item {
+        color: vars.$black;
+        text-decoration: none;
+        background: none;
+        display: flex;
+        flex-direction: column;
+        padding-bottom: 1rem;
+
+        > * {
+            position: relative;
+            order: 1;
+
+            &:nth-of-type(2n+1) {
+                order: 2;
+            }
+
+            &:only-of-type {
+                margin-right: grid-column(3);
+            }
+
+            .navigate.mobile {
+                display: inline-block;
+                top: 1rem;
+                right: 0;
+                position: absolute;
+
+                @include breakpoint(medium) {
+                    display: none;
+                }
+            }
+        }
+
+        .picture {
+            margin-right: -1rem;
+            margin-left: grid-column(3);
+
+            img {
+                height: 300px;
+                width: 100%;
+                object-fit: cover;
+                border-top-right-radius: 0;
+                border-bottom-right-radius: 0;
+                border-right-width: 0;
+            }
+        }
+
+        &:nth-child(2n) {
+            > * {
+                order: 2;
+
+                &:nth-of-type(2n+1) {
+                    order: 1;
+                }
+
+                &:only-of-type {
+                    margin-right: 0;
+                    margin-left: grid-column(3);
+                }
+            }
+
+            .picture {
+                margin-left: -1rem;
+                margin-right: grid-column(3);
+
+                img {
+                    margin-top: -4rem;
+                    border-top-right-radius: 2rem;
+                    border-bottom-right-radius: 2rem;
+                    border-right-width: .5rem;
+                    border-top-left-radius: 0;
+                    border-bottom-left-radius: 0;
+                    border-left-width: 0;
+                }
+            }
+        }
+    }
+
+    @include breakpoint(medium) {
+        @include grid-row-nest;
+        .item {
+            display: block;
+            max-width: 100%;
+            float: left;
+            margin: 0;
+            padding-bottom: 2rem;
+
+            > * {
+                @include grid-column-gutter;
+                width: 5 / 12 * 100vw;
+                float: right;
+                
+                // nasty hack, since scrollbars break this
+                // basically detects a computer or laptop
+                @media (hover: hover) and (pointer: fine) {
+                    width: calc(#{5 / 12 * 100vw} - 0.5rem);
+                }
+
+                &:only-of-type {
+                    margin-right: 0;
+                }
+            }
+
+            &:nth-child(2n) > * {
+                float: left;
+
+                &:only-of-type {
+                    margin-left: 0;
+                }
+            }
+
+            .picture, &:nth-child(2n) .picture {
+                margin: 0;
+
+                img {
+                margin: 0;
+                border-radius: 2rem;
+                border-left-width: .5rem;
+                border-right-width: .5rem;
+                }
+            }
+        }
+    }
+
+    @include breakpoint(large) {
+        @include wide;
+        padding-left: 0;
+        padding-right: 0;
+        
+        .item {
+            @include grid-column-size(6);
+            float: left;
+            margin-left: 0;
+            margin-right: 0;
+
+            > * {
+                width: 50%;
+            }
+        }
+    }
+}

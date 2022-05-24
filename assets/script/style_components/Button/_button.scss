@@ -1,0 +1,37 @@
+@use "./../vars";
+
+
+@mixin content-box($height: 1rem) {
+    display: inline-block;
+    border-radius: 2 * $height;
+    border-width: .25rem;
+    border-style: solid;
+    padding: $height - .25rem 1.125 * $height - .25rem;
+}
+
+@mixin button-normal($height: 1rem) {
+    @include content-box($height);
+    color: vars.$black;
+    text-decoration: none;
+    font-weight: bold;
+    text-align: center;
+    cursor: pointer;
+    line-height: 1em;
+}
+
+@mixin button-hover($height: 1rem) {
+    color: vars.$black;
+    background-color: transparent;
+}
+
+@mixin button($height: 1rem) {
+    @include button-normal($height);
+
+    @include vars.hover {
+        @include button-hover($height);
+    }
+}
+
+.button {
+    @include button(2);
+}

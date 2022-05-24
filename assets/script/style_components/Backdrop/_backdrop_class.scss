@@ -1,0 +1,34 @@
+@use "vars";
+@import "backdrop";
+
+.bd-wide {
+    @include backdrop;
+
+    &::before {
+        mask-image: url("image/BG1.svg");
+    }
+}
+
+.bd-wide-alt {
+    @include backdrop;
+
+    &::before {
+        mask-image: url("image/BG2.svg");
+    }
+}
+
+.bd {
+    @include backdrop;
+
+    &::before {
+        mask-image: url("image/BG3.svg");
+    }
+}
+
+.bd-alt {
+    @include backdrop;
+
+    &::before {
+        mask-image: url("image/BG4.svg");
+    }
+}

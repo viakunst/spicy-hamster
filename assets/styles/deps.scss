@@ -1,0 +1,6 @@
+@import 'settings';
+@import 'overrides';
+@import '~foundation-sites/scss/foundation';
+
+@include foundation-global-styles;
+@include foundation-typography;

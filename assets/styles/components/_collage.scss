@@ -1,0 +1,65 @@
+@use "vars";
+
+.root .collage {
+    @include wide;
+    position: relative;
+
+    img {
+        display: block;
+        overflow: hidden;
+        width: grid-column(9);
+        position: relative;
+        object-fit: cover;
+
+        @include breakpoint(medium) {
+            width: grid-column(6);
+            min-height: 300px;
+            max-height: 40vh;
+        }
+
+        &:nth-of-type(1) {
+            z-index: 3;
+            width: calc(#{grid-column(9)} + 1rem);
+            margin-left: -1rem;
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+            border-left-width: 0;
+            margin-right: grid-column(3);
+
+            @include breakpoint(medium) {
+                border-radius: 2rem;
+                border-width: .5rem;
+                width: grid-column(7);
+                margin-left: 0;
+            }
+        }
+
+        &:nth-of-type(2) {
+            z-index: 2;
+            margin-left: grid-column(3);
+            margin-top: -3rem;
+            margin-bottom: -3rem;
+
+            @include breakpoint(medium) {
+                margin-left: grid-column(6);
+                margin-top: auto;
+                margin-bottom: auto;
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                max-height: 60vh;
+            }
+        }
+
+        &:nth-of-type(3) {
+            z-index: 1;
+            margin-right: grid-column(3);
+
+            @include breakpoint(medium) {
+                margin-top: 4rem;
+                margin-left: grid-column(1);
+                margin-right: grid-column(5);
+            }
+        }
+    }
+}

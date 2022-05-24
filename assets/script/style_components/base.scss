@@ -1,0 +1,32 @@
+
+
+@use './vars';
+@use './settings';
+@use './../../../node_modules/foundation-sites/scss/grid/_layout.scss';
+@use './font';
+
+
+@import './../../../node_modules/foundation-sites/scss/util/_util.scss';
+
+
+html{
+    overflow-y: scroll;
+}
+
+html, body {
+    height: 100%;
+    background-color: vars.$orange;
+}
+
+.layout {
+    padding: 0 1rem;
+
+    @include breakpoint(medium) {
+        padding: 0;
+    }
+}
+
+body {
+    font: Helvetica, Arial, sans-serif;
+    color: #000000;
+}
