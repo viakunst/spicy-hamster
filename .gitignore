@@ -8,6 +8,12 @@
 /vendor/
 ###< symfony/framework-bundle ###
 
+###> config for front-end ###
+/assets/script/config/awsConfig.ts
+/assets/script/config/userManagerConfig.ts
+###< config for front-end ###
+
+
 ###> symfony/phpunit-bridge ###
 .phpunit.result.cache
 /phpunit.xml
