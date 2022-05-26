@@ -6,9 +6,12 @@ use App\Entity\Person\Person;
 use DateTime;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Overblog\GraphQLBundle\Annotation as GQL;
 
 /**
  * @ORM\Entity
+ * @GQL\Type
+ * @GQL\Description("Send emails form the server.")
  */
 class Mail
 {
@@ -16,17 +19,20 @@ class Mail
      * @ORM\Id()
      * @ORM\GeneratedValue(strategy="UUID")
      * @ORM\Column(type="guid")
+     * @GQL\Field(type="String!")
      */
     private string $id;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Person\Person")
      * @ORM\JoinColumn(name="person_id", referencedColumnName="id")
+     * @GQL\Field(type="Person")
      */
     private ?Person $person;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Mail\Recipient", mappedBy="mail")
+     *@GQL\Field(type="[Recipient]")
      *
      * @var Collection<int,Recipient>
      */
@@ -34,16 +40,19 @@ class Mail
 
     /**
      * @ORM\Column(type="string")
+     * @GQL\Field(type="String!")
      */
     private string $title;
 
     /**
      * @ORM\Column(type="text")
+     * @GQL\Field(type="String!")
      */
     private string $content;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @GQL\Field(type="String!")
      */
     private string $sender;
 

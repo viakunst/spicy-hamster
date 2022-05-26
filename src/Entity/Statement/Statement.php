@@ -2,7 +2,6 @@
 
 namespace App\Entity\Statement;
 
-use App\Repository\Statement\StatementRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Overblog\GraphQLBundle\Annotation as GQL;
 use Symfony\Component\HttpFoundation\File\File;
@@ -10,8 +9,10 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
  * @GQL\Type
+ * @GQL\Input
+ * @GQL\Description("Recipients of the e-mails.")
  * @GQL\Description("Statement on what is owned from the organisation.")
- * @ORM\Entity(repositoryClass=StatementRepository::class)
+ * @ORM\Entity
  * @Vich\Uploadable
  */
 class Statement
@@ -20,31 +21,37 @@ class Statement
      * @ORM\Id()
      * @ORM\GeneratedValue(strategy="UUID")
      * @ORM\Column(type="guid")
+     * @GQL\Field(type="String!")
      */
     private string $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @GQL\Field(type="String!")
      */
     private string $name;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @GQL\Field(type="String!")
      */
     private string $IBAN;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @GQL\Field(type="String!")
      */
     private string $mail;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @GQL\Field(type="String!")
      */
     private string $item;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @GQL\Field(type="String!")
      */
     private string $reason;
 
@@ -57,21 +64,25 @@ class Statement
 
     /**
      * @ORM\Column(type="text")
+     * @GQL\Field(type="String!")
      */
     private string $comment;
 
     /**
      * @ORM\Column(type="text")
+     * @GQL\Field(type="String!")
      */
     private string $feedback;
 
     /**
      * @ORM\Column(type="string")
+     * @GQL\Field(type="String!")
      */
     private string $status;
 
     /**
      * @ORM\Column(type="integer")
+     * @GQL\Field(type="Int!")
      */
     private int $amount;
 

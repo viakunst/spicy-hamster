@@ -94,6 +94,7 @@ export default function App() {
 
                 // Instantly identify the user in the identity pool and request credentials.
                 OidcService.saveIdToken(user.id_token);
+                OidcService.saveAccessToken(user.access_token);
                 // `user.state` will reflect the state that was passed in via signinArgs.
                 routeProps.history.push('/');
               }}

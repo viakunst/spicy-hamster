@@ -52,7 +52,8 @@ class AccessTokenAuthenticator extends AbstractAuthenticator
         $data = [
             // you may want to customize or obfuscate the message first
             'message' => strtr($exception->getMessageKey(), $exception->getMessageData()),
-
+            'exta' => 'messgae',
+            's' => $exception->__toString(),
             // or to translate this message
             // $this->translator->trans($exception->getMessageKey(), $exception->getMessageData())
         ];

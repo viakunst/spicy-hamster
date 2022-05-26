@@ -1,5 +1,31 @@
-query Persons {
+query GetPersons {
   persons {
-    getSub
+    getId 
+    getName
+    sub
+    email
+    givenName
+    familyName
+    address
   }
 }
+
+query GetStatements {
+  statements {
+    id
+    name
+  }
+}
+
+
+mutation CreatePerson($person: PersonInput!) {
+  createPerson(person: $person)
+} 
+
+mutation updatePerson($id: String!, $person: PersonInput!) {
+  updatePerson(id: $id, person: $person)
+} 
+
+mutation deletePerson($id: String!) {
+  deletePerson(id: $id)
+} 

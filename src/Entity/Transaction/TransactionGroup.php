@@ -2,13 +2,16 @@
 
 namespace App\Entity\Transaction;
 
-use App\Repository\TransactionRepository\TransactionGroupRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Overblog\GraphQLBundle\Annotation as GQL;
 
 /**
- * @ORM\Entity(repositoryClass=TransactionGroupRepository::class)
+ * @ORM\Entity
+ * @GQL\Type
+ * @GQL\Input
+ * @GQL\Description("Grouped transaction from the organisation.")
  */
 class TransactionGroup
 {
@@ -16,21 +19,25 @@ class TransactionGroup
      * @ORM\Id()
      * @ORM\GeneratedValue(strategy="UUID")
      * @ORM\Column(type="guid")
+     * @GQL\Field(type="String!")
      */
     private string $id;
 
     /**
      * @ORM\Column(type="integer")
+     * @GQL\Field(type="Int!")
      */
     private int $amount;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @GQL\Field(type="String!")
      */
     private string $title;
 
     /**
      * @ORM\Column(type="text")
+     * @GQL\Field(type="String!")
      */
     private string $description;
 
@@ -41,11 +48,13 @@ class TransactionGroup
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @GQL\Field(type="String!")
      */
     private string $IBAN;
 
     /**
      * @ORM\OneToMany(targetEntity=Transaction::class, mappedBy="TransactionGroup")
+     * @GQL\Field(type="[Transaction]")
      *
      * @var Collection<int,Transaction>
      */

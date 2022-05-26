@@ -3,14 +3,14 @@
 namespace App\Entity\Transaction;
 
 use App\Entity\Person\Person;
-use App\Repository\TransactionRepository\TransactionRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Overblog\GraphQLBundle\Annotation as GQL;
 
 /**
- * @GQL\Type
- * @GQL\Description("Transaction from the organisation.")
- * @ORM\Entity(repositoryClass=TransactionRepository::class)
+ * @GQL\Type(name="Transaction")
+ * @GQL\Input
+ * @GQL\Description("Indiviual Transactions from the organisation.")
+ * @ORM\Entity
  * @ORM\Table(name="`Transaction`")
  */
 class Transaction
@@ -19,6 +19,7 @@ class Transaction
      * @ORM\Id()
      * @ORM\GeneratedValue(strategy="UUID")
      * @ORM\Column(type="guid")
+     * @GQL\Field(type="String!")
      */
     private string $id;
 
@@ -38,13 +39,14 @@ class Transaction
 
     /**
      * @ORM\Column(type="string")
+     * @GQL\Field(type="String!")
      */
     private string $status;
 
     /**
      * @ORM\Column(type="text", nullable=true)
-     * @GQL\Field(type="String!")
      * @GQL\Description("Comment on transaction.")
+     * @GQL\Field(type="String")
      */
     private ?string $comment;
 

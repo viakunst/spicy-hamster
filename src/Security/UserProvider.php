@@ -35,7 +35,8 @@ class UserProvider implements UserProviderInterface
      */
     public function loadUserByIdentifier(string $identifier): UserInterface
     {
-        // test whether provided access token (as $identifier) is valid
+        // test whether provided access token (as $identifier) is validT
+        // var_dump($identifier);
         $this->client->setAccessToken($identifier);
         try {
             $info = $this->client->requestUserInfo();
