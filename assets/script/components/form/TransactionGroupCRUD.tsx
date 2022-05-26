@@ -3,22 +3,22 @@ import React, { useEffect, useState } from 'react';
 import {
   Button, Form, message, Divider, Input, Checkbox, Table,
 } from 'antd';
-import { Person } from '../../../Api/Backend';
+import { TransactionGroup } from '../../Api/Backend';
 
-import { FormType, basicForm } from '../FormHelper';
+import { FormType, basicForm } from './FormHelper';
 
-interface PersonCreateProps {
+interface TransactionGroupCRUDProps {
   onAttributesUpdate: () => Promise<void>;
-  person? : Person;
+  transactionGroup? : TransactionGroup;
   formtype : FormType
 }
 
-function PersonCRUD(props:PersonCreateProps) {
+function TransactionGroupCRUD(props:TransactionGroupCRUDProps) {
   const [form] = Form.useForm();
 
   const {
     onAttributesUpdate,
-    person,
+    transactionGroup,
     formtype,
   } = props;
 
@@ -62,19 +62,16 @@ function PersonCRUD(props:PersonCreateProps) {
 
   const updateCreateFormItems = (
     <>
-      <Form.Item label="Voornaam" name="givenName" rules={[{ required: true }]}>
+      <Form.Item label="IBAN" name="givenName" rules={[{ required: true }]}>
         <Input />
       </Form.Item>
-      <Form.Item label="Voornaam" name="familyName" rules={[{ required: true }]}>
+      <Form.Item label="Bedrag" name="amount" rules={[{ required: true }]}>
         <Input />
       </Form.Item>
-      <Form.Item label="email" name="email" rules={[{ required: true, type: 'email' }]}>
+      <Form.Item label="Omschrijving" name="description" rules={[{ required: true, type: 'email' }]}>
         <Input />
       </Form.Item>
-      <Form.Item label="Adress" name="address" rules={[{ required: true }]}>
-        <Input />
-      </Form.Item>
-      <Form.Item label="AWS Identifier" name="sub" rules={[{ required: false }]}>
+      <Form.Item label="Naam" name="title" rules={[{ required: true }]}>
         <Input />
       </Form.Item>
     </>
@@ -86,10 +83,7 @@ function PersonCRUD(props:PersonCreateProps) {
     </Form.Item>
   );
 
-  console.log(formtype);
-  console.log(person);
-
-  if (formtype == FormType.CREATE && person === undefined) {
+  if (formtype == FormType.CREATE && transactionGroup === undefined) {
     content = (
       <>
         {basicForm(form, onCreateFinish, 'Maak aan', updateCreateFormItems)}
@@ -97,13 +91,12 @@ function PersonCRUD(props:PersonCreateProps) {
     );
   }
 
-  if (formtype == FormType.UPDATE && person !== undefined) {
+  if (formtype == FormType.UPDATE && transactionGroup !== undefined) {
     const updateInitial = {
-      sub: person.sub,
-      email: person.email,
-      address: person.address,
-      givenName: person.givenName,
-      familyName: person.familyName,
+      IBAN: transactionGroup.IBAN,
+      amount: transactionGroup.amount,
+      description: transactionGroup.description,
+      title: transactionGroup.title,
     };
 
     content = (
@@ -113,12 +106,12 @@ function PersonCRUD(props:PersonCreateProps) {
     );
   }
 
-  if (formtype == FormType.READ && person !== undefined) {
+  if (formtype == FormType.READ && transactionGroup !== undefined) {
     const readData = [
-      { key: 'Volledige naam', value: person.getName },
-      { key: 'email', value: person.email },
-      { key: 'address', value: person.address },
-      { key: 'AWS identifier', value: person.sub },
+      { key: 'Title of naam', value: transactionGroup.title },
+      { key: 'Omschrijving', value: transactionGroup.description },
+      { key: 'Bedrag', value: transactionGroup.amount },
+      { key: 'IBAN', value: transactionGroup.IBAN },
     ];
 
     content = (
@@ -128,7 +121,7 @@ function PersonCRUD(props:PersonCreateProps) {
     );
   }
 
-  if (formtype == FormType.DELETE && person !== undefined) {
+  if (formtype == FormType.DELETE && transactionGroup !== undefined) {
     content = (
       <>
         {basicForm(form, onDeleteFinish, 'Verwijder', deleteFormItems)}
@@ -143,4 +136,4 @@ function PersonCRUD(props:PersonCreateProps) {
   );
 }
 
-export default PersonCRUD;
+export default TransactionGroupCRUD;

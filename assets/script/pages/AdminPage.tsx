@@ -2,6 +2,8 @@ import React from 'react';
 
 import { QueryClient, QueryClientProvider, useQuery } from 'react-query';
 import AdminTransactionPool from '../components/admin-components/AdminTransactionPool';
+import AdminTransactionGroupPool from '../components/admin-components/AdminTransactionGroupPool';
+import AdminMailPool from '../components/admin-components/AdminMailPool';
 import AdminPersonPool from '../components/admin-components/AdminPersonPool';
 import AdminStatementPool from '../components/admin-components/AdminStatementPool';
 
@@ -16,6 +18,9 @@ export default function AdminPage() {
       <div className="table">
         <QueryClientProvider client={queryClient}>
           <AdminPersonPool />
+          <AdminMailPool />
+          <AdminTransactionPool />
+          <AdminTransactionGroupPool />
           <AdminStatementPool />
         </QueryClientProvider>
       </div>

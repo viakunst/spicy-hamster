@@ -6,7 +6,7 @@ import {
 
 import { Person, GetPersonsDocument } from '../../Api/Backend';
 import { FormType } from '../form/FormHelper';
-import PersonCRUD from '../form/person/PersonCRUD';
+import PersonCRUD from '../form/PersonCRUD';
 
 import 'antd/dist/antd.css';
 

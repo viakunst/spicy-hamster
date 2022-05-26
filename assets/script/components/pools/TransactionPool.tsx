@@ -4,24 +4,22 @@ import {
   Divider, Modal, Select, Table, Input, Button,
 } from 'antd';
 
-import Icon from '@ant-design/icons';
+import { Transaction, GetTransactionsDocument } from '../../Api/Backend';
+import { FormType } from '../form/FormHelper';
+import TransactionCRUD from '../form/TransactionCRUD';
+
 import 'antd/dist/antd.css';
 
 import { ColumnsType } from 'antd/lib/table';
 
-import GraphqlService from '../../helpers/OidcService';
-
-const { Search } = Input;
-
-// Use interface or the graphql backend.ts code.
-interface Transaction {
-
-}
+import GraphqlService from '../../helpers/GraphqlService';
 
 interface TransactionPoolState {
   transactions: Transaction[] | undefined,
   searchAttribute: string | null,
-  transactionSelected: boolean,
+  modelTitle: string,
+  modelVisible: boolean,
+  modelContent: JSX.Element,
   selectedTransaction: Transaction | null,
 }
 
@@ -29,127 +27,127 @@ export function TransactionPool() {
   const [state, setState] = useState<TransactionPoolState>({
     transactions: [],
     searchAttribute: '',
-    transactionSelected: false,
+    modelTitle: 'unknown',
+    modelVisible: false,
+    modelContent: (<></>),
     selectedTransaction: null,
   });
 
-  const fetchTransaction = async () => {
-    // Use GraphqlService to fill this function.
+  const fetch = async () => {
+    GraphqlService.getClient().request(GetTransactionsDocument).then((data) => {
+      if (data !== undefined) {
+        console.log('Succesfull fetch of Transactions');
+        const transactions = data.transactions as Transaction[];
+        setState({ ...state, transactions });
+      }
+    });
   };
 
   // componentDidMount
   useEffect(() => {
-    // Get config (optional)
-    // Get transactions.
+    fetch();
   }, []);
 
-  const handleChange = async (userPoolId: string) => {
-    // Refetch transaction and other stuff.
+  const handleChange = async () => {
+    fetch();
   };
 
-  const createUser = async (e: MouseEvent) => {
-    // Model with create stuff..
-  };
+  const openModal = async (e: MouseEvent, formType: string, transaction?: Transaction) => {
+    let modelTitle = 'unknown';
+    let modelContent = <></>;
+    const modelVisible = true;
 
-  const exportData = async (e: MouseEvent) => {
-    // Might be useful someday.
-
-    /*
-    const {
-      activeUserPool,
-    } = state;
-    e.preventDefault();
-    if (activeUserPool) {
-      AttributeConfigParser.resolve(attributeConfig, ConfigContext.ADMIN_READ).then(
-        async (config) => {
-          const users = await activeUserPool.listUsers();
-
-          // create csv file
-          const data = [
-            config.map((attr) => attr.view({}).title),
-            ...users.map((user) => config.map((attr) => user.userAttributes[attr.attribute] ?? '')),
-          ];
-
-          // create csv file
-          let csv = '';
-          data.forEach((row) => {
-            csv += `${row.join(',')}\n`;
-          });
-
-          // create file download
-          const a = document.createElement('a');
-          a.download = 'users.csv';
-          a.rel = 'noopener';
-          a.href = `data:text/csv;charset=utf-8,${encodeURI(csv)}`;
-          setTimeout(() => { a.dispatchEvent(new MouseEvent('click')); }, 0);
-        },
-      );
-    }
-    */
-  };
-
-  const handleSearchAttribute = (searchAttribute:string) => {
-    setState({ ...state, searchAttribute });
-  };
-
-  const searchField = (name: string, attribute: string) => (
-    <Select
-      key={attribute ?? ''}
-      value={attribute ?? ''}
-    >
-      {name}
-    </Select>
-  );
-
-  const onSearch = async (value:string) => {
-    // fetch transaction with query string.
-  };
-
-  const searchSelector = () => {
-    const { searchAttribute } = state;
-
-    // implement config search fields someday.
-
-    /*
-    // No searchable fields.
-    if (searchConfigInst.configAttributes.length === 0) {
-      return (<></>);
+    switch (formType) {
+      case FormType.CREATE:
+        modelTitle = 'Maak nieuw persoon aan.';
+        modelContent = (
+          <TransactionCRUD
+            formtype={FormType.CREATE}
+            onAttributesUpdate={handleChange}
+            transaction={transaction}
+          />
+        );
+        break;
+      case FormType.READ:
+        modelTitle = 'Details van persoon';
+        modelContent = (
+          <TransactionCRUD
+            formtype={FormType.READ}
+            onAttributesUpdate={handleChange}
+            transaction={transaction}
+          />
+        );
+        break;
+      case FormType.UPDATE:
+        modelTitle = 'Bewerk persoon';
+        modelContent = (
+          <TransactionCRUD
+            formtype={FormType.UPDATE}
+            onAttributesUpdate={handleChange}
+            transaction={transaction}
+          />
+        );
+        break;
+      case FormType.DELETE:
+        modelTitle = 'Verwijder persoon';
+        modelContent = (
+          <TransactionCRUD
+            formtype={FormType.DELETE}
+            onAttributesUpdate={handleChange}
+            transaction={transaction}
+          />
+        );
+        break;
+      default:
+        console.log('error');
+        break;
     }
 
-    if (searchAttribute?.length === 0) {
-      handleSearchAttribute(searchConfigInst.configAttributes[0].attribute);
-    }
+    setState({
+      ...state, modelVisible, modelContent, modelTitle,
+    });
+  };
 
-    // One searchable field.
-    if (searchConfigInst.configAttributes.length === 1) {
-      return (
-        <Search placeholder="Zoek" allowClear onSearch={onSearch} style={{ width: 200 }} />
-      );
-    }
-
-    // Multiple Searchable fields.
-    return (
-      <>
-        <Select
-          defaultValue={searchConfigInst.configAttributes[0].attribute}
-          placeholder="Zoekveld"
-          style={{ width: 200, marginBottom: 10 }}
-          onChange={handleSearchAttribute}
-        >
-          { searchConfigInst.configAttributes.map((att) => searchField(att.name, att.attribute))}
-        </Select>
-        <Search placeholder="Zoek" allowClear onSearch={onSearch} style={{ width: 200 }} /> | {' '}
-      </>
-    ); */
+  const closeModal = () => {
+    setState({ ...state, modelVisible: false });
   };
 
   // These are the columns of the table.
   const columns: ColumnsType<Transaction> = [
-    // Fill these correctly.
+    {
+      title: 'Opmerking',
+      dataIndex: 'comment',
+      key: 'comment',
+    },
+    {
+      title: 'Status',
+      dataIndex: 'status',
+      key: 'status',
+    },
+    {
+      title: 'Details',
+      key: 'action',
+      render: (text, record) => (
+        <>
+          <span>
+            <Button onClick={(e) => openModal(e.nativeEvent, FormType.READ, record)}>Details</Button>
+          </span>
+          <span>
+            <Button onClick={(e) => openModal(e.nativeEvent, FormType.UPDATE, record)}>Bewerken</Button>
+          </span>
+          <span>
+            <Button onClick={(e) => openModal(e.nativeEvent, FormType.DELETE, record)}>verwijderen</Button>
+          </span>
+
+        </>
+      ),
+    },
   ];
 
+  console.log(state);
+
   const {
-    transactions, selectedTransaction, transactionSelected,
+    transactions, modelContent, modelTitle, modelVisible,
   } = state;
 
   return (
@@ -158,12 +156,8 @@ export function TransactionPool() {
       <div style={{ padding: 24, background: '#fff', minHeight: 360 }}>
 
         <div className="row">
-          {searchSelector()}
-          <Button type="primary" onClick={(e) => createUser(e.nativeEvent)}>
-            Maak transactie aan.
-          </Button> | {' '}
-          <Button onClick={(e) => exportData(e.nativeEvent)}>
-            Exporteer transactie
+          <Button type="primary" onClick={(e) => openModal(e.nativeEvent, FormType.CREATE)}>
+            Nieuw persoon
           </Button> | {' '}
           <Link to="/">
             <Button>
@@ -172,7 +166,18 @@ export function TransactionPool() {
           </Link>
         </div>
 
-        <Table pagination={false} columns={columns} dataSource={transactions} />
+        <Table pagination={false} columns={columns} rowKey="id" dataSource={transactions} />
+
+        <Modal
+          title={modelTitle}
+          destroyOnClose
+          visible={modelVisible}
+          onCancel={closeModal}
+          footer={null}
+        >
+          { modelContent }
+        </Modal>
+
       </div>
     </div>
   );

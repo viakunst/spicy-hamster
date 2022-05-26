@@ -19,7 +19,6 @@ class Transaction
      * @ORM\Id()
      * @ORM\GeneratedValue(strategy="UUID")
      * @ORM\Column(type="guid")
-     * @GQL\Field(type="String!")
      */
     private string $id;
 
@@ -32,6 +31,7 @@ class Transaction
     /**
      * @ORM\ManyToOne(targetEntity=TransactionGroup::class, inversedBy="transactions")
      * @ORM\JoinColumn(name="transaction_group_id", nullable=false)
+     * @GQL\Field(type="TransactionGroup!")
      *
      * @var TransactionGroup
      */
@@ -50,6 +50,10 @@ class Transaction
      */
     private ?string $comment;
 
+    /**
+     * @GQL\Field(type="String!")
+     * @GQL\Description("The subject identifier of the person.")
+     */
     public function getId(): string
     {
         return $this->id;

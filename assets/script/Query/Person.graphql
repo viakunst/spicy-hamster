@@ -12,11 +12,45 @@ query GetPersons {
 
 query GetStatements {
   statements {
-    id
+    amount
+    comment
+    feedback
+    getName
+    getId
+    item
+    mail
     name
+    reason
+    status
   }
 }
 
+query GetMails {
+  mails {
+    getId
+    title
+    content
+    sender
+  }
+}
+
+query GetTransactions {
+  transactions {
+    getId
+    comment
+    status
+  }
+}
+
+query GetTransactionGroups {
+  transactionGroups {
+    getId
+    IBAN
+    amount
+    description
+    title
+  }
+}
 
 mutation CreatePerson($person: PersonInput!) {
   createPerson(person: $person)

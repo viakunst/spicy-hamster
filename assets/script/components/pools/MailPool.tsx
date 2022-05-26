@@ -4,9 +4,9 @@ import {
   Divider, Modal, Select, Table, Input, Button,
 } from 'antd';
 
-import { Statement, GetStatementsDocument } from '../../Api/Backend';
+import { Mail, GetMailsDocument } from '../../Api/Backend';
 import { FormType } from '../form/FormHelper';
-import StatementCRUD from '../form/StatementCRUD';
+import MailCRUD from '../form/MailCRUD';
 
 import 'antd/dist/antd.css';
 
@@ -14,31 +14,31 @@ import { ColumnsType } from 'antd/lib/table';
 
 import GraphqlService from '../../helpers/GraphqlService';
 
-interface StatementPoolState {
-  statements: Statement[] | undefined,
+interface MailPoolState {
+  mails: Mail[] | undefined,
   searchAttribute: string | null,
   modelTitle: string,
   modelVisible: boolean,
   modelContent: JSX.Element,
-  selectedStatement: Statement | null,
+  selectedMail: Mail | null,
 }
 
-export function StatementPool() {
-  const [state, setState] = useState<StatementPoolState>({
-    statements: [],
+export function MailPool() {
+  const [state, setState] = useState<MailPoolState>({
+    mails: [],
     searchAttribute: '',
     modelTitle: 'unknown',
     modelVisible: false,
     modelContent: (<></>),
-    selectedStatement: null,
+    selectedMail: null,
   });
 
   const fetch = async () => {
-    GraphqlService.getClient().request(GetStatementsDocument).then((data) => {
+    GraphqlService.getClient().request(GetMailsDocument).then((data) => {
       if (data !== undefined) {
-        console.log('Succesfull fetch of Statements');
-        const statements = data.statements as Statement[];
-        setState({ ...state, statements });
+        console.log('Succesfull fetch of Mails');
+        const mails = data.mails as Mail[];
+        setState({ ...state, mails });
       }
     });
   };
@@ -52,7 +52,7 @@ export function StatementPool() {
     fetch();
   };
 
-  const openModal = async (e: MouseEvent, formType: string, statement?: Statement) => {
+  const openModal = async (e: MouseEvent, formType: string, mail?: Mail) => {
     let modelTitle = 'unknown';
     let modelContent = <></>;
     const modelVisible = true;
@@ -61,40 +61,40 @@ export function StatementPool() {
       case FormType.CREATE:
         modelTitle = 'Maak nieuw persoon aan.';
         modelContent = (
-          <StatementCRUD
+          <MailCRUD
             formtype={FormType.CREATE}
             onAttributesUpdate={handleChange}
-            statement={statement}
+            mail={mail}
           />
         );
         break;
       case FormType.READ:
         modelTitle = 'Details van persoon';
         modelContent = (
-          <StatementCRUD
+          <MailCRUD
             formtype={FormType.READ}
             onAttributesUpdate={handleChange}
-            statement={statement}
+            mail={mail}
           />
         );
         break;
       case FormType.UPDATE:
         modelTitle = 'Bewerk persoon';
         modelContent = (
-          <StatementCRUD
+          <MailCRUD
             formtype={FormType.UPDATE}
             onAttributesUpdate={handleChange}
-            statement={statement}
+            mail={mail}
           />
         );
         break;
       case FormType.DELETE:
         modelTitle = 'Verwijder persoon';
         modelContent = (
-          <StatementCRUD
+          <MailCRUD
             formtype={FormType.DELETE}
             onAttributesUpdate={handleChange}
-            statement={statement}
+            mail={mail}
           />
         );
         break;
@@ -113,26 +113,16 @@ export function StatementPool() {
   };
 
   // These are the columns of the table.
-  const columns: ColumnsType<Statement> = [
+  const columns: ColumnsType<Mail> = [
     {
-      title: 'Naam',
-      dataIndex: 'name',
-      key: 'name',
+      title: 'Titel',
+      dataIndex: 'title',
+      key: 'title',
     },
     {
-      title: 'Waarvoor',
-      dataIndex: 'item',
-      key: 'item',
-    },
-    {
-      title: 'Bedrag',
-      dataIndex: 'amount',
-      key: 'amount',
-    },
-    {
-      title: 'Status',
-      dataIndex: 'status',
-      key: 'status',
+      title: 'Content',
+      dataIndex: 'content',
+      key: 'content',
     },
     {
       title: 'Details',
@@ -157,7 +147,7 @@ export function StatementPool() {
   console.log(state);
 
   const {
-    statements, modelContent, modelTitle, modelVisible,
+    mails, modelContent, modelTitle, modelVisible,
   } = state;
 
   return (
@@ -176,7 +166,7 @@ export function StatementPool() {
           </Link>
         </div>
 
-        <Table pagination={false} columns={columns} rowKey="id" dataSource={statements} />
+        <Table pagination={false} columns={columns} rowKey="id" dataSource={mails} />
 
         <Modal
           title={modelTitle}
@@ -193,4 +183,4 @@ export function StatementPool() {
   );
 }
 
-export default StatementPool;
+export default MailPool;

@@ -4,9 +4,9 @@ import {
   Divider, Modal, Select, Table, Input, Button,
 } from 'antd';
 
-import { Statement, GetStatementsDocument } from '../../Api/Backend';
+import { TransactionGroup, GetTransactionGroupsDocument } from '../../Api/Backend';
 import { FormType } from '../form/FormHelper';
-import StatementCRUD from '../form/StatementCRUD';
+import TransactionGroupCRUD from '../form/TransactionGroupCRUD';
 
 import 'antd/dist/antd.css';
 
@@ -14,31 +14,31 @@ import { ColumnsType } from 'antd/lib/table';
 
 import GraphqlService from '../../helpers/GraphqlService';
 
-interface StatementPoolState {
-  statements: Statement[] | undefined,
+interface TransactionGroupPoolState {
+  transactionGroups: TransactionGroup[] | undefined,
   searchAttribute: string | null,
   modelTitle: string,
   modelVisible: boolean,
   modelContent: JSX.Element,
-  selectedStatement: Statement | null,
+  selectedTransactionGroup: TransactionGroup | null,
 }
 
-export function StatementPool() {
-  const [state, setState] = useState<StatementPoolState>({
-    statements: [],
+export function TransactionGroupPool() {
+  const [state, setState] = useState<TransactionGroupPoolState>({
+    transactionGroups: [],
     searchAttribute: '',
     modelTitle: 'unknown',
     modelVisible: false,
     modelContent: (<></>),
-    selectedStatement: null,
+    selectedTransactionGroup: null,
   });
 
   const fetch = async () => {
-    GraphqlService.getClient().request(GetStatementsDocument).then((data) => {
+    GraphqlService.getClient().request(GetTransactionGroupsDocument).then((data) => {
       if (data !== undefined) {
-        console.log('Succesfull fetch of Statements');
-        const statements = data.statements as Statement[];
-        setState({ ...state, statements });
+        console.log('Succesfull fetch of TransactionGroups');
+        const transactionGroups = data.transactionGroups as TransactionGroup[];
+        setState({ ...state, transactionGroups });
       }
     });
   };
@@ -52,7 +52,7 @@ export function StatementPool() {
     fetch();
   };
 
-  const openModal = async (e: MouseEvent, formType: string, statement?: Statement) => {
+  const openModal = async (e: MouseEvent, formType: string, transactionGroup?: TransactionGroup) => {
     let modelTitle = 'unknown';
     let modelContent = <></>;
     const modelVisible = true;
@@ -61,40 +61,40 @@ export function StatementPool() {
       case FormType.CREATE:
         modelTitle = 'Maak nieuw persoon aan.';
         modelContent = (
-          <StatementCRUD
+          <TransactionGroupCRUD
             formtype={FormType.CREATE}
             onAttributesUpdate={handleChange}
-            statement={statement}
+            transactionGroup={transactionGroup}
           />
         );
         break;
       case FormType.READ:
         modelTitle = 'Details van persoon';
         modelContent = (
-          <StatementCRUD
+          <TransactionGroupCRUD
             formtype={FormType.READ}
             onAttributesUpdate={handleChange}
-            statement={statement}
+            transactionGroup={transactionGroup}
           />
         );
         break;
       case FormType.UPDATE:
         modelTitle = 'Bewerk persoon';
         modelContent = (
-          <StatementCRUD
+          <TransactionGroupCRUD
             formtype={FormType.UPDATE}
             onAttributesUpdate={handleChange}
-            statement={statement}
+            transactionGroup={transactionGroup}
           />
         );
         break;
       case FormType.DELETE:
         modelTitle = 'Verwijder persoon';
         modelContent = (
-          <StatementCRUD
+          <TransactionGroupCRUD
             formtype={FormType.DELETE}
             onAttributesUpdate={handleChange}
-            statement={statement}
+            transactionGroup={transactionGroup}
           />
         );
         break;
@@ -113,26 +113,16 @@ export function StatementPool() {
   };
 
   // These are the columns of the table.
-  const columns: ColumnsType<Statement> = [
+  const columns: ColumnsType<TransactionGroup> = [
     {
       title: 'Naam',
-      dataIndex: 'name',
-      key: 'name',
-    },
-    {
-      title: 'Waarvoor',
-      dataIndex: 'item',
-      key: 'item',
+      dataIndex: 'title',
+      key: 'title',
     },
     {
       title: 'Bedrag',
       dataIndex: 'amount',
       key: 'amount',
-    },
-    {
-      title: 'Status',
-      dataIndex: 'status',
-      key: 'status',
     },
     {
       title: 'Details',
@@ -157,7 +147,7 @@ export function StatementPool() {
   console.log(state);
 
   const {
-    statements, modelContent, modelTitle, modelVisible,
+    transactionGroups, modelContent, modelTitle, modelVisible,
   } = state;
 
   return (
@@ -176,7 +166,7 @@ export function StatementPool() {
           </Link>
         </div>
 
-        <Table pagination={false} columns={columns} rowKey="id" dataSource={statements} />
+        <Table pagination={false} columns={columns} rowKey="id" dataSource={transactionGroups} />
 
         <Modal
           title={modelTitle}
@@ -193,4 +183,4 @@ export function StatementPool() {
   );
 }
 
-export default StatementPool;
+export default TransactionGroupPool;

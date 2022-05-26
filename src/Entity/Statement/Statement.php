@@ -21,7 +21,6 @@ class Statement
      * @ORM\Id()
      * @ORM\GeneratedValue(strategy="UUID")
      * @ORM\Column(type="guid")
-     * @GQL\Field(type="String!")
      */
     private string $id;
 
@@ -116,6 +115,10 @@ class Statement
      */
     private $updatedAt;
 
+    /**
+     * @GQL\Field(type="String!")
+     * @GQL\Description("The subject identifier of the statement.")
+     */
     public function getId(): ?string
     {
         return $this->id;

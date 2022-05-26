@@ -19,7 +19,6 @@ class TransactionGroup
      * @ORM\Id()
      * @ORM\GeneratedValue(strategy="UUID")
      * @ORM\Column(type="guid")
-     * @GQL\Field(type="String!")
      */
     private string $id;
 
@@ -54,7 +53,6 @@ class TransactionGroup
 
     /**
      * @ORM\OneToMany(targetEntity=Transaction::class, mappedBy="TransactionGroup")
-     * @GQL\Field(type="[Transaction]")
      *
      * @var Collection<int,Transaction>
      */
@@ -65,6 +63,10 @@ class TransactionGroup
         $this->transactions = new ArrayCollection();
     }
 
+    /**
+     * @GQL\Field(type="String!")
+     * @GQL\Description("The subject identifier of the transaction group.")
+     */
     public function getId(): string
     {
         return $this->id;
@@ -138,6 +140,8 @@ class TransactionGroup
     }
 
     /**
+     * @GQL\Field(type="[Transaction]")
+     *
      * @return Collection<int,Transaction>
      */
     public function getTransactions(): Collection

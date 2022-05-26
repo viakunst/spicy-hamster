@@ -19,7 +19,6 @@ class Mail
      * @ORM\Id()
      * @ORM\GeneratedValue(strategy="UUID")
      * @ORM\Column(type="guid")
-     * @GQL\Field(type="String!")
      */
     private string $id;
 
@@ -32,7 +31,7 @@ class Mail
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Mail\Recipient", mappedBy="mail")
-     *@GQL\Field(type="[Recipient]")
+     * @GQL\Field(type="[Recipient]")
      *
      * @var Collection<int,Recipient>
      */
@@ -61,6 +60,10 @@ class Mail
      */
     private DateTime $sentAt;
 
+    /**
+     * @GQL\Field(type="String!")
+     * @GQL\Description("The subject identifier of the statement.")
+     */
     public function getId(): ?string
     {
         return $this->id;
