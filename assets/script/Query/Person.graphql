@@ -39,6 +39,14 @@ query GetTransactions {
     getId
     comment
     status
+    amount
+    getPerson {
+      getId
+      getName
+    }
+    getTransactionGroup {
+      getId
+    }
   }
 }
 
@@ -46,9 +54,11 @@ query GetTransactionGroups {
   transactionGroups {
     getId
     IBAN
-    amount
     description
     title
+    getTransactions {
+      getId
+    }
   }
 }
 

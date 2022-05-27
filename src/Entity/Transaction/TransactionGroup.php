@@ -162,11 +162,11 @@ class TransactionGroup
             $this->description = $transactionGroup->getDescription();
         }
         if (null !== $transactionGroup->getDate()) {
-            $this->setDate(\DateTime::createFromInterface($transactionGroup->getDate()));
+            // Find a way around this error.
+            // $this->setDate(\DateTime::createFromInterface($transactionGroup->getDate()));
         }
         if (null !== $transactionGroup->getIBAN()) {
             $this->IBAN = $transactionGroup->getIBAN();
         }
-        $this->transactions = $transactionGroup->getTransactions();
     }
 }

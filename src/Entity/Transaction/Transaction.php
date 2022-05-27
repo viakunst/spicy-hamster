@@ -31,7 +31,6 @@ class Transaction
     /**
      * @ORM\ManyToOne(targetEntity=TransactionGroup::class, inversedBy="transactions")
      * @ORM\JoinColumn(name="transaction_group_id", nullable=false)
-     * @GQL\Field(type="TransactionGroup!")
      *
      * @var TransactionGroup
      */
@@ -78,6 +77,9 @@ class Transaction
         return $this;
     }
 
+    /**
+     * @GQL\Field(type="Person")
+     */
     public function getPerson(): ?Person
     {
         return $this->person;
@@ -90,6 +92,9 @@ class Transaction
         return $this;
     }
 
+    /**
+     * @GQL\Field(type="TransactionGroup")
+     */
     public function getTransactionGroup(): ?TransactionGroup
     {
         return $this->transactionGroup;
@@ -152,12 +157,6 @@ class Transaction
 
     public function cloneFrom(Transaction $transaction): void
     {
-        if (null !== $transaction->getPerson()) {
-            $this->person = $transaction->getPerson();
-        }
-        if (null !== $transaction->getTransactionGroup()) {
-            $this->transactionGroup = $transaction->getTransactionGroup();
-        }
         if (null !== $transaction->getAmount()) {
             $this->amount = $transaction->getAmount();
         }

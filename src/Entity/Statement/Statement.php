@@ -327,6 +327,7 @@ class Statement
             $this->reason = $statement->getReason();
         }
 
+        // Maybe remove this?
         $this->groups = $statement->getGroups();
 
         if (null !== $statement->getComment()) {
