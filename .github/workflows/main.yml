@@ -32,7 +32,12 @@ jobs:
       uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
-      
+
+    - name: Spoof the AWS config files
+      run: |
+        mv  ./assets/script/config/awsConfig.sample.ts  ./assets/script/config/awsConfig.ts
+        mv  ./assets/script/config/userManagerConfig.sample.ts  ./assets/script/config/userManagerConfig.ts 
+  
     - name: Install dependencies
       run: composer install --prefer-dist --no-progress --optimize-autoloader
       env:
@@ -50,11 +55,6 @@ jobs:
     - name: Generate JS API bindings
       run: yarn generate
     
-    - name: Spoof the AWS config files
-      run: |
-        mv  ./assets/config/awsConfig.sample.ts  ./assets/config/awsConfig.ts
-        mv  ./assets/config/userManagerConfig.sample.ts  ./assets/config/userManagerConfig.ts 
-
     - name: Build JS dependencies
       run: yarn build
 
