@@ -51,10 +51,9 @@ jobs:
       run: yarn generate
     
     - name: Spoof the AWS config files
-      working-directory: ./assets/config
       run: |
-        mv awsConfig.sample.ts awsConfig.ts
-        mv userManagerConfig.sample.ts userManagerConfig.ts 
+        mv  ./assets/config/awsConfig.sample.ts  ./assets/config/awsConfig.ts
+        mv  ./assets/config/userManagerConfig.sample.ts  ./assets/config/userManagerConfig.ts 
 
     - name: Build JS dependencies
       run: yarn build
