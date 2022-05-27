@@ -305,4 +305,51 @@ class Statement
     {
         return $this->imageSize;
     }
+
+    public function cloneFrom(Statement $statement): void
+    {
+        if (null !== $statement->getName()) {
+            $this->name = $statement->getName();
+        }
+
+        if (null !== $statement->getMail()) {
+            $this->mail = $statement->getMail();
+        }
+
+        if (null !== $statement->getIBAN()) {
+            $this->IBAN = $statement->getIBAN();
+        }
+
+        if (null !== $statement->getItem()) {
+            $this->item = $statement->getItem();
+        }
+        if (null !== $statement->getReason()) {
+            $this->reason = $statement->getReason();
+        }
+
+        $this->groups = $statement->getGroups();
+
+        if (null !== $statement->getComment()) {
+            $this->comment = $statement->getComment();
+        }
+        if (null !== $statement->getFeedback()) {
+            $this->feedback = $statement->getFeedback();
+        }
+        if (null !== $statement->getStatus()) {
+            $this->status = $statement->getStatus();
+        }
+        if (null !== $statement->getAmount()) {
+            $this->amount = $statement->getAmount();
+        }
+
+        if (null !== $statement->getImageFile()) {
+            $this->imageFile = $statement->getImageFile();
+        }
+        if (null !== $statement->getImageName()) {
+            $this->imageName = $statement->getImageName();
+        }
+        if (null !== $statement->getImageSize()) {
+            $this->imageSize = $statement->getImageSize();
+        }
+    }
 }

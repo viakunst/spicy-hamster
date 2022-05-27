@@ -23,12 +23,6 @@ class TransactionGroup
     private string $id;
 
     /**
-     * @ORM\Column(type="integer")
-     * @GQL\Field(type="Int!")
-     */
-    private int $amount;
-
-    /**
      * @ORM\Column(type="string", length=255)
      * @GQL\Field(type="String!")
      */
@@ -75,18 +69,6 @@ class TransactionGroup
     public function setId(string $id): self
     {
         $this->id = $id;
-
-        return $this;
-    }
-
-    public function getAmount(): ?int
-    {
-        return $this->amount;
-    }
-
-    public function setAmount(int $amount): self
-    {
-        $this->amount = $amount;
 
         return $this;
     }
@@ -169,5 +151,22 @@ class TransactionGroup
         }
 
         return $this;
+    }
+
+    public function cloneFrom(TransactionGroup $transactionGroup): void
+    {
+        if (null !== $transactionGroup->getTitle()) {
+            $this->title = $transactionGroup->getTitle();
+        }
+        if (null !== $transactionGroup->getDescription()) {
+            $this->description = $transactionGroup->getDescription();
+        }
+        if (null !== $transactionGroup->getDate()) {
+            $this->setDate(\DateTime::createFromInterface($transactionGroup->getDate()));
+        }
+        if (null !== $transactionGroup->getIBAN()) {
+            $this->IBAN = $transactionGroup->getIBAN();
+        }
+        $this->transactions = $transactionGroup->getTransactions();
     }
 }

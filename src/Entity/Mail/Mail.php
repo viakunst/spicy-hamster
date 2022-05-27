@@ -2,7 +2,6 @@
 
 namespace App\Entity\Mail;
 
-use App\Entity\Person\Person;
 use DateTime;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -21,13 +20,6 @@ class Mail
      * @ORM\Column(type="guid")
      */
     private string $id;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Person\Person")
-     * @ORM\JoinColumn(name="person_id", referencedColumnName="id")
-     * @GQL\Field(type="Person")
-     */
-    private ?Person $person;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Mail\Recipient", mappedBy="mail")
@@ -54,6 +46,12 @@ class Mail
      * @GQL\Field(type="String!")
      */
     private string $sender;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     * @GQL\Field(type="String!")
+     */
+    private string $sendBy;
 
     /**
      * @ORM\Column(type="datetime")
@@ -93,14 +91,14 @@ class Mail
         return $this;
     }
 
-    public function getPerson(): ?Person
+    public function getSendBy(): ?string
     {
-        return $this->person;
+        return $this->sendBy;
     }
 
-    public function setPerson(?Person $person): self
+    public function setSendBy(string $sendBy): self
     {
-        $this->person = $person;
+        $this->sendBy = $sendBy;
 
         return $this;
     }

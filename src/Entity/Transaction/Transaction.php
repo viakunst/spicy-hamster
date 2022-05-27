@@ -38,6 +38,18 @@ class Transaction
     private $transactionGroup;
 
     /**
+     * @ORM\Column(type="integer")
+     * @GQL\Field(type="Int!")
+     */
+    private int $amount;
+
+    /**
+     * @ORM\Column(type="integer")
+     * @GQL\Field(type="Int!")
+     */
+    private int $timesReminded;
+
+    /**
      * @ORM\Column(type="string")
      * @GQL\Field(type="String!")
      */
@@ -90,6 +102,30 @@ class Transaction
         return $this;
     }
 
+    public function getAmount(): ?int
+    {
+        return $this->amount;
+    }
+
+    public function setAmount(int $amount): self
+    {
+        $this->amount = $amount;
+
+        return $this;
+    }
+
+    public function getTimesRemainded(): ?int
+    {
+        return $this->timesReminded;
+    }
+
+    public function setTimesRemainded(int $timesReminded): self
+    {
+        $this->timesReminded = $timesReminded;
+
+        return $this;
+    }
+
     public function getStatus(): ?string
     {
         return $this->status;
@@ -112,5 +148,27 @@ class Transaction
         $this->comment = $comment;
 
         return $this;
+    }
+
+    public function cloneFrom(Transaction $transaction): void
+    {
+        if (null !== $transaction->getPerson()) {
+            $this->person = $transaction->getPerson();
+        }
+        if (null !== $transaction->getTransactionGroup()) {
+            $this->transactionGroup = $transaction->getTransactionGroup();
+        }
+        if (null !== $transaction->getAmount()) {
+            $this->amount = $transaction->getAmount();
+        }
+        if (null !== $transaction->getTimesRemainded()) {
+            $this->timesReminded = $transaction->getTimesRemainded();
+        }
+        if (null !== $transaction->getStatus()) {
+            $this->status = $transaction->getStatus();
+        }
+        if (null !== $transaction->getComment()) {
+            $this->comment = $transaction->getComment();
+        }
     }
 }
