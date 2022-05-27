@@ -4,7 +4,7 @@ import {
   Divider, Modal, Select, Table, Input, Button,
 } from 'antd';
 
-import { Person, GetPersonsDocument } from '../../Api/Backend';
+import { Person, GetPersonsDocument, useGetPersonsQuery } from '../../Api/Backend';
 import { FormType } from '../form/FormHelper';
 import PersonCRUD from '../form/PersonCRUD';
 
@@ -13,6 +13,7 @@ import 'antd/dist/antd.css';
 import { ColumnsType } from 'antd/lib/table';
 
 import GraphqlService from '../../helpers/GraphqlService';
+import { GraphQLClient } from 'graphql-request';
 
 interface PersonPoolState {
   persons: Person[] | undefined,
@@ -23,7 +24,16 @@ interface PersonPoolState {
   selectedPerson: Person | null,
 }
 
+const options = {
+  onSuccess: (data: any) => {
+    console.log('success call');
+    console.log(data);
+  },
+};
+
 export function PersonPool() {
+  const req = useGetPersonsQuery(GraphqlService.getClient(), {}, options);
+
   const [state, setState] = useState<PersonPoolState>({
     persons: [],
     searchAttribute: '',

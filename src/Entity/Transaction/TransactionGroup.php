@@ -46,7 +46,7 @@ class TransactionGroup
     private string $IBAN;
 
     /**
-     * @ORM\OneToMany(targetEntity=Transaction::class, mappedBy="TransactionGroup")
+     * @ORM\OneToMany(targetEntity=Transaction::class, mappedBy="transactionGroup")
      *
      * @var Collection<int,Transaction>
      */

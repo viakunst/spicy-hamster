@@ -71,7 +71,7 @@ function MailCRUD(props:MailCRUDProps) {
       { key: 'Titel', value: mail.title },
       { key: 'Content', value: mail.content },
       { key: 'verzonden naar', value: mail.recipients },
-      { key: 'persoon?', value: mail.person },
+      { key: 'verzonden door', value: mail.sendBy },
     ];
 
     content = (

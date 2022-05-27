@@ -5,6 +5,8 @@ namespace App\GraphQL\Mutation;
 use App\Entity\Person\Person;
 use App\GraphQL\Mutation;
 use Overblog\GraphQLBundle\Annotation as GQL;
+use Overblog\GraphQLBundle\Definition\Resolver\AliasedInterface;
+use Overblog\GraphQLBundle\Definition\Resolver\MutationInterface;
 
 /**
  * This classes houses all of the create update and delete functions.
@@ -12,7 +14,7 @@ use Overblog\GraphQLBundle\Annotation as GQL;
  * @GQL\Type
  * @GQL\Description("The person mutation operations.")
  */
-class PersonMutation extends Mutation
+class PersonMutation extends Mutation implements MutationInterface, AliasedInterface
 {
     /**
      * @GQL\Field(type="String!")
@@ -78,5 +80,17 @@ class PersonMutation extends Mutation
         }
 
         return "failure: person with id {$id} was not found";
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @return array<string,string>
+     */
+    public static function getAliases(): array
+    {
+        return [
+            'createShip' => 'create_ship',
+        ];
     }
 }

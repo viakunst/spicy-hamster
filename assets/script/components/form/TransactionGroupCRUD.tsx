@@ -94,7 +94,6 @@ function TransactionGroupCRUD(props:TransactionGroupCRUDProps) {
   if (formtype == FormType.UPDATE && transactionGroup !== undefined) {
     const updateInitial = {
       IBAN: transactionGroup.IBAN,
-      amount: transactionGroup.amount,
       description: transactionGroup.description,
       title: transactionGroup.title,
     };
@@ -110,7 +109,6 @@ function TransactionGroupCRUD(props:TransactionGroupCRUDProps) {
     const readData = [
       { key: 'Title of naam', value: transactionGroup.title },
       { key: 'Omschrijving', value: transactionGroup.description },
-      { key: 'Bedrag', value: transactionGroup.amount },
       { key: 'IBAN', value: transactionGroup.IBAN },
     ];
 

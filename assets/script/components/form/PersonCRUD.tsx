@@ -3,7 +3,9 @@ import React, { useEffect, useState } from 'react';
 import {
   Button, Form, message, Divider, Input, Checkbox, Table,
 } from 'antd';
-import { Person } from '../../Api/Backend';
+import { Person, CreatePersonDocument, CreatePersonMutationVariables } from '../../Api/Backend';
+
+import GraphqlService from '../../helpers/GraphqlService';
 
 import { FormType, basicForm } from './FormHelper';
 
@@ -29,6 +31,20 @@ function PersonCRUD(props:PersonCreateProps) {
 
   const onCreateFinish = async () => {
     // Push attributes, that are actually editable, to list.
+
+    const mutationVar = {
+      person: {
+        address: 'a',
+        email: 'a',
+        familyName: 'a',
+        givenName: 'a',
+        sub: 'a',
+      },
+    } as CreatePersonMutationVariables;
+
+    GraphqlService.getClient().request(CreatePersonDocument, mutationVar).then((data) => {
+      console.log(data);
+    });
 
     onAttributesUpdate();
   };
