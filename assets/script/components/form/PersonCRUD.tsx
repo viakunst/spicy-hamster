@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 import {
-  Button, Form, message, Divider, Input, Checkbox, Table,
+  Form, Input, Checkbox, Table,
 } from 'antd';
 import {
   Person, useCreatePersonMutation, useUpdatePersonMutation, useDeletePersonMutation, PersonInput,
@@ -53,7 +53,7 @@ function PersonCRUD(props:PersonCreateProps) {
     }
   };
 
-  let content = (<></>);
+  let content = (<>empty</>);
 
   const readColumns = [
     {
@@ -97,7 +97,7 @@ function PersonCRUD(props:PersonCreateProps) {
   console.log(formtype);
   console.log(person);
 
-  if (formtype == FormType.CREATE && person === undefined) {
+  if (formtype === FormType.CREATE && person === undefined) {
     content = (
       <>
         {basicForm(form, onCreateFinish, 'Maak aan', updateCreateFormItems)}
@@ -105,7 +105,7 @@ function PersonCRUD(props:PersonCreateProps) {
     );
   }
 
-  if (formtype == FormType.UPDATE && person !== undefined) {
+  if (formtype === FormType.UPDATE && person !== undefined) {
     const updateInitial = {
       sub: person.sub,
       email: person.email,
@@ -121,7 +121,7 @@ function PersonCRUD(props:PersonCreateProps) {
     );
   }
 
-  if (formtype == FormType.READ && person !== undefined) {
+  if (formtype === FormType.READ && person !== undefined) {
     const readData = [
       { key: 'Volledige naam', value: person.getName },
       { key: 'email', value: person.email },
@@ -136,7 +136,7 @@ function PersonCRUD(props:PersonCreateProps) {
     );
   }
 
-  if (formtype == FormType.DELETE && person !== undefined) {
+  if (formtype === FormType.DELETE && person !== undefined) {
     content = (
       <>
         {basicForm(form, onDeleteFinish, 'Verwijder', deleteFormItems)}

@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
-  Divider, Modal, Select, Table, Input, Button,
+  Modal, Table, Button,
 } from 'antd';
+import { ColumnsType } from 'antd/lib/table';
+
+import 'antd/dist/antd.css';
 
 import { Person, useGetPersonsQuery } from '../../Api/Backend';
 import { FormType } from '../form/FormHelper';
 import PersonCRUD from '../form/PersonCRUD';
-
-import 'antd/dist/antd.css';
-import { ColumnsType } from 'antd/lib/table';
 import GraphqlService from '../../helpers/GraphqlService';
 
 interface PersonPoolState {
@@ -20,22 +20,16 @@ interface PersonPoolState {
   selectedPerson: Person | null,
 }
 
-const options = {
-  onSuccess: (data: any) => {
-    console.log('success call');
-    console.log(data);
-  },
-};
-
-export function PersonPool() {
+function PersonPool() {
   const {
     data, isLoading, isError, refetch,
   } = useGetPersonsQuery(GraphqlService.getClient());
+
   const [state, setState] = useState<PersonPoolState>({
     searchAttribute: '',
     modelTitle: 'unknown',
     modelVisible: false,
-    modelContent: (<></>),
+    modelContent: (<>empty</>),
     selectedPerson: null,
   });
 
@@ -49,7 +43,7 @@ export function PersonPool() {
 
   const openModal = async (e: MouseEvent, formType: string, person?: Person) => {
     let modelTitle = 'unknown';
-    let modelContent = <></>;
+    let modelContent = <>empty</>;
     const modelVisible = true;
 
     console.log(person);
@@ -126,13 +120,25 @@ export function PersonPool() {
       render: (text, record) => (
         <>
           <span>
-            <Button onClick={(e) => openModal(e.nativeEvent, FormType.READ, record)}>Details</Button>
+            <Button onClick={
+              (e) => openModal(e.nativeEvent, FormType.READ, record)
+              }
+            >Details
+            </Button>
           </span>
           <span>
-            <Button onClick={(e) => openModal(e.nativeEvent, FormType.UPDATE, record)}>Bewerken</Button>
+            <Button onClick={
+              (e) => openModal(e.nativeEvent, FormType.UPDATE, record)
+              }
+            >Bewerken
+            </Button>
           </span>
           <span>
-            <Button onClick={(e) => openModal(e.nativeEvent, FormType.DELETE, record)}>verwijderen</Button>
+            <Button onClick={
+              (e) => openModal(e.nativeEvent, FormType.DELETE, record)
+              }
+            >verwijderen
+            </Button>
           </span>
 
         </>

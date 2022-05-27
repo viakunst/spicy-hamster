@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 import {
-  Button, Form, message, Divider, Input, Checkbox, Table,
+  Form, Input, Checkbox, Table,
 } from 'antd';
 import { Statement } from '../../Api/Backend';
 
@@ -23,11 +23,7 @@ function StatementCRUD(props:StatementCRUDProps) {
     formtype,
     admin,
   } = props;
-
-  // componentDidMount
-  useEffect(() => {
-
-  }, []);
+  console.log(admin);
 
   const onCreateFinish = async () => {
     // Push attributes, that are actually editable, to list.
@@ -47,7 +43,7 @@ function StatementCRUD(props:StatementCRUDProps) {
     onAttributesUpdate();
   };
 
-  let content = (<></>);
+  let content = (<>empty</>);
 
   const readColumns = [
     {
@@ -100,7 +96,7 @@ function StatementCRUD(props:StatementCRUDProps) {
     </Form.Item>
   );
 
-  if (formtype == FormType.CREATE && statement === undefined) {
+  if (formtype === FormType.CREATE && statement === undefined) {
     content = (
       <>
         {basicForm(form, onCreateFinish, 'Maak aan', updateCreateFormItems)}
@@ -108,7 +104,7 @@ function StatementCRUD(props:StatementCRUDProps) {
     );
   }
 
-  if (formtype == FormType.UPDATE && statement !== undefined) {
+  if (formtype === FormType.UPDATE && statement !== undefined) {
     const updateInitial = {
       IBAN: statement.IBAN,
       amount: statement.amount,
@@ -128,7 +124,7 @@ function StatementCRUD(props:StatementCRUDProps) {
     );
   }
 
-  if (formtype == FormType.READ && statement !== undefined) {
+  if (formtype === FormType.READ && statement !== undefined) {
     const readData = [
       { key: 'IBAN', value: statement.IBAN },
       { key: 'Bedrag', value: statement.amount },
@@ -147,7 +143,7 @@ function StatementCRUD(props:StatementCRUDProps) {
     );
   }
 
-  if (formtype == FormType.DELETE && statement !== undefined) {
+  if (formtype === FormType.DELETE && statement !== undefined) {
     content = (
       <>
         {basicForm(form, onDeleteFinish, 'Verwijder', deleteFormItems)}

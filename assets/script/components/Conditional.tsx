@@ -1,4 +1,4 @@
-import React, { PropsWithChildren } from 'react';
+import { PropsWithChildren } from 'react';
 
 type ConditionalProps = PropsWithChildren<{
   isVisible: () => boolean;
@@ -7,11 +7,9 @@ type ConditionalProps = PropsWithChildren<{
 function Conditional({ isVisible, children }: ConditionalProps) {
   if (isVisible()) {
     return (
-      <>{ children }</>
+      { children }
     );
   }
-
-  return (<></>);
 }
 
 export default Conditional;

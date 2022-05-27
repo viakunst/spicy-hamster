@@ -1,21 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
-  Divider, Modal, Select, Table, Input, Button,
+  Modal, Table, Button,
 } from 'antd';
-
-import { Statement, GetStatementsDocument } from '../../Api/Backend';
-import { FormType } from '../form/FormHelper';
-import StatementCRUD from '../form/StatementCRUD';
+import { ColumnsType } from 'antd/lib/table';
 
 import 'antd/dist/antd.css';
 
-import { ColumnsType } from 'antd/lib/table';
-
+import { Statement, useGetStatementsQuery } from '../../Api/Backend';
+import { FormType } from '../form/FormHelper';
+import StatementCRUD from '../form/StatementCRUD';
 import GraphqlService from '../../helpers/GraphqlService';
 
 interface StatementPoolState {
-  statements: Statement[] | undefined,
   searchAttribute: string | null,
   modelTitle: string,
   modelVisible: boolean,
@@ -23,38 +20,30 @@ interface StatementPoolState {
   selectedStatement: Statement | null,
 }
 
-export function StatementPool() {
+function StatementPool() {
+  const {
+    data, isLoading, isError, refetch,
+  } = useGetStatementsQuery(GraphqlService.getClient());
+
   const [state, setState] = useState<StatementPoolState>({
-    statements: [],
     searchAttribute: '',
     modelTitle: 'unknown',
     modelVisible: false,
-    modelContent: (<></>),
+    modelContent: (<>empty</>),
     selectedStatement: null,
   });
 
-  const fetch = async () => {
-    GraphqlService.getClient().request(GetStatementsDocument).then((data) => {
-      if (data !== undefined) {
-        console.log('Succesfull fetch of Statements');
-        const statements = data.statements as Statement[];
-        setState({ ...state, statements });
-      }
-    });
-  };
-
-  // componentDidMount
-  useEffect(() => {
-    fetch();
-  }, []);
+  if (isLoading || isError || data === undefined) {
+    return <span>Loading...</span>;
+  }
 
   const handleChange = async () => {
-    fetch();
+    refetch();
   };
 
   const openModal = async (e: MouseEvent, formType: string, statement?: Statement) => {
     let modelTitle = 'unknown';
-    let modelContent = <></>;
+    let modelContent = <>empty</>;
     const modelVisible = true;
 
     switch (formType) {
@@ -140,13 +129,25 @@ export function StatementPool() {
       render: (text, record) => (
         <>
           <span>
-            <Button onClick={(e) => openModal(e.nativeEvent, FormType.READ, record)}>Details</Button>
+            <Button onClick={
+              (e) => openModal(e.nativeEvent, FormType.READ, record)
+              }
+            >Details
+            </Button>
           </span>
           <span>
-            <Button onClick={(e) => openModal(e.nativeEvent, FormType.UPDATE, record)}>Bewerken</Button>
+            <Button onClick={
+              (e) => openModal(e.nativeEvent, FormType.UPDATE, record)
+              }
+            >Bewerken
+            </Button>
           </span>
           <span>
-            <Button onClick={(e) => openModal(e.nativeEvent, FormType.DELETE, record)}>verwijderen</Button>
+            <Button onClick={
+              (e) => openModal(e.nativeEvent, FormType.DELETE, record)
+              }
+            >verwijderen
+            </Button>
           </span>
 
         </>
@@ -154,11 +155,11 @@ export function StatementPool() {
     },
   ];
 
-  console.log(state);
-
   const {
-    statements, modelContent, modelTitle, modelVisible,
+    modelContent, modelTitle, modelVisible,
   } = state;
+
+  const statements = data.statements as Statement[];
 
   return (
     <div>

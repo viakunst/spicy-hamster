@@ -5,8 +5,6 @@ import {
   Button,
 } from 'antd';
 
-import OidcService from '../../helpers/OidcService';
-
 export default function AdminMenuButton() {
   const [state, setState] = useState({
     admin: 'user',
@@ -35,5 +33,5 @@ export default function AdminMenuButton() {
     );
   }
 
-  return (<></>);
+  return null;
 }

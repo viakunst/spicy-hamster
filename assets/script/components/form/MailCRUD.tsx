@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 
 import {
-  Button, Form, message, Divider, Input, Checkbox, Table,
+  Form, Checkbox, Table,
 } from 'antd';
 import { Mail } from '../../Api/Backend';
 
@@ -27,25 +27,13 @@ function MailCRUD(props:MailCRUDProps) {
 
   }, []);
 
-  const onCreateFinish = async () => {
-    // Push attributes, that are actually editable, to list.
-
-    onAttributesUpdate();
-  };
-
-  const onUpdateFinish = async () => {
-    // Push attributes, that are actually editable, to list.
-
-    onAttributesUpdate();
-  };
-
   const onDeleteFinish = async () => {
     // Push attributes, that are actually editable, to list.
-
+    console.log(mail?.getId);
     onAttributesUpdate();
   };
 
-  let content = (<></>);
+  let content = (<>empty</>);
 
   const readColumns = [
     {
@@ -66,7 +54,7 @@ function MailCRUD(props:MailCRUDProps) {
     </Form.Item>
   );
 
-  if (formtype == FormType.READ && mail !== undefined) {
+  if (formtype === FormType.READ && mail !== undefined) {
     const readData = [
       { key: 'Titel', value: mail.title },
       { key: 'Content', value: mail.content },
@@ -81,7 +69,7 @@ function MailCRUD(props:MailCRUDProps) {
     );
   }
 
-  if (formtype == FormType.DELETE && mail !== undefined) {
+  if (formtype === FormType.DELETE && mail !== undefined) {
     content = (
       <>
         {basicForm(form, onDeleteFinish, 'Verwijder', deleteFormItems)}

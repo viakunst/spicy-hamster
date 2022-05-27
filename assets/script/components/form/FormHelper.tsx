@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from 'react';
-
+import React from 'react';
 import {
-  Button, Form, message, Divider, Input, Checkbox, Table, FormInstance,
+  Button, Form, FormInstance,
 } from 'antd';
 
 export enum FormType {
@@ -22,7 +21,13 @@ export const formItemLayout = {
   },
 };
 
-export const basicForm = (form: FormInstance, onFinish:((values:any)=> void), buttonName:string, formItems:any, initialValues?:any) => (
+export const basicForm = (
+  form: FormInstance,
+  onFinish:((values:any)=> void),
+  buttonName:string,
+  formItems:any,
+  initialValues?:any,
+) => (
   <Form
     labelCol={formItemLayout?.labelCol}
     wrapperCol={formItemLayout?.wrapperCol}

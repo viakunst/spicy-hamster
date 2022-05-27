@@ -1,21 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
-  Divider, Modal, Select, Table, Input, Button,
+  Modal, Table, Button,
 } from 'antd';
-
-import { Transaction, GetTransactionsDocument } from '../../Api/Backend';
-import { FormType } from '../form/FormHelper';
-import TransactionCRUD from '../form/TransactionCRUD';
+import { ColumnsType } from 'antd/lib/table';
 
 import 'antd/dist/antd.css';
 
-import { ColumnsType } from 'antd/lib/table';
-
+import { Transaction, useGetTransactionsQuery } from '../../Api/Backend';
+import { FormType } from '../form/FormHelper';
+import TransactionCRUD from '../form/TransactionCRUD';
 import GraphqlService from '../../helpers/GraphqlService';
 
 interface TransactionPoolState {
-  transactions: Transaction[] | undefined,
   searchAttribute: string | null,
   modelTitle: string,
   modelVisible: boolean,
@@ -23,38 +20,30 @@ interface TransactionPoolState {
   selectedTransaction: Transaction | null,
 }
 
-export function TransactionPool() {
+function TransactionPool() {
+  const {
+    data, isLoading, isError, refetch,
+  } = useGetTransactionsQuery(GraphqlService.getClient());
+
   const [state, setState] = useState<TransactionPoolState>({
-    transactions: [],
     searchAttribute: '',
     modelTitle: 'unknown',
     modelVisible: false,
-    modelContent: (<></>),
+    modelContent: <>empty</>,
     selectedTransaction: null,
   });
 
-  const fetch = async () => {
-    GraphqlService.getClient().request(GetTransactionsDocument).then((data) => {
-      if (data !== undefined) {
-        console.log('Succesfull fetch of Transactions');
-        const transactions = data.transactions as Transaction[];
-        setState({ ...state, transactions });
-      }
-    });
-  };
-
-  // componentDidMount
-  useEffect(() => {
-    fetch();
-  }, []);
+  if (isLoading || isError || data === undefined) {
+    return <span>Loading...</span>;
+  }
 
   const handleChange = async () => {
-    fetch();
+    refetch();
   };
 
   const openModal = async (e: MouseEvent, formType: string, transaction?: Transaction) => {
     let modelTitle = 'unknown';
-    let modelContent = <></>;
+    let modelContent = <>empty</>;
     const modelVisible = true;
 
     switch (formType) {
@@ -130,13 +119,25 @@ export function TransactionPool() {
       render: (text, record) => (
         <>
           <span>
-            <Button onClick={(e) => openModal(e.nativeEvent, FormType.READ, record)}>Details</Button>
+            <Button onClick={
+              (e) => openModal(e.nativeEvent, FormType.READ, record)
+              }
+            >Details
+            </Button>
           </span>
           <span>
-            <Button onClick={(e) => openModal(e.nativeEvent, FormType.UPDATE, record)}>Bewerken</Button>
+            <Button onClick={
+              (e) => openModal(e.nativeEvent, FormType.UPDATE, record)
+              }
+            >Bewerken
+            </Button>
           </span>
           <span>
-            <Button onClick={(e) => openModal(e.nativeEvent, FormType.DELETE, record)}>verwijderen</Button>
+            <Button onClick={
+              (e) => openModal(e.nativeEvent, FormType.DELETE, record)
+              }
+            >verwijderen
+            </Button>
           </span>
 
         </>
@@ -144,11 +145,11 @@ export function TransactionPool() {
     },
   ];
 
-  console.log(state);
-
   const {
-    transactions, modelContent, modelTitle, modelVisible,
+    modelContent, modelTitle, modelVisible,
   } = state;
+
+  const transactions = data.transactions as Transaction[];
 
   return (
     <div>

@@ -1,21 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
-  Divider, Modal, Select, Table, Input, Button,
+  Modal, Table, Button,
 } from 'antd';
-
-import { Mail, GetMailsDocument } from '../../Api/Backend';
-import { FormType } from '../form/FormHelper';
-import MailCRUD from '../form/MailCRUD';
+import { ColumnsType } from 'antd/lib/table';
 
 import 'antd/dist/antd.css';
 
-import { ColumnsType } from 'antd/lib/table';
-
+import { Mail, useGetMailsQuery } from '../../Api/Backend';
+import { FormType } from '../form/FormHelper';
+import MailCRUD from '../form/MailCRUD';
 import GraphqlService from '../../helpers/GraphqlService';
 
 interface MailPoolState {
-  mails: Mail[] | undefined,
   searchAttribute: string | null,
   modelTitle: string,
   modelVisible: boolean,
@@ -23,38 +20,30 @@ interface MailPoolState {
   selectedMail: Mail | null,
 }
 
-export function MailPool() {
+function MailPool() {
+  const {
+    data, isLoading, isError, refetch,
+  } = useGetMailsQuery(GraphqlService.getClient());
+
   const [state, setState] = useState<MailPoolState>({
-    mails: [],
     searchAttribute: '',
     modelTitle: 'unknown',
     modelVisible: false,
-    modelContent: (<></>),
+    modelContent: (<>empty</>),
     selectedMail: null,
   });
 
-  const fetch = async () => {
-    GraphqlService.getClient().request(GetMailsDocument).then((data) => {
-      if (data !== undefined) {
-        console.log('Succesfull fetch of Mails');
-        const mails = data.mails as Mail[];
-        setState({ ...state, mails });
-      }
-    });
-  };
-
-  // componentDidMount
-  useEffect(() => {
-    fetch();
-  }, []);
+  if (isLoading || isError || data === undefined) {
+    return <span>Loading...</span>;
+  }
 
   const handleChange = async () => {
-    fetch();
+    refetch();
   };
 
   const openModal = async (e: MouseEvent, formType: string, mail?: Mail) => {
     let modelTitle = 'unknown';
-    let modelContent = <></>;
+    let modelContent = <>empty</>;
     const modelVisible = true;
 
     switch (formType) {
@@ -130,13 +119,18 @@ export function MailPool() {
       render: (text, record) => (
         <>
           <span>
-            <Button onClick={(e) => openModal(e.nativeEvent, FormType.READ, record)}>Details</Button>
+            <Button onClick={
+              (e) => openModal(e.nativeEvent, FormType.READ, record)
+              }
+            >Details
+            </Button>
           </span>
           <span>
-            <Button onClick={(e) => openModal(e.nativeEvent, FormType.UPDATE, record)}>Bewerken</Button>
-          </span>
-          <span>
-            <Button onClick={(e) => openModal(e.nativeEvent, FormType.DELETE, record)}>verwijderen</Button>
+            <Button onClick={
+              (e) => openModal(e.nativeEvent, FormType.DELETE, record)
+              }
+            >verwijderen
+            </Button>
           </span>
 
         </>
@@ -144,11 +138,11 @@ export function MailPool() {
     },
   ];
 
-  console.log(state);
-
   const {
-    mails, modelContent, modelTitle, modelVisible,
+    modelContent, modelTitle, modelVisible,
   } = state;
+
+  const mails = data.mails as Mail[];
 
   return (
     <div>

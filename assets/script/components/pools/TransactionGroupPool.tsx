@@ -1,21 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
-  Divider, Modal, Select, Table, Input, Button,
+  Modal, Table, Button,
 } from 'antd';
-
-import { TransactionGroup, GetTransactionGroupsDocument } from '../../Api/Backend';
-import { FormType } from '../form/FormHelper';
-import TransactionGroupCRUD from '../form/TransactionGroupCRUD';
+import { ColumnsType } from 'antd/lib/table';
 
 import 'antd/dist/antd.css';
 
-import { ColumnsType } from 'antd/lib/table';
-
+import { TransactionGroup, useGetTransactionGroupsQuery } from '../../Api/Backend';
+import { FormType } from '../form/FormHelper';
+import TransactionGroupCRUD from '../form/TransactionGroupCRUD';
 import GraphqlService from '../../helpers/GraphqlService';
 
 interface TransactionGroupPoolState {
-  transactionGroups: TransactionGroup[] | undefined,
   searchAttribute: string | null,
   modelTitle: string,
   modelVisible: boolean,
@@ -23,38 +20,34 @@ interface TransactionGroupPoolState {
   selectedTransactionGroup: TransactionGroup | null,
 }
 
-export function TransactionGroupPool() {
+function TransactionGroupPool() {
+  const {
+    data, isLoading, isError, refetch,
+  } = useGetTransactionGroupsQuery(GraphqlService.getClient());
+
   const [state, setState] = useState<TransactionGroupPoolState>({
-    transactionGroups: [],
     searchAttribute: '',
     modelTitle: 'unknown',
     modelVisible: false,
-    modelContent: (<></>),
+    modelContent: (<>empty</>),
     selectedTransactionGroup: null,
   });
 
-  const fetch = async () => {
-    GraphqlService.getClient().request(GetTransactionGroupsDocument).then((data) => {
-      if (data !== undefined) {
-        console.log('Succesfull fetch of TransactionGroups');
-        const transactionGroups = data.transactionGroups as TransactionGroup[];
-        setState({ ...state, transactionGroups });
-      }
-    });
-  };
-
-  // componentDidMount
-  useEffect(() => {
-    fetch();
-  }, []);
+  if (isLoading || isError || data === undefined) {
+    return <span>Loading...</span>;
+  }
 
   const handleChange = async () => {
-    fetch();
+    refetch();
   };
 
-  const openModal = async (e: MouseEvent, formType: string, transactionGroup?: TransactionGroup) => {
+  const openModal = async (
+    e: MouseEvent,
+    formType: string,
+    transactionGroup?: TransactionGroup,
+  ) => {
     let modelTitle = 'unknown';
-    let modelContent = <></>;
+    let modelContent = <>empty</>;
     const modelVisible = true;
 
     switch (formType) {
@@ -130,13 +123,25 @@ export function TransactionGroupPool() {
       render: (text, record) => (
         <>
           <span>
-            <Button onClick={(e) => openModal(e.nativeEvent, FormType.READ, record)}>Details</Button>
+            <Button onClick={
+              (e) => openModal(e.nativeEvent, FormType.READ, record)
+              }
+            >Details
+            </Button>
           </span>
           <span>
-            <Button onClick={(e) => openModal(e.nativeEvent, FormType.UPDATE, record)}>Bewerken</Button>
+            <Button onClick={
+              (e) => openModal(e.nativeEvent, FormType.UPDATE, record)
+              }
+            >Bewerken
+            </Button>
           </span>
           <span>
-            <Button onClick={(e) => openModal(e.nativeEvent, FormType.DELETE, record)}>verwijderen</Button>
+            <Button onClick={
+              (e) => openModal(e.nativeEvent, FormType.DELETE, record)
+              }
+            >verwijderen
+            </Button>
           </span>
 
         </>
@@ -144,11 +149,11 @@ export function TransactionGroupPool() {
     },
   ];
 
-  console.log(state);
-
   const {
-    transactionGroups, modelContent, modelTitle, modelVisible,
+    modelContent, modelTitle, modelVisible,
   } = state;
+
+  const transactionGroups = data.transactionGroups as TransactionGroup[];
 
   return (
     <div>

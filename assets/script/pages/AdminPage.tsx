@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { QueryClient, QueryClientProvider, useQuery } from 'react-query';
+import { QueryClient, QueryClientProvider } from 'react-query';
 import AdminTransactionPool from '../components/admin-components/AdminTransactionPool';
 import AdminTransactionGroupPool from '../components/admin-components/AdminTransactionGroupPool';
 import AdminMailPool from '../components/admin-components/AdminMailPool';

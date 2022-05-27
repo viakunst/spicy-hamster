@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 import {
-  Button, Form, message, Divider, Input, Checkbox, Table,
+  Form, Input, Checkbox, Table,
 } from 'antd';
 import { Transaction } from '../../Api/Backend';
 
@@ -22,11 +22,6 @@ function TransactionCRUD(props:TransactionCRUDprops) {
     formtype,
   } = props;
 
-  // componentDidMount
-  useEffect(() => {
-
-  }, []);
-
   const onCreateFinish = async () => {
     // Push attributes, that are actually editable, to list.
 
@@ -45,7 +40,7 @@ function TransactionCRUD(props:TransactionCRUDprops) {
     onAttributesUpdate();
   };
 
-  let content = (<></>);
+  let content = (<>empty</>);
 
   const readColumns = [
     {
@@ -77,7 +72,7 @@ function TransactionCRUD(props:TransactionCRUDprops) {
     </Form.Item>
   );
 
-  if (formtype == FormType.CREATE && transaction === undefined) {
+  if (formtype === FormType.CREATE && transaction === undefined) {
     content = (
       <>
         {basicForm(form, onCreateFinish, 'Maak aan', updateCreateFormItems)}
@@ -85,7 +80,7 @@ function TransactionCRUD(props:TransactionCRUDprops) {
     );
   }
 
-  if (formtype == FormType.UPDATE && transaction !== undefined) {
+  if (formtype === FormType.UPDATE && transaction !== undefined) {
     const updateInitial = {
       comment: transaction.comment,
       status: transaction.status,
@@ -98,7 +93,7 @@ function TransactionCRUD(props:TransactionCRUDprops) {
     );
   }
 
-  if (formtype == FormType.READ && transaction !== undefined) {
+  if (formtype === FormType.READ && transaction !== undefined) {
     const readData = [
       { key: 'Opmerking', value: transaction.comment },
       { key: 'Status', value: transaction.status },
@@ -111,7 +106,7 @@ function TransactionCRUD(props:TransactionCRUDprops) {
     );
   }
 
-  if (formtype == FormType.DELETE && transaction !== undefined) {
+  if (formtype === FormType.DELETE && transaction !== undefined) {
     content = (
       <>
         {basicForm(form, onDeleteFinish, 'Verwijder', deleteFormItems)}

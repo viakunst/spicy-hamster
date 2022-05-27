@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 import {
-  Button, Form, message, Divider, Input, Checkbox, Table,
+  Form, Input, Checkbox, Table,
 } from 'antd';
 import { TransactionGroup } from '../../Api/Backend';
 
@@ -22,11 +22,6 @@ function TransactionGroupCRUD(props:TransactionGroupCRUDProps) {
     formtype,
   } = props;
 
-  // componentDidMount
-  useEffect(() => {
-
-  }, []);
-
   const onCreateFinish = async () => {
     // Push attributes, that are actually editable, to list.
 
@@ -45,7 +40,7 @@ function TransactionGroupCRUD(props:TransactionGroupCRUDProps) {
     onAttributesUpdate();
   };
 
-  let content = (<></>);
+  let content = (<>empty</>);
 
   const readColumns = [
     {
@@ -83,7 +78,7 @@ function TransactionGroupCRUD(props:TransactionGroupCRUDProps) {
     </Form.Item>
   );
 
-  if (formtype == FormType.CREATE && transactionGroup === undefined) {
+  if (formtype === FormType.CREATE && transactionGroup === undefined) {
     content = (
       <>
         {basicForm(form, onCreateFinish, 'Maak aan', updateCreateFormItems)}
@@ -91,7 +86,7 @@ function TransactionGroupCRUD(props:TransactionGroupCRUDProps) {
     );
   }
 
-  if (formtype == FormType.UPDATE && transactionGroup !== undefined) {
+  if (formtype === FormType.UPDATE && transactionGroup !== undefined) {
     const updateInitial = {
       IBAN: transactionGroup.IBAN,
       description: transactionGroup.description,
@@ -105,7 +100,7 @@ function TransactionGroupCRUD(props:TransactionGroupCRUDProps) {
     );
   }
 
-  if (formtype == FormType.READ && transactionGroup !== undefined) {
+  if (formtype === FormType.READ && transactionGroup !== undefined) {
     const readData = [
       { key: 'Title of naam', value: transactionGroup.title },
       { key: 'Omschrijving', value: transactionGroup.description },
@@ -119,7 +114,7 @@ function TransactionGroupCRUD(props:TransactionGroupCRUDProps) {
     );
   }
 
-  if (formtype == FormType.DELETE && transactionGroup !== undefined) {
+  if (formtype === FormType.DELETE && transactionGroup !== undefined) {
     content = (
       <>
         {basicForm(form, onDeleteFinish, 'Verwijder', deleteFormItems)}
