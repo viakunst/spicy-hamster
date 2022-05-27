@@ -1,0 +1,28 @@
+
+query GetTransactions {
+  transactions {
+    getId
+    comment
+    status
+    amount
+    getPerson {
+      getId
+      getName
+    }
+    getTransactionGroup {
+      getId
+    }
+  }
+}
+
+mutation CreateTransaction($transaction: TransactionInput!) {
+  createTransaction(transaction: $transaction)
+} 
+
+mutation UpdateTransaction($id: String!, $transaction: TransactionInput!) {
+  updateTransaction(id: $id, transaction: $transaction)
+} 
+
+mutation DeleteTransaction($id: String!) {
+  deleteTransaction(id: $id)
+} 

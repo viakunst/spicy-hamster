@@ -3,7 +3,6 @@
 namespace App\GraphQL;
 
 use App\Entity\Mail\Mail;
-use App\Entity\Person\Person;
 use App\Entity\Statement\Statement;
 use App\Entity\Transaction\Transaction;
 use App\Entity\Transaction\TransactionGroup;
@@ -22,83 +21,17 @@ class Mutation
     /**
      * @var EntityManagerInterface
      */
-    private $em;
+    protected $em;
 
     /**
      * @var ValidatorInterface
      */
-    private $validator;
+    protected $validator;
 
     public function __construct(EntityManagerInterface $em, ValidatorInterface $validator)
     {
         $this->em = $em;
         $this->validator = $validator;
-    }
-
-    /**
-     * @GQL\Field(type="String!")
-     * @GQL\Description("Create person.")
-     * @GQL\Access("isAuthenticated()")
-     */
-    public function createPerson(Person $person): string
-    {
-        $dbperson = new Person();
-        $dbperson->cloneFrom($person);
-
-        // Check validation errors.
-        $msg = $this->validate($dbperson);
-        if (null !== $msg) {
-            return $msg;
-        }
-
-        $this->em->persist($dbperson);
-        $this->em->flush();
-
-        return 'succes';
-    }
-
-    /**
-     * @GQL\Field(type="String!")
-     * @GQL\Description("Update person.")
-     * @GQL\Access("isAuthenticated()")
-     */
-    public function updatePerson(string $id, Person $person): string
-    {
-        $dbperson = $this->em->getRepository(Person::class)->findOneBy(['id' => $id]);
-        if (null !== $dbperson) {
-            $dbperson->cloneFrom($person);
-
-            // Check validation errors.
-            $msg = $this->validate($dbperson);
-            if (null !== $msg) {
-                return $msg;
-            }
-
-            $this->em->persist($dbperson);
-            $this->em->flush();
-
-            return 'success';
-        }
-
-        return "failure: person with id {$id} was not found";
-    }
-
-    /**
-     * @GQL\Field(type="String!")
-     * @GQL\Description("Delete person.")
-     * @GQL\Access("isAuthenticated()")
-     */
-    public function deletePerson(string $id): string
-    {
-        $dbperson = $this->em->getRepository(Person::class)->findOneBy(['id' => $id]);
-        if (null !== $dbperson) {
-            $this->em->remove($dbperson);
-            $this->em->flush();
-
-            return 'success';
-        }
-
-        return "failure: person with id {$id} was not found";
     }
 
     /**
@@ -337,7 +270,7 @@ class Mutation
     /**
      * @return string|null
      */
-    private function validate(object $object)
+    protected function validate(object $object)
     {
         $errors = $this->validator->validate($object);
 

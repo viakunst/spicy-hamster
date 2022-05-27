@@ -1,0 +1,25 @@
+
+query GetTransactionGroups {
+  transactionGroups {
+    getId
+    IBAN
+    description
+    title
+    getTransactions {
+      getId
+    }
+  }
+}
+
+
+mutation CreateTransactionGroup($transactionGroup: TransactionGroupInput!) {
+  createTransactionGroup(transactionGroup: $transactionGroup)
+} 
+
+mutation UpdateTransactionGroup($id: String!, $transactionGroup: TransactionGroupInput!) {
+  updateTransactionGroup(id: $id, transactionGroup: $transactionGroup)
+} 
+
+mutation DeleteTransactionGroup($id: String!) {
+  deleteTransactionGroup(id: $id)
+} 

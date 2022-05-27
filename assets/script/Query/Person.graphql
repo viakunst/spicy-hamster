@@ -10,66 +10,25 @@ query GetPersons {
   }
 }
 
-query GetStatements {
-  statements {
-    amount
-    comment
-    feedback
-    getName
-    getId
-    item
-    mail
-    name
-    reason
-    status
-  }
-}
-
-query GetMails {
-  mails {
-    getId
-    title
-    content
-    sender
-  }
-}
-
-query GetTransactions {
-  transactions {
-    getId
-    comment
-    status
-    amount
-    getPerson {
-      getId
-      getName
-    }
-    getTransactionGroup {
-      getId
-    }
-  }
-}
-
-query GetTransactionGroups {
-  transactionGroups {
-    getId
-    IBAN
-    description
-    title
-    getTransactions {
-      getId
-    }
-  }
-}
-
 mutation CreatePerson($person: PersonInput!) {
   createPerson(person: $person)
 } 
 
-mutation updatePerson($id: String!, $person: PersonInput!) {
+mutation UpdatePerson($id: String!, $person: PersonInput!) {
   updatePerson(id: $id, person: $person)
 } 
 
-mutation deletePerson($id: String!) {
+mutation DeletePerson($id: String!) {
   deletePerson(id: $id)
 } 
+
+
+
+
+
+
+
+
+
+
+
