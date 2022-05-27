@@ -4,19 +4,15 @@ import {
   Divider, Modal, Select, Table, Input, Button,
 } from 'antd';
 
-import { Person, GetPersonsDocument, useGetPersonsQuery } from '../../Api/Backend';
+import { Person, useGetPersonsQuery } from '../../Api/Backend';
 import { FormType } from '../form/FormHelper';
 import PersonCRUD from '../form/PersonCRUD';
 
 import 'antd/dist/antd.css';
-
 import { ColumnsType } from 'antd/lib/table';
-
 import GraphqlService from '../../helpers/GraphqlService';
-import { GraphQLClient } from 'graphql-request';
 
 interface PersonPoolState {
-  persons: Person[] | undefined,
   searchAttribute: string | null,
   modelTitle: string,
   modelVisible: boolean,
@@ -32,10 +28,10 @@ const options = {
 };
 
 export function PersonPool() {
-  const req = useGetPersonsQuery(GraphqlService.getClient(), {}, options);
-
+  const {
+    data, isLoading, isError, refetch,
+  } = useGetPersonsQuery(GraphqlService.getClient());
   const [state, setState] = useState<PersonPoolState>({
-    persons: [],
     searchAttribute: '',
     modelTitle: 'unknown',
     modelVisible: false,
@@ -43,23 +39,12 @@ export function PersonPool() {
     selectedPerson: null,
   });
 
-  const fetch = async () => {
-    GraphqlService.getClient().request(GetPersonsDocument).then((data) => {
-      if (data !== undefined) {
-        console.log('Succesfull fetch of persons');
-        const persons = data.persons as Person[];
-        setState({ ...state, persons });
-      }
-    });
-  };
-
-  // componentDidMount
-  useEffect(() => {
-    fetch();
-  }, []);
+  if (isLoading || isError || data === undefined) {
+    return <span>Loading...</span>;
+  }
 
   const handleChange = async () => {
-    fetch();
+    refetch();
   };
 
   const openModal = async (e: MouseEvent, formType: string, person?: Person) => {
@@ -155,11 +140,10 @@ export function PersonPool() {
     },
   ];
 
-  console.log(state);
-
   const {
-    persons, modelContent, modelTitle, modelVisible,
+    modelContent, modelTitle, modelVisible,
   } = state;
+  const persons = data.persons as Person[];
 
   return (
     <div>

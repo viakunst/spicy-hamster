@@ -15,13 +15,19 @@ query GetStatements {
 
 
 mutation CreateStatement($statement: StatementInput!) {
-  createStatement(statement: $statement)
+  statementMutation {
+    createStatement(statement: $statement)
+  }
 } 
 
 mutation UpdateStatement($id: String!, $statement: StatementInput!) {
-  updateStatement(id: $id, statement: $statement)
+  statementMutation {
+    updateStatement(id: $id, statement: $statement)
+  }
 } 
 
 mutation DeleteStatement($id: String!) {
-  deleteStatement(id: $id)
+  statementMutation {
+    deleteStatement(id: $id)
+  }
 } 

@@ -3,7 +3,9 @@ import React, { useEffect, useState } from 'react';
 import {
   Button, Form, message, Divider, Input, Checkbox, Table,
 } from 'antd';
-import { Person, CreatePersonDocument, CreatePersonMutationVariables } from '../../Api/Backend';
+import {
+  Person, useCreatePersonMutation, useUpdatePersonMutation, useDeletePersonMutation, PersonInput,
+} from '../../Api/Backend';
 
 import GraphqlService from '../../helpers/GraphqlService';
 
@@ -18,47 +20,37 @@ interface PersonCreateProps {
 function PersonCRUD(props:PersonCreateProps) {
   const [form] = Form.useForm();
 
+  console.log('person crud on');
+  const createMutation = useCreatePersonMutation(GraphqlService.getClient());
+  const updateMutation = useUpdatePersonMutation(GraphqlService.getClient());
+  const deleteMutation = useDeletePersonMutation(GraphqlService.getClient());
+
   const {
     onAttributesUpdate,
     person,
     formtype,
   } = props;
 
-  // componentDidMount
-  useEffect(() => {
-
-  }, []);
-
-  const onCreateFinish = async () => {
-    // Push attributes, that are actually editable, to list.
-
-    const mutationVar = {
-      person: {
-        address: 'a',
-        email: 'a',
-        familyName: 'a',
-        givenName: 'a',
-        sub: 'a',
-      },
-    } as CreatePersonMutationVariables;
-
-    GraphqlService.getClient().request(CreatePersonDocument, mutationVar).then((data) => {
-      console.log(data);
-    });
-
+  const onCreateFinish = async (values: any) => {
+    const personInput = values as PersonInput;
+    createMutation.mutate({ person: personInput });
     onAttributesUpdate();
   };
 
-  const onUpdateFinish = async () => {
+  const onUpdateFinish = async (values: any) => {
     // Push attributes, that are actually editable, to list.
-
-    onAttributesUpdate();
+    const personInput = values as PersonInput;
+    if (person !== undefined) {
+      updateMutation.mutate({ id: person.getId, person: personInput });
+      onAttributesUpdate();
+    }
   };
 
   const onDeleteFinish = async () => {
-    // Push attributes, that are actually editable, to list.
-
-    onAttributesUpdate();
+    if (person !== undefined) {
+      deleteMutation.mutate({ id: person.getId });
+      onAttributesUpdate();
+    }
   };
 
   let content = (<></>);

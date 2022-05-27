@@ -13,13 +13,19 @@ query GetTransactionGroups {
 
 
 mutation CreateTransactionGroup($transactionGroup: TransactionGroupInput!) {
-  createTransactionGroup(transactionGroup: $transactionGroup)
+  transactionGroupMutation {
+    createTransactionGroup(transactionGroup: $transactionGroup)
+  }
 } 
 
 mutation UpdateTransactionGroup($id: String!, $transactionGroup: TransactionGroupInput!) {
-  updateTransactionGroup(id: $id, transactionGroup: $transactionGroup)
+  transactionGroupMutation {
+    updateTransactionGroup(id: $id, transactionGroup: $transactionGroup)
+  }
 } 
 
 mutation DeleteTransactionGroup($id: String!) {
-  deleteTransactionGroup(id: $id)
+  transactionGroupMutation {
+    deleteTransactionGroup(id: $id)
+  }
 } 

@@ -16,13 +16,19 @@ query GetTransactions {
 }
 
 mutation CreateTransaction($transaction: TransactionInput!) {
-  createTransaction(transaction: $transaction)
+  transactionMutation {
+    createTransaction(transaction: $transaction)
+  }
 } 
 
 mutation UpdateTransaction($id: String!, $transaction: TransactionInput!) {
-  updateTransaction(id: $id, transaction: $transaction)
+  transactionMutation {
+    updateTransaction(id: $id, transaction: $transaction)
+  }  
 } 
 
 mutation DeleteTransaction($id: String!) {
-  deleteTransaction(id: $id)
+  transactionMutation {
+    deleteTransaction(id: $id)
+  }
 } 

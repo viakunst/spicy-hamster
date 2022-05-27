@@ -3,7 +3,6 @@
 namespace App\GraphQL\Mutation;
 
 use App\Entity\Statement\Statement;
-use App\GraphQL\Mutation;
 use Overblog\GraphQLBundle\Annotation as GQL;
 
 /**
@@ -12,7 +11,7 @@ use Overblog\GraphQLBundle\Annotation as GQL;
  * @GQL\Type
  * @GQL\Description("The statement mutation operations.")
  */
-class StatementMutation extends Mutation
+class StatementMutation extends AbstractMutation
 {
     /**
      * @GQL\Field(type="String!")

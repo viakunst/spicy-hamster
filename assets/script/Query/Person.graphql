@@ -11,16 +11,24 @@ query GetPersons {
 }
 
 mutation CreatePerson($person: PersonInput!) {
-  createPerson(person: $person)
+  personMutation {
+    createPerson(person: $person)
+  }
 } 
 
 mutation UpdatePerson($id: String!, $person: PersonInput!) {
-  updatePerson(id: $id, person: $person)
+  personMutation {
+    updatePerson(id: $id, person: $person)
+  }
+  
 } 
 
 mutation DeletePerson($id: String!) {
-  deletePerson(id: $id)
-} 
+  personMutation {
+    deletePerson(id: $id)
+  } 
+}
+  
 
 
 

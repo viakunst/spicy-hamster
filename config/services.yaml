@@ -31,6 +31,12 @@ services:
     App\GraphQL\Mutation:
         public: true
 
+    App\GraphQL\Mutation\:
+        resource: '../src/GraphQL/Mutation/'
+        exclude:
+         - '../src/GraphQL/Mutation/AbstractMutation'
+        public: true
+
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

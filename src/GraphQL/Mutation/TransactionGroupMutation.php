@@ -3,7 +3,6 @@
 namespace App\GraphQL\Mutation;
 
 use App\Entity\Transaction\TransactionGroup;
-use App\GraphQL\Mutation;
 use Overblog\GraphQLBundle\Annotation as GQL;
 
 /**
@@ -12,7 +11,7 @@ use Overblog\GraphQLBundle\Annotation as GQL;
  * @GQL\Type
  * @GQL\Description("The person mutation operations.")
  */
-class TransactionGroupMutation extends Mutation
+class TransactionGroupMutation extends AbstractMutation
 {
     /**
      * @GQL\Field(type="String!")

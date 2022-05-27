@@ -3,6 +3,10 @@
 namespace App\GraphQL;
 
 use App\Entity\Mail\Mail;
+use App\GraphQL\Mutation\PersonMutation;
+use App\GraphQL\Mutation\StatementMutation;
+use App\GraphQL\Mutation\TransactionGroupMutation;
+use App\GraphQL\Mutation\TransactionMutation;
 use Doctrine\ORM\EntityManagerInterface;
 use Overblog\GraphQLBundle\Annotation as GQL;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -25,10 +29,68 @@ class Mutation
      */
     protected $validator;
 
-    public function __construct(EntityManagerInterface $em, ValidatorInterface $validator)
+    protected PersonMutation $persons;
+    protected StatementMutation $statements;
+    protected TransactionMutation $transactions;
+    protected transactionGroupMutation $transactionGroups;
+
+    public function __construct(EntityManagerInterface $em, ValidatorInterface $validator, PersonMutation $persons,
+    StatementMutation $statements, TransactionMutation $transactions, transactionGroupMutation $transactionGroups)
     {
         $this->em = $em;
         $this->validator = $validator;
+        $this->persons = $persons;
+        $this->statements = $statements;
+        $this->transactions = $transactions;
+        $this->transactionGroups = $transactionGroups;
+    }
+
+    /**
+     * @GQL\Field(type="PersonMutation")
+     * @GQL\Description("All transactions stored in the database.")
+     * @GQL\Access("isAuthenticated()")
+     *
+     * @return PersonMutation
+     */
+    public function personMutation()
+    {
+        return $this->persons;
+    }
+
+    /**
+     * @GQL\Field(type="StatementMutation")
+     * @GQL\Description("All transactions stored in the database.")
+     * @GQL\Access("isAuthenticated()")
+     *
+     * @return StatementMutation
+     */
+    public function statementMutation()
+    {
+        return $this->statements;
+    }
+
+    /**
+     * @GQL\Field(type="TransactionMutation")
+     * @GQL\Description("All transactions stored in the database.")
+     * @GQL\Access("isAuthenticated()")
+     *
+     * @return TransactionMutation
+     */
+    public function transactionMutation()
+    {
+        return $this->transactions;
+    }
+
+    /**
+     * @GQL\Field(type="TransactionGroupMutation")
+     * @GQL\Description("All transactions stored in the database.")
+     * @GQL\Access("isAuthenticated()")
+     *
+     * @return TransactionGroupMutation
+     */
+    public function transactionGroupMutation()
+    {
+        return $this->transactionGroups;
     }
 
     /**
@@ -47,24 +109,5 @@ class Mutation
         }
 
         return "failure: mail with id {$id} was not found";
-    }
-
-    /**
-     * @return string|null
-     */
-    protected function validate(object $object)
-    {
-        $errors = $this->validator->validate($object);
-
-        if (count($errors) > 0) {
-            $msg = 'failure: on validation.';
-            foreach ($errors as $err) {
-                $msg = $msg."\n error: {$err->getMessage()}";
-            }
-
-            return $msg;
-        }
-
-        return null;
     }
 }
