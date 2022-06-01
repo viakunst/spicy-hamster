@@ -3,7 +3,6 @@
 App\Entity\Transaction\TransactionGroup:
   transactionGroup_1:
     id: 'id1'
-    amount: '5'
     title: 'betaal'
     description: 3
     date: <dateTimeBetween('1980-10-10', '1980-10-10')>

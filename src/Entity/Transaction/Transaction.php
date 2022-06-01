@@ -119,12 +119,12 @@ class Transaction
         return $this;
     }
 
-    public function getTimesRemainded(): ?int
+    public function getTimesReminded(): ?int
     {
         return $this->timesReminded;
     }
 
-    public function setTimesRemainded(int $timesReminded): self
+    public function setTimesReminded(int $timesReminded): self
     {
         $this->timesReminded = $timesReminded;
 
@@ -160,8 +160,8 @@ class Transaction
         if (null !== $transaction->getAmount()) {
             $this->amount = $transaction->getAmount();
         }
-        if (null !== $transaction->getTimesRemainded()) {
-            $this->timesReminded = $transaction->getTimesRemainded();
+        if (null !== $transaction->getTimesReminded()) {
+            $this->timesReminded = $transaction->getTimesReminded();
         }
         if (null !== $transaction->getStatus()) {
             $this->status = $transaction->getStatus();

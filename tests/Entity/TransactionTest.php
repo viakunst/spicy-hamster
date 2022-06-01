@@ -140,4 +140,24 @@ class TransactionTest extends TestCase
         $this->transaction->setComment($expected);
         $this::assertSame($expected, $property->getValue($this->transaction));
     }
+
+    public function testGetAmount(): void
+    {
+        $expected = 42;
+        $property = (new ReflectionClass(Transaction::class))
+            ->getProperty('amount');
+        $property->setAccessible(true);
+        $property->setValue($this->transaction, $expected);
+        $this::assertSame($expected, $this->transaction->getAmount());
+    }
+
+    public function testSetAmount(): void
+    {
+        $expected = 42;
+        $property = (new ReflectionClass(Transaction::class))
+            ->getProperty('amount');
+        $property->setAccessible(true);
+        $this->transaction->setAmount($expected);
+        $this::assertSame($expected, $property->getValue($this->transaction));
+    }
 }
