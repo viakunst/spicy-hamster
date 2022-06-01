@@ -20,14 +20,28 @@ services:
         resource: '../src/'
         exclude:
             - '../src/DependencyInjection/'
+            - '../src/GraphQL/'
             - '../src/Entity/'
             - '../src/Kernel.php'
             - '../src/Tests/'
+
+    # required for overblog to correctly get the query DI.
+    App\GraphQL\Query:
+        public: true
+    App\GraphQL\Mutation:
+        public: true
+
+    App\GraphQL\Mutation\:
+        resource: '../src/GraphQL/Mutation/'
+        exclude:
+         - '../src/GraphQL/Mutation/AbstractMutation'
+        public: true
+
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
     Jumbojett\OpenIDConnectClient:
         arguments:
-            $provider_url: '%env(SECURE_SCHEME)%://%env(OIDC_ADDRESS)%'
+            $provider_url: '%env(OIDC_ADDRESS)%'
             $client_id: '%env(OIDC_ID)%'
             $client_secret: '%env(OIDC_SECRET)%'

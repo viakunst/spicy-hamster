@@ -4,7 +4,6 @@ namespace App\Tests\Entity;
 
 use App\Entity\Mail\Mail;
 use App\Entity\Mail\Recipient;
-use App\Entity\Person\Person;
 use DateTime;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
@@ -89,26 +88,6 @@ class MailTest extends TestCase
             ->getProperty('content');
         $property->setAccessible(true);
         $this->mail->setContent($expected);
-        $this::assertSame($expected, $property->getValue($this->mail));
-    }
-
-    public function testGetPerson(): void
-    {
-        $expected = $this->createMock(Person::class);
-        $property = (new ReflectionClass(Mail::class))
-            ->getProperty('person');
-        $property->setAccessible(true);
-        $property->setValue($this->mail, $expected);
-        $this::assertSame($expected, $this->mail->getPerson());
-    }
-
-    public function testSetPerson(): void
-    {
-        $expected = $this->createMock(Person::class);
-        $property = (new ReflectionClass(Mail::class))
-            ->getProperty('person');
-        $property->setAccessible(true);
-        $this->mail->setPerson($expected);
         $this::assertSame($expected, $property->getValue($this->mail));
     }
 

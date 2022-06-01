@@ -2,13 +2,16 @@
 
 namespace App\Entity\Transaction;
 
-use App\Repository\TransactionRepository\TransactionGroupRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Overblog\GraphQLBundle\Annotation as GQL;
 
 /**
- * @ORM\Entity(repositoryClass=TransactionGroupRepository::class)
+ * @ORM\Entity
+ * @GQL\Type
+ * @GQL\Input
+ * @GQL\Description("Grouped transaction from the organisation.")
  */
 class TransactionGroup
 {
@@ -20,17 +23,14 @@ class TransactionGroup
     private string $id;
 
     /**
-     * @ORM\Column(type="integer")
-     */
-    private int $amount;
-
-    /**
      * @ORM\Column(type="string", length=255)
+     * @GQL\Field(type="String!")
      */
     private string $title;
 
     /**
      * @ORM\Column(type="text")
+     * @GQL\Field(type="String!")
      */
     private string $description;
 
@@ -41,11 +41,12 @@ class TransactionGroup
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @GQL\Field(type="String!")
      */
     private string $IBAN;
 
     /**
-     * @ORM\OneToMany(targetEntity=Transaction::class, mappedBy="TransactionGroup")
+     * @ORM\OneToMany(targetEntity=Transaction::class, mappedBy="transactionGroup")
      *
      * @var Collection<int,Transaction>
      */
@@ -56,6 +57,10 @@ class TransactionGroup
         $this->transactions = new ArrayCollection();
     }
 
+    /**
+     * @GQL\Field(type="String!")
+     * @GQL\Description("The subject identifier of the transaction group.")
+     */
     public function getId(): string
     {
         return $this->id;
@@ -64,18 +69,6 @@ class TransactionGroup
     public function setId(string $id): self
     {
         $this->id = $id;
-
-        return $this;
-    }
-
-    public function getAmount(): ?int
-    {
-        return $this->amount;
-    }
-
-    public function setAmount(int $amount): self
-    {
-        $this->amount = $amount;
 
         return $this;
     }
@@ -129,6 +122,8 @@ class TransactionGroup
     }
 
     /**
+     * @GQL\Field(type="[Transaction]")
+     *
      * @return Collection<int,Transaction>
      */
     public function getTransactions(): Collection
@@ -156,5 +151,22 @@ class TransactionGroup
         }
 
         return $this;
+    }
+
+    public function cloneFrom(TransactionGroup $transactionGroup): void
+    {
+        if (null !== $transactionGroup->getTitle()) {
+            $this->title = $transactionGroup->getTitle();
+        }
+        if (null !== $transactionGroup->getDescription()) {
+            $this->description = $transactionGroup->getDescription();
+        }
+        if (null !== $transactionGroup->getDate()) {
+            // Find a way around this error.
+            // $this->setDate(\DateTime::createFromInterface($transactionGroup->getDate()));
+        }
+        if (null !== $transactionGroup->getIBAN()) {
+            $this->IBAN = $transactionGroup->getIBAN();
+        }
     }
 }

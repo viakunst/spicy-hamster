@@ -2,13 +2,15 @@
 
 namespace App\Entity\Mail;
 
-use App\Entity\Person\Person;
 use DateTime;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Overblog\GraphQLBundle\Annotation as GQL;
 
 /**
  * @ORM\Entity
+ * @GQL\Type
+ * @GQL\Description("Send emails form the server.")
  */
 class Mail
 {
@@ -20,13 +22,8 @@ class Mail
     private string $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Person\Person")
-     * @ORM\JoinColumn(name="person_id", referencedColumnName="id")
-     */
-    private ?Person $person;
-
-    /**
      * @ORM\OneToMany(targetEntity="App\Entity\Mail\Recipient", mappedBy="mail")
+     * @GQL\Field(type="[Recipient]")
      *
      * @var Collection<int,Recipient>
      */
@@ -34,24 +31,37 @@ class Mail
 
     /**
      * @ORM\Column(type="string")
+     * @GQL\Field(type="String!")
      */
     private string $title;
 
     /**
      * @ORM\Column(type="text")
+     * @GQL\Field(type="String!")
      */
     private string $content;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @GQL\Field(type="String!")
      */
     private string $sender;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     * @GQL\Field(type="String!")
+     */
+    private string $sendBy;
 
     /**
      * @ORM\Column(type="datetime")
      */
     private DateTime $sentAt;
 
+    /**
+     * @GQL\Field(type="String!")
+     * @GQL\Description("The subject identifier of the statement.")
+     */
     public function getId(): ?string
     {
         return $this->id;
@@ -81,14 +91,14 @@ class Mail
         return $this;
     }
 
-    public function getPerson(): ?Person
+    public function getSendBy(): ?string
     {
-        return $this->person;
+        return $this->sendBy;
     }
 
-    public function setPerson(?Person $person): self
+    public function setSendBy(string $sendBy): self
     {
-        $this->person = $person;
+        $this->sendBy = $sendBy;
 
         return $this;
     }

@@ -3,14 +3,14 @@
 namespace App\Entity\Transaction;
 
 use App\Entity\Person\Person;
-use App\Repository\TransactionRepository\TransactionRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Overblog\GraphQLBundle\Annotation as GQL;
 
 /**
- * @GQL\Type
- * @GQL\Description("Transaction from the organisation.")
- * @ORM\Entity(repositoryClass=TransactionRepository::class)
+ * @GQL\Type(name="Transaction")
+ * @GQL\Input
+ * @GQL\Description("Indiviual Transactions from the organisation.")
+ * @ORM\Entity
  * @ORM\Table(name="`Transaction`")
  */
 class Transaction
@@ -37,17 +37,34 @@ class Transaction
     private $transactionGroup;
 
     /**
+     * @ORM\Column(type="integer")
+     * @GQL\Field(type="Int!")
+     */
+    private int $amount;
+
+    /**
+     * @ORM\Column(type="integer")
+     * @GQL\Field(type="Int!")
+     */
+    private int $timesReminded;
+
+    /**
      * @ORM\Column(type="string")
+     * @GQL\Field(type="String!")
      */
     private string $status;
 
     /**
      * @ORM\Column(type="text", nullable=true)
-     * @GQL\Field(type="String!")
      * @GQL\Description("Comment on transaction.")
+     * @GQL\Field(type="String")
      */
     private ?string $comment;
 
+    /**
+     * @GQL\Field(type="String!")
+     * @GQL\Description("The subject identifier of the person.")
+     */
     public function getId(): string
     {
         return $this->id;
@@ -60,6 +77,9 @@ class Transaction
         return $this;
     }
 
+    /**
+     * @GQL\Field(type="Person")
+     */
     public function getPerson(): ?Person
     {
         return $this->person;
@@ -72,6 +92,9 @@ class Transaction
         return $this;
     }
 
+    /**
+     * @GQL\Field(type="TransactionGroup")
+     */
     public function getTransactionGroup(): ?TransactionGroup
     {
         return $this->transactionGroup;
@@ -80,6 +103,30 @@ class Transaction
     public function setTransactionGroup(TransactionGroup $transactionGroup): self
     {
         $this->transactionGroup = $transactionGroup;
+
+        return $this;
+    }
+
+    public function getAmount(): ?int
+    {
+        return $this->amount;
+    }
+
+    public function setAmount(int $amount): self
+    {
+        $this->amount = $amount;
+
+        return $this;
+    }
+
+    public function getTimesReminded(): ?int
+    {
+        return $this->timesReminded;
+    }
+
+    public function setTimesReminded(int $timesReminded): self
+    {
+        $this->timesReminded = $timesReminded;
 
         return $this;
     }
@@ -106,5 +153,21 @@ class Transaction
         $this->comment = $comment;
 
         return $this;
+    }
+
+    public function cloneFrom(Transaction $transaction): void
+    {
+        if (null !== $transaction->getAmount()) {
+            $this->amount = $transaction->getAmount();
+        }
+        if (null !== $transaction->getTimesReminded()) {
+            $this->timesReminded = $transaction->getTimesReminded();
+        }
+        if (null !== $transaction->getStatus()) {
+            $this->status = $transaction->getStatus();
+        }
+        if (null !== $transaction->getComment()) {
+            $this->comment = $transaction->getComment();
+        }
     }
 }

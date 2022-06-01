@@ -5,5 +5,7 @@ App\Entity\Transaction\Transaction:
     id: 'id1'
     status: 'niet betaald'
     comment: 'exp'
+    amount: '5'
     person: '@person_1'
     transactionGroup: '@transactionGroup_1'
+    timesReminded: 5

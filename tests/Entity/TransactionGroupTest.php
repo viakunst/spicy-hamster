@@ -60,26 +60,6 @@ class TransactionGroupTest extends TestCase
         $this::assertSame($expected, $property->getValue($this->transactionGroup));
     }
 
-    public function testGetAmount(): void
-    {
-        $expected = 42;
-        $property = (new ReflectionClass(TransactionGroup::class))
-            ->getProperty('amount');
-        $property->setAccessible(true);
-        $property->setValue($this->transactionGroup, $expected);
-        $this::assertSame($expected, $this->transactionGroup->getAmount());
-    }
-
-    public function testSetAmount(): void
-    {
-        $expected = 42;
-        $property = (new ReflectionClass(TransactionGroup::class))
-            ->getProperty('amount');
-        $property->setAccessible(true);
-        $this->transactionGroup->setAmount($expected);
-        $this::assertSame($expected, $property->getValue($this->transactionGroup));
-    }
-
     public function testGetTitle(): void
     {
         $expected = '42';

@@ -1,0 +1,8 @@
+query GetMails {
+  mails {
+    getId
+    title
+    content
+    sender
+  }
+}

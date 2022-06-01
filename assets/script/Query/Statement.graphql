@@ -1,0 +1,33 @@
+query GetStatements {
+  statements {
+    amount
+    comment
+    feedback
+    getName
+    getId
+    item
+    mail
+    name
+    reason
+    status
+  }
+}
+
+
+mutation CreateStatement($statement: StatementInput!) {
+  statementMutation {
+    createStatement(statement: $statement)
+  }
+} 
+
+mutation UpdateStatement($id: String!, $statement: StatementInput!) {
+  statementMutation {
+    updateStatement(id: $id, statement: $statement)
+  }
+} 
+
+mutation DeleteStatement($id: String!) {
+  statementMutation {
+    deleteStatement(id: $id)
+  }
+} 

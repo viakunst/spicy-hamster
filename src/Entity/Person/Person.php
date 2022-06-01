@@ -8,6 +8,7 @@ use Overblog\GraphQLBundle\Annotation as GQL;
 /**
  * @ORM\Entity
  * @GQL\Type
+ * @GQL\Input
  * @GQL\Description("A local copy of a person who has registered transactions or statements.")
  */
 class Person
@@ -21,29 +22,43 @@ class Person
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
+     * @GQL\Field(type="String!")
+     * @GQL\Description("The AWS subject identifier of the person.")
      */
     private string $sub;
 
     /**
      * @ORM\Column(type="string", length=180)
+     * @GQL\Field(type="String!")
+     * @GQL\Description("The e-mail address of the person.")
      */
     private string $email;
 
     /**
      * @ORM\Column(type="string", length=180)
+     * @GQL\Field(type="String!")
+     * @GQL\Description("The given name of the person.")
      */
     private string $givenName;
 
     /**
      * @ORM\Column(type="string", length=180)
+     * @GQL\Field(type="String!")
+     * @GQL\Description("The family name of the person.")
      */
     private string $familyName;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @GQL\Field(type="String!")
+     * @GQL\Description("The address of the person.")
      */
     private string $address;
 
+    /**
+     * @GQL\Field(type="String!")
+     * @GQL\Description("The subject identifier of the person.")
+     */
     public function getId(): ?string
     {
         return $this->id;
@@ -56,10 +71,6 @@ class Person
         return $this;
     }
 
-    /**
-     * @GQL\Field(type="String!")
-     * @GQL\Description("The subject identifier of the person.")
-     */
     public function getSub(): ?string
     {
         return $this->sub;
@@ -72,10 +83,6 @@ class Person
         return $this;
     }
 
-    /**
-     * @GQL\Field(type="String!")
-     * @GQL\Description("The e-mail address of the person.")
-     */
     public function getEmail(): ?string
     {
         return $this->email;
@@ -102,7 +109,7 @@ class Person
      * Get name.
      *
      * @GQL\Field(type="String!")
-     * @GQL\Description("The subject identifier of the person.")
+     * @GQL\Description("The full name of the person.")
      *
      * @return string
      */
@@ -129,9 +136,6 @@ class Person
     /**
      * Get name.
      *
-     * @GQL\Field(type="String!")
-     * @GQL\Description("The given name of the person.")
-     *
      * @return string
      */
     public function getGivenName(): ?string
@@ -152,9 +156,6 @@ class Person
     /**
      * Get name.
      *
-     * @GQL\Field(type="String!")
-     * @GQL\Description("The family name of the person.")
-     *
      * @return string
      */
     public function getFamilyName(): ?string
@@ -173,8 +174,7 @@ class Person
     }
 
     /**
-     * @GQL\Field(type="String!")
-     * @GQL\Description("The address of the person.")
+     * get adress.
      */
     public function getAddress(): ?string
     {
@@ -186,5 +186,24 @@ class Person
         $this->address = $address;
 
         return $this;
+    }
+
+    public function cloneFrom(Person $person): void
+    {
+        if (null !== $person->getSub()) {
+            $this->sub = $person->getSub();
+        }
+        if (null !== $person->getEmail()) {
+            $this->email = $person->getEmail();
+        }
+        if (null !== $person->getGivenName()) {
+            $this->givenName = $person->getGivenName();
+        }
+        if (null !== $person->getFamilyName()) {
+            $this->familyName = $person->getFamilyName();
+        }
+        if (null !== $person->getAddress()) {
+            $this->address = $person->getAddress();
+        }
     }
 }

@@ -2,7 +2,6 @@
 
 namespace App\Entity\Statement;
 
-use App\Repository\Statement\StatementRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Overblog\GraphQLBundle\Annotation as GQL;
 use Symfony\Component\HttpFoundation\File\File;
@@ -10,8 +9,10 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
  * @GQL\Type
+ * @GQL\Input
+ * @GQL\Description("Recipients of the e-mails.")
  * @GQL\Description("Statement on what is owned from the organisation.")
- * @ORM\Entity(repositoryClass=StatementRepository::class)
+ * @ORM\Entity
  * @Vich\Uploadable
  */
 class Statement
@@ -25,26 +26,31 @@ class Statement
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @GQL\Field(type="String!")
      */
     private string $name;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @GQL\Field(type="String!")
      */
     private string $IBAN;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @GQL\Field(type="String!")
      */
     private string $mail;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @GQL\Field(type="String!")
      */
     private string $item;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @GQL\Field(type="String!")
      */
     private string $reason;
 
@@ -57,21 +63,25 @@ class Statement
 
     /**
      * @ORM\Column(type="text")
+     * @GQL\Field(type="String!")
      */
     private string $comment;
 
     /**
      * @ORM\Column(type="text")
+     * @GQL\Field(type="String!")
      */
     private string $feedback;
 
     /**
      * @ORM\Column(type="string")
+     * @GQL\Field(type="String!")
      */
     private string $status;
 
     /**
      * @ORM\Column(type="integer")
+     * @GQL\Field(type="Int!")
      */
     private int $amount;
 
@@ -105,6 +115,10 @@ class Statement
      */
     private $updatedAt;
 
+    /**
+     * @GQL\Field(type="String!")
+     * @GQL\Description("The subject identifier of the statement.")
+     */
     public function getId(): ?string
     {
         return $this->id;
@@ -290,5 +304,53 @@ class Statement
     public function getImageSize(): ?int
     {
         return $this->imageSize;
+    }
+
+    public function cloneFrom(Statement $statement): void
+    {
+        if (null !== $statement->getName()) {
+            $this->name = $statement->getName();
+        }
+
+        if (null !== $statement->getMail()) {
+            $this->mail = $statement->getMail();
+        }
+
+        if (null !== $statement->getIBAN()) {
+            $this->IBAN = $statement->getIBAN();
+        }
+
+        if (null !== $statement->getItem()) {
+            $this->item = $statement->getItem();
+        }
+        if (null !== $statement->getReason()) {
+            $this->reason = $statement->getReason();
+        }
+
+        // Maybe remove this?
+        $this->groups = $statement->getGroups();
+
+        if (null !== $statement->getComment()) {
+            $this->comment = $statement->getComment();
+        }
+        if (null !== $statement->getFeedback()) {
+            $this->feedback = $statement->getFeedback();
+        }
+        if (null !== $statement->getStatus()) {
+            $this->status = $statement->getStatus();
+        }
+        if (null !== $statement->getAmount()) {
+            $this->amount = $statement->getAmount();
+        }
+
+        if (null !== $statement->getImageFile()) {
+            $this->imageFile = $statement->getImageFile();
+        }
+        if (null !== $statement->getImageName()) {
+            $this->imageName = $statement->getImageName();
+        }
+        if (null !== $statement->getImageSize()) {
+            $this->imageSize = $statement->getImageSize();
+        }
     }
 }

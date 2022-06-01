@@ -4,9 +4,12 @@ namespace App\Entity\Mail;
 
 use App\Entity\Person\Person;
 use Doctrine\ORM\Mapping as ORM;
+use Overblog\GraphQLBundle\Annotation as GQL;
 
 /**
  * @ORM\Entity
+ * @GQL\Type
+ * @GQL\Description("Recipients of the e-mails.")
  */
 class Recipient
 {
@@ -20,6 +23,7 @@ class Recipient
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Person\Person")
      * @ORM\JoinColumn(name="person_id", referencedColumnName="id")
+     * @GQL\Field(type="Person")
      *
      * @var Person|null
      */
@@ -28,11 +32,16 @@ class Recipient
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Mail\Mail", inversedBy="recipients")
      * @ORM\JoinColumn(name="mail", referencedColumnName="id")
+     * @GQL\Field(type="Mail")
      *
      * @var Mail|null
      */
     private $mail;
 
+    /**
+     * @GQL\Field(type="String!")
+     * @GQL\Description("The subject identifier of the statement.")
+     */
     public function getId(): ?string
     {
         return $this->id;
