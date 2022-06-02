@@ -10,6 +10,10 @@ query GetPersons {
   }
 }
 
+mutation ImportPerson($token : String!) {
+  importPerson(token: $token)
+}
+
 mutation CreatePerson($person: PersonInput!) {
   personMutation {
     createPerson(person: $person)
