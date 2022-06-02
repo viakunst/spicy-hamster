@@ -7,7 +7,6 @@ import { ColumnsType } from 'antd/lib/table';
 
 import 'antd/dist/antd.css';
 
-import { OidcClient } from 'oidc-client';
 import { Person, useGetPersonsQuery, useImportPersonMutation } from '../../Api/Backend';
 import { FormType } from '../form/FormHelper';
 import PersonCRUD from '../form/PersonCRUD';
@@ -172,7 +171,7 @@ function PersonPool() {
           <Button type="primary" onClick={(e) => openModal(e.nativeEvent, FormType.CREATE)}>
             Nieuw persoon
           </Button> | {' '}
-          <Button type="primary" onClick={(e) => importPerson()}>
+          <Button type="primary" onClick={() => importPerson()}>
             Importeer
           </Button> | {' '}
 
