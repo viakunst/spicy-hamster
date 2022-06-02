@@ -7,6 +7,7 @@ use App\GraphQL\Mutation\PersonMutation;
 use App\GraphQL\Mutation\StatementMutation;
 use App\GraphQL\Mutation\TransactionGroupMutation;
 use App\GraphQL\Mutation\TransactionMutation;
+use App\Service\CognitoService;
 use Doctrine\ORM\EntityManagerInterface;
 use Overblog\GraphQLBundle\Annotation as GQL;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -29,16 +30,23 @@ class Mutation
      */
     protected $validator;
 
+    /**
+     * @var CognitoService
+     */
+    protected $cognito;
+
     protected PersonMutation $persons;
     protected StatementMutation $statements;
     protected TransactionMutation $transactions;
     protected transactionGroupMutation $transactionGroups;
 
-    public function __construct(EntityManagerInterface $em, ValidatorInterface $validator, PersonMutation $persons,
+    public function __construct(EntityManagerInterface $em, ValidatorInterface $validator,
+    CognitoService $cognito, PersonMutation $persons,
     StatementMutation $statements, TransactionMutation $transactions, transactionGroupMutation $transactionGroups)
     {
         $this->em = $em;
         $this->validator = $validator;
+        $this->cognito = $cognito;
         $this->persons = $persons;
         $this->statements = $statements;
         $this->transactions = $transactions;
@@ -91,6 +99,16 @@ class Mutation
     public function transactionGroupMutation()
     {
         return $this->transactionGroups;
+    }
+
+    /**
+     * @GQL\Field(type="String!")
+     * @GQL\Description("Imports persons from the identity provider.")
+     * @GQL\Access("isAuthenticated()")
+     */
+    public function importPerson(string $token): string
+    {
+        return $this->cognito->listAllUser($token);
     }
 
     /**
