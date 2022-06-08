@@ -7,10 +7,11 @@ import { ColumnsType } from 'antd/lib/table';
 
 import 'antd/dist/antd.css';
 
-import { Person, useGetPersonsQuery } from '../../Api/Backend';
+import { Person, useGetPersonsQuery, useImportPersonMutation } from '../../Api/Backend';
 import { FormType } from '../form/FormHelper';
 import PersonCRUD from '../form/PersonCRUD';
 import GraphqlService from '../../helpers/GraphqlService';
+import OidcService from '../../helpers/OidcService';
 
 interface PersonPoolState {
   searchAttribute: string | null,
@@ -24,6 +25,8 @@ function PersonPool() {
   const {
     data, isLoading, isError, refetch,
   } = useGetPersonsQuery(GraphqlService.getClient());
+
+  const importMutation = useImportPersonMutation(GraphqlService.getClient());
 
   const [state, setState] = useState<PersonPoolState>({
     searchAttribute: '',
@@ -39,6 +42,14 @@ function PersonPool() {
 
   const handleChange = async () => {
     refetch();
+  };
+
+  const importPerson = async () => {
+    const tok = OidcService.getIdToken();
+    console.log(importMutation.data);
+    if (tok !== null) {
+      importMutation.mutate({ token: tok });
+    }
   };
 
   const openModal = async (e: MouseEvent, formType: string, person?: Person) => {
@@ -160,6 +171,10 @@ function PersonPool() {
           <Button type="primary" onClick={(e) => openModal(e.nativeEvent, FormType.CREATE)}>
             Nieuw persoon
           </Button> | {' '}
+          <Button type="primary" onClick={() => importPerson()}>
+            Importeer
+          </Button> | {' '}
+
           <Link to="/">
             <Button>
               Ga terug
