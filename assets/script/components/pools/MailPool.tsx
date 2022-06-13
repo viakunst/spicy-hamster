@@ -147,7 +147,7 @@ function MailPool() {
   return (
     <div>
 
-      <div style={{ padding: 24, background: '#fff', minHeight: 360 }}>
+      <div style={{ padding: 0, background: '#fff', minHeight: 360 }}>
 
         <div className="row">
           <Button type="primary" onClick={(e) => openModal(e.nativeEvent, FormType.CREATE)}>

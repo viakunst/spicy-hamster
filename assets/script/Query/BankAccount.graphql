@@ -1,0 +1,20 @@
+query GetBankAccounts {
+  bankAccounts {
+    getId,
+    name,
+    IBAN
+  }
+}
+
+  
+
+
+
+
+
+
+
+
+
+
+

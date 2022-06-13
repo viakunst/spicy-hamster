@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { Menu } from 'antd';
@@ -17,6 +18,7 @@ import AdminMailPool from '../components/admin-components/AdminMailPool';
 import AdminPersonPool from '../components/admin-components/AdminPersonPool';
 import AdminStatementPool from '../components/admin-components/AdminStatementPool';
 import TransactionGroupPool from '../components/pools/TransactionGroupPool';
+import TransactionCreator from '../components/form/TransactionCreator';
 
 const queryClient = new QueryClient();
 
@@ -42,6 +44,8 @@ const items: MenuProps['items'] = [
   getItem('Personen', 'persons', <ContainerOutlined />),
 
   getItem('Betaalherrinneringen', 'transactions', <ContainerOutlined />, [
+    getItem('Nieuwe transactie groep', 'transaction-new'),
+    getItem('Per persoon', 'transaction-person'),
     getItem('Per activiteit', 'group'),
     getItem('Totaal', 'total'),
   ]),
@@ -52,6 +56,8 @@ const items: MenuProps['items'] = [
   getItem('Instellingen', 'settings', <SettingOutlined />, [
     getItem('Bank rekenigen', 'acounts'),
   ]),
+
+  getItem('Terug', 'back', <ContainerOutlined />),
 ];
 
 const DEFAULT_OPEN = 'persons';
@@ -59,10 +65,14 @@ const DEFAULT_OPEN = 'persons';
 export default function AdminPage() {
   // Render all attributes
   const [menuState, setMenuState] = useState<string>(DEFAULT_OPEN);
+  const history = useHistory();
 
   const onClick = ({
     item, key, keyPath, domEvent,
   }: any) => {
+    if (key === 'back') {
+      history.push('/');
+    }
     setMenuState(key);
   };
 
@@ -74,6 +84,8 @@ export default function AdminPage() {
         return <AdminTransactionGroupPool />;
       case 'total':
         return <AdminTransactionPool />;
+      case 'transaction-new':
+        return <TransactionCreator />;
       case 'statements':
         return <AdminStatementPool />;
       case 'emails':

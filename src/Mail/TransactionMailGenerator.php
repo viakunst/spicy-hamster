@@ -11,7 +11,7 @@ use Twig\Environment;
  */
 class TransactionMailGenerator
 {
-    private $twig;
+    private Environment $twig;
 
     public function __construct(Environment $twig)
     {
@@ -27,7 +27,11 @@ class TransactionMailGenerator
         $transactions = array_filter(
             $transactions,
             function ($var) use ($person) {
-                return $var->getPerson()->getId() == $person->getId();
+                if (null !== $var->getPerson()) {
+                    return $var->getPerson()->getId() == $person->getId();
+                }
+
+                return false;
             }
         );
 
@@ -55,7 +59,11 @@ class TransactionMailGenerator
             $filteredTransactions = array_filter(
                 $transactions,
                 function ($var) use ($account) {
-                    return $var->getBankAccount()->getId() == $account->getId();
+                    if (null !== $var->getBankAccount()) {
+                        return $var->getBankAccount()->getId() == $account->getId();
+                    }
+
+                    return false;
                 }
             );
 

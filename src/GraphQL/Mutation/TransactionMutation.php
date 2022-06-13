@@ -78,6 +78,23 @@ class TransactionMutation extends AbstractMutation
 
     /**
      * @GQL\Field(type="String!")
+     * @GQL\Description("Send transaction reminder.")
+     * @GQL\Access("isAuthenticated()")
+     */
+    public function switchTransactionStatus(string $id): string
+    {
+        $dbtransaction = $this->em->getRepository(Transaction::class)->findOneBy(['id' => $id]);
+        if (null !== $dbtransaction) {
+            // ??
+
+            return 'success';
+        }
+
+        return "failure: transaction with id {$id} was not found";
+    }
+
+    /**
+     * @GQL\Field(type="String!")
      * @GQL\Description("Delete transaction.")
      * @GQL\Access("isAuthenticated()")
      */

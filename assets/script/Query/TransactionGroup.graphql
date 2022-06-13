@@ -2,10 +2,12 @@
 query GetTransactionGroups {
   transactionGroups {
     getId
-    IBAN
     description
     title
     getTransactions {
+      getId
+    }
+    getBankAccount {
       getId
     }
   }
