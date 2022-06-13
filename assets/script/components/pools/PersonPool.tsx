@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
-  Modal, Table, Button,
+  Modal, Table, Button, Space,
 } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 
@@ -167,20 +167,14 @@ function PersonPool() {
 
       <div style={{ padding: 24, background: '#fff', minHeight: 360 }}>
 
-        <div className="row">
+        <Space>
           <Button type="primary" onClick={(e) => openModal(e.nativeEvent, FormType.CREATE)}>
             Nieuw persoon
           </Button> | {' '}
           <Button type="primary" onClick={() => importPerson()}>
             Importeer
-          </Button> | {' '}
-
-          <Link to="/">
-            <Button>
-              Ga terug
-            </Button>
-          </Link>
-        </div>
+          </Button>
+        </Space>
 
         <Table pagination={false} columns={columns} rowKey="id" dataSource={persons} />
 

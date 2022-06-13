@@ -36,7 +36,7 @@ class CognitoService
         $this->logger = $logger;
     }
 
-    public function listAllUser(string $token): string
+    public function importAllPersons(string $token): string
     {
         $cognitoClient = $this->getCognitoClient($token);
 

@@ -6,3 +6,16 @@ query GetMails {
     sender
   }
 }
+
+
+mutation sendAllReminders($id: String!, $person: PersonInput!) {
+  emailMutation {
+    sendAllReminders(id: $id)
+  }
+} 
+
+mutation sendAllRemindersByPerson($id: String!, $person: PersonInput!) {
+  emailMutation {
+    sendAllRemindersByPerson(id: $id)
+  }
+} 

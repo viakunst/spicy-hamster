@@ -3,6 +3,7 @@
 namespace App\GraphQL\Mutation;
 
 use App\Mail\MailService;
+use App\Mail\TransactionMailGenerator;
 use Doctrine\ORM\EntityManagerInterface;
 use Overblog\GraphQLBundle\Definition\Resolver\MutationInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -24,11 +25,17 @@ class AbstractMutation implements MutationInterface
      */
     protected $mailer;
 
-    public function __construct(EntityManagerInterface $em, ValidatorInterface $validator, MailService $mailer)
+    /**
+     * @var TransactionMailGenerator
+     */
+    protected $mailGenerator;
+
+    public function __construct(EntityManagerInterface $em, ValidatorInterface $validator, MailService $mailer, TransactionMailGenerator $mailGenerator)
     {
         $this->em = $em;
         $this->validator = $validator;
         $this->mailer = $mailer;
+        $this->mailGenerator = $mailGenerator;
     }
 
     /**

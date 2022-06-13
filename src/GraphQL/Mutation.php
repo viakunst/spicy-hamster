@@ -2,7 +2,8 @@
 
 namespace App\GraphQL;
 
-use App\Entity\Mail\Mail;
+use App\GraphQL\Mutation\BankAccountMutation;
+use App\GraphQL\Mutation\EmailMutation;
 use App\GraphQL\Mutation\PersonMutation;
 use App\GraphQL\Mutation\StatementMutation;
 use App\GraphQL\Mutation\TransactionGroupMutation;
@@ -38,11 +39,13 @@ class Mutation
     protected PersonMutation $persons;
     protected StatementMutation $statements;
     protected TransactionMutation $transactions;
-    protected transactionGroupMutation $transactionGroups;
+    protected TransactionGroupMutation $transactionGroups;
+    protected EmailMutation $emails;
+    protected BankAccountMutation $bankAccounts;
 
     public function __construct(EntityManagerInterface $em, ValidatorInterface $validator,
-    CognitoService $cognito, PersonMutation $persons,
-    StatementMutation $statements, TransactionMutation $transactions, transactionGroupMutation $transactionGroups)
+    CognitoService $cognito, PersonMutation $persons, EmailMutation $emails, BankAccountMutation $bankAccounts,
+    StatementMutation $statements, TransactionMutation $transactions, TransactionGroupMutation $transactionGroups)
     {
         $this->em = $em;
         $this->validator = $validator;
@@ -51,11 +54,13 @@ class Mutation
         $this->statements = $statements;
         $this->transactions = $transactions;
         $this->transactionGroups = $transactionGroups;
+        $this->bankAccounts = $bankAccounts;
+        $this->emails = $emails;
     }
 
     /**
      * @GQL\Field(type="PersonMutation")
-     * @GQL\Description("All transactions stored in the database.")
+     * @GQL\Description("All persons mutations.")
      * @GQL\Access("isAuthenticated()")
      *
      * @return PersonMutation
@@ -63,6 +68,30 @@ class Mutation
     public function personMutation()
     {
         return $this->persons;
+    }
+
+    /**
+     * @GQL\Field(type="EmailMutation")
+     * @GQL\Description("All email mutations.")
+     * @GQL\Access("isAuthenticated()")
+     *
+     * @return EmailMutation
+     */
+    public function emailMutation()
+    {
+        return $this->emails;
+    }
+
+    /**
+     * @GQL\Field(type="BankAccountMutation")
+     * @GQL\Description("All bank account mutations.")
+     * @GQL\Access("isAuthenticated()")
+     *
+     * @return BankAccountMutation
+     */
+    public function backAccountMutation()
+    {
+        return $this->bankAccounts;
     }
 
     /**
@@ -108,24 +137,6 @@ class Mutation
      */
     public function importPerson(string $token): string
     {
-        return $this->cognito->listAllUser($token);
-    }
-
-    /**
-     * @GQL\Field(type="String!")
-     * @GQL\Description("Delete mail.")
-     * @GQL\Access("isAuthenticated()")
-     */
-    public function deletemail(string $id): string
-    {
-        $dbmail = $this->em->getRepository(Mail::class)->findOneBy(['id' => $id]);
-        if (null !== $dbmail) {
-            $this->em->remove($dbmail);
-            $this->em->flush();
-
-            return 'success';
-        }
-
-        return "failure: mail with id {$id} was not found";
+        return $this->cognito->importAllPersons($token);
     }
 }

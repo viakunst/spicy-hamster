@@ -149,17 +149,6 @@ function MailPool() {
 
       <div style={{ padding: 0, background: '#fff', minHeight: 360 }}>
 
-        <div className="row">
-          <Button type="primary" onClick={(e) => openModal(e.nativeEvent, FormType.CREATE)}>
-            Nieuw persoon
-          </Button> | {' '}
-          <Link to="/">
-            <Button>
-              Ga terug
-            </Button>
-          </Link>
-        </div>
-
         <Table pagination={false} columns={columns} rowKey="id" dataSource={mails} />
 
         <Modal
