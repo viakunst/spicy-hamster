@@ -63,15 +63,13 @@ class TransactionMutation extends AbstractMutation
 
     /**
      * @GQL\Field(type="String!")
-     * @GQL\Description("Delete transaction.")
+     * @GQL\Description("Send transaction reminder.")
      * @GQL\Access("isAuthenticated()")
      */
     public function sendTransactionReminder(string $id): string
     {
         $dbtransaction = $this->em->getRepository(Transaction::class)->findOneBy(['id' => $id]);
         if (null !== $dbtransaction) {
-            // TO-DO email stuff.
-
             return 'success';
         }
 

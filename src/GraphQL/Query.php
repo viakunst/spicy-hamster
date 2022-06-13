@@ -2,6 +2,7 @@
 
 namespace App\GraphQL;
 
+use App\Entity\BankAccount\BankAccount;
 use App\Entity\Mail\Mail;
 use App\Entity\Mail\Recipient;
 use App\Entity\Person\Person;
@@ -73,6 +74,18 @@ class Query
     public function recipients()
     {
         return $this->em->getRepository(Recipient::class)->findAll();
+    }
+
+    /**
+     * @GQL\Field(type="[BankAccount]")
+     * @GQL\Description("All bank accounts stored in the database.")
+     * @GQL\Access("isAuthenticated()")
+     *
+     * @return BankAccount[]
+     */
+    public function bankAccounts()
+    {
+        return $this->em->getRepository(BankAccount::class)->findAll();
     }
 
     /**

@@ -2,6 +2,7 @@
 
 namespace App\Entity\Transaction;
 
+use App\Entity\BankAccount\BankAccount;
 use App\Entity\Person\Person;
 use Doctrine\ORM\Mapping as ORM;
 use Overblog\GraphQLBundle\Annotation as GQL;
@@ -15,6 +16,9 @@ use Overblog\GraphQLBundle\Annotation as GQL;
  */
 class Transaction
 {
+    public const PAID = 'Betaald';
+    public const OUTSTANDING = 'Openstaand';
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue(strategy="UUID")
@@ -153,6 +157,48 @@ class Transaction
         $this->comment = $comment;
 
         return $this;
+    }
+
+    // Utility functions
+
+    public function getTitle(): ?string
+    {
+        $transactionGroup = $this->getTransactionGroup();
+        if (null !== $transactionGroup) {
+            return $transactionGroup->getTitle();
+        }
+
+        return null;
+    }
+
+    public function getDescription(): ?string
+    {
+        $transactionGroup = $this->getTransactionGroup();
+        if (null !== $transactionGroup) {
+            return $transactionGroup->getDescription();
+        }
+
+        return null;
+    }
+
+    public function getDate(): ?\DateTimeInterface
+    {
+        $transactionGroup = $this->getTransactionGroup();
+        if (null !== $transactionGroup) {
+            return $transactionGroup->getDate();
+        }
+
+        return null;
+    }
+
+    public function getBankAccount(): ?BankAccount
+    {
+        $transactionGroup = $this->getTransactionGroup();
+        if (null !== $transactionGroup) {
+            return $transactionGroup->getBankAccount();
+        }
+
+        return null;
     }
 
     public function cloneFrom(Transaction $transaction): void

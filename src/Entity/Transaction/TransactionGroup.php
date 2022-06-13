@@ -2,6 +2,7 @@
 
 namespace App\Entity\Transaction;
 
+use App\Entity\BankAccount\BankAccount;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -39,11 +40,7 @@ class TransactionGroup
      */
     private \DateTime $date;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     * @GQL\Field(type="String!")
-     */
-    private string $IBAN;
+    private BankAccount $bankAccount;
 
     /**
      * @ORM\OneToMany(targetEntity=Transaction::class, mappedBy="transactionGroup")
@@ -109,14 +106,17 @@ class TransactionGroup
         return $this;
     }
 
-    public function getIBAN(): ?string
+    /**
+     * @GQL\Field(type="BankAccount")
+     */
+    public function getBankAccount(): ?BankAccount
     {
-        return $this->IBAN;
+        return $this->bankAccount;
     }
 
-    public function setIBAN(string $IBAN): self
+    public function setBankAccount(BankAccount $bankAccount): self
     {
-        $this->IBAN = $IBAN;
+        $this->bankAccount = $bankAccount;
 
         return $this;
     }
@@ -164,9 +164,6 @@ class TransactionGroup
         if (null !== $transactionGroup->getDate()) {
             // Find a way around this error.
             // $this->setDate(\DateTime::createFromInterface($transactionGroup->getDate()));
-        }
-        if (null !== $transactionGroup->getIBAN()) {
-            $this->IBAN = $transactionGroup->getIBAN();
         }
     }
 }
