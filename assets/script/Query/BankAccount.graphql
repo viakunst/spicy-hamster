@@ -7,6 +7,25 @@ query GetBankAccounts {
 }
 
   
+mutation CreateBankAccount($bankaccount: BankAccountInput!) {
+  bankAccountMutation {
+    createBankAccount(bankaccount: $bankaccount)
+  }
+} 
+
+mutation UpdateBankAccount($id: String!, $bankaccount: BankAccountInput!) {
+  bankAccountMutation {
+    updateBankAccount(id: $id, bankaccount: $bankaccount)
+  }
+  
+} 
+
+mutation DeleteBankAccount($id: String!) {
+  bankAccountMutation {
+    deleteBankAccount(id: $id)
+  } 
+}
+  
 
 
 

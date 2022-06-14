@@ -89,7 +89,7 @@ class Mutation
      *
      * @return BankAccountMutation
      */
-    public function backAccountMutation()
+    public function bankAccountMutation()
     {
         return $this->bankAccounts;
     }

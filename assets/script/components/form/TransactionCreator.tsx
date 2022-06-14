@@ -81,7 +81,7 @@ function TransactionCreator(props:TransactionCreatorProps) {
   const bankAccountOptions = (
     <>
       {accounts.map((account) => (
-        <Option value={account.getId}>{account.IBAN}</Option>
+        <Option value={account.getId}>{account.name} {account.IBAN}</Option>
       ))}
     </>
   );
@@ -195,9 +195,7 @@ function TransactionCreator(props:TransactionCreatorProps) {
           placeholder="De bankrekening van deze activiteit."
           allowClear
         >
-          <Option value="male">male</Option>
-          <Option value="female">female</Option>
-          <Option value="other">other</Option>
+          {bankAccountOptions}
         </Select>
       </Form.Item>
 

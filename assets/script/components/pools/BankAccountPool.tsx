@@ -7,33 +7,31 @@ import { ColumnsType } from 'antd/lib/table';
 
 import 'antd/dist/antd.css';
 
-import { Person, useGetPersonsQuery, useImportPersonMutation } from '../../Api/Backend';
+import { BankAccount, useGetBankAccountsQuery } from '../../Api/Backend';
 import { FormType } from '../form/FormHelper';
-import PersonCRUD from '../form/PersonCRUD';
+import BankAccountCRUD from '../form/BankAccountCRUD';
 import GraphqlService from '../../helpers/GraphqlService';
 import OidcService from '../../helpers/OidcService';
 
-interface PersonPoolState {
+interface BankAccountPoolState {
   searchAttribute: string | null,
   modelTitle: string,
   modelVisible: boolean,
   modelContent: JSX.Element,
-  selectedPerson: Person | null,
+  selectedBankAccount: BankAccount | null,
 }
 
-function PersonPool() {
+function BankAccountPool() {
   const {
     data, isLoading, isError, refetch,
-  } = useGetPersonsQuery(GraphqlService.getClient());
+  } = useGetBankAccountsQuery(GraphqlService.getClient());
 
-  const importMutation = useImportPersonMutation(GraphqlService.getClient());
-
-  const [state, setState] = useState<PersonPoolState>({
+  const [state, setState] = useState<BankAccountPoolState>({
     searchAttribute: '',
     modelTitle: 'unknown',
     modelVisible: false,
     modelContent: (<>empty</>),
-    selectedPerson: null,
+    selectedBankAccount: null,
   });
 
   if (isLoading || isError || data === undefined) {
@@ -41,61 +39,56 @@ function PersonPool() {
   }
 
   const handleChange = async () => {
+    console.log('refetching');
     refetch();
+
+    setState({ ...state, modelVisible: false });
   };
 
-  const importPerson = async () => {
-    const tok = OidcService.getIdToken();
-    console.log(importMutation.data);
-    if (tok !== null) {
-      importMutation.mutate({ token: tok });
-    }
-  };
-
-  const openModal = async (e: MouseEvent, formType: string, person?: Person) => {
+  const openModal = async (e: MouseEvent, formType: string, bankaccount?: BankAccount) => {
     let modelTitle = 'unknown';
     let modelContent = <>empty</>;
     const modelVisible = true;
 
-    console.log(person);
+    console.log(bankaccount);
     switch (formType) {
       case FormType.CREATE:
-        modelTitle = 'Maak nieuw persoon aan.';
+        modelTitle = 'Maak nieuwe bankrekening aan.';
         modelContent = (
-          <PersonCRUD
+          <BankAccountCRUD
             formtype={FormType.CREATE}
             onAttributesUpdate={handleChange}
-            person={person}
+            bankaccount={bankaccount}
           />
         );
         break;
       case FormType.READ:
-        modelTitle = 'Details van persoon';
+        modelTitle = 'Details van bankrekening';
         modelContent = (
-          <PersonCRUD
+          <BankAccountCRUD
             formtype={FormType.READ}
             onAttributesUpdate={handleChange}
-            person={person}
+            bankaccount={bankaccount}
           />
         );
         break;
       case FormType.UPDATE:
-        modelTitle = 'Bewerk persoon';
+        modelTitle = 'Bewerk bankrekening';
         modelContent = (
-          <PersonCRUD
+          <BankAccountCRUD
             formtype={FormType.UPDATE}
             onAttributesUpdate={handleChange}
-            person={person}
+            bankaccount={bankaccount}
           />
         );
         break;
       case FormType.DELETE:
-        modelTitle = 'Verwijder persoon';
+        modelTitle = 'Verwijder bankrekening';
         modelContent = (
-          <PersonCRUD
+          <BankAccountCRUD
             formtype={FormType.DELETE}
             onAttributesUpdate={handleChange}
-            person={person}
+            bankaccount={bankaccount}
           />
         );
         break;
@@ -114,16 +107,16 @@ function PersonPool() {
   };
 
   // These are the columns of the table.
-  const columns: ColumnsType<Person> = [
+  const columns: ColumnsType<BankAccount> = [
     {
       title: 'Naam',
-      dataIndex: 'getName',
-      key: 'getName',
+      dataIndex: 'name',
+      key: 'name',
     },
     {
-      title: 'Email',
-      dataIndex: 'email',
-      key: 'email',
+      title: 'IBAN',
+      dataIndex: 'IBAN',
+      key: 'IBAN',
     },
     {
       title: 'Details',
@@ -148,7 +141,7 @@ function PersonPool() {
             <Button onClick={
               (e) => openModal(e.nativeEvent, FormType.DELETE, record)
               }
-            >verwijderen
+            >Verwijderen
             </Button>
           </span>
 
@@ -160,23 +153,22 @@ function PersonPool() {
   const {
     modelContent, modelTitle, modelVisible,
   } = state;
-  const persons = data.persons as Person[];
+
+  const bankaccounts = data.bankAccounts as BankAccount[];
 
   return (
     <div>
 
       <div style={{ padding: 24, background: '#fff', minHeight: 360 }}>
+        <div style={{ padding: 5, background: '#fff' }}>
+          <Space>
+            <Button type="primary" onClick={(e) => openModal(e.nativeEvent, FormType.CREATE)}>
+              Nieuwe bankrekening
+            </Button>
+          </Space>
+        </div>
 
-        <Space>
-          <Button type="primary" onClick={(e) => openModal(e.nativeEvent, FormType.CREATE)}>
-            Nieuw persoon
-          </Button>
-          <Button type="primary" onClick={() => importPerson()}>
-            Importeer
-          </Button>
-        </Space>
-
-        <Table pagination={false} columns={columns} rowKey="id" dataSource={persons} />
+        <Table pagination={false} columns={columns} rowKey="id" dataSource={bankaccounts} />
 
         <Modal
           title={modelTitle}
@@ -193,4 +185,4 @@ function PersonPool() {
   );
 }
 
-export default PersonPool;
+export default BankAccountPool;

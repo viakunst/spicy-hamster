@@ -5,11 +5,9 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { Menu } from 'antd';
 import type { MenuProps } from 'antd';
 import {
-  AppstoreOutlined,
   ContainerOutlined,
   SettingOutlined,
   MailOutlined,
-  PieChartOutlined,
 } from '@ant-design/icons';
 
 import AdminTransactionPool from '../components/admin-components/AdminTransactionPool';
@@ -17,8 +15,8 @@ import AdminTransactionGroupPool from '../components/admin-components/AdminTrans
 import AdminMailPool from '../components/admin-components/AdminMailPool';
 import AdminPersonPool from '../components/admin-components/AdminPersonPool';
 import AdminStatementPool from '../components/admin-components/AdminStatementPool';
-import TransactionGroupPool from '../components/pools/TransactionGroupPool';
 import TransactionCreator from '../components/form/TransactionCreator';
+import AdminBankAccountPool from '../components/admin-components/AdminBankAccountPool';
 
 const queryClient = new QueryClient();
 
@@ -46,7 +44,7 @@ const items: MenuProps['items'] = [
   getItem('Betaalherrinneringen', 'transactions', <ContainerOutlined />, [
     getItem('Nieuwe transactie groep', 'transaction-new'),
     getItem('Per persoon', 'transaction-person'),
-    getItem('Per activiteit', 'group'),
+    getItem('Per activiteit', 'transaction-group'),
     getItem('Totaal', 'total'),
   ]),
 
@@ -54,7 +52,7 @@ const items: MenuProps['items'] = [
   getItem('Emails', 'emails', <MailOutlined />),
 
   getItem('Instellingen', 'settings', <SettingOutlined />, [
-    getItem('Bank rekenigen', 'acounts'),
+    getItem('Bank rekenigen', 'accounts'),
   ]),
 
   getItem('Terug', 'back', <ContainerOutlined />),
@@ -86,12 +84,16 @@ export default function AdminPage() {
         return <AdminTransactionPool />;
       case 'transaction-new':
         return <TransactionCreator />;
+      case 'transaction-group':
+        return <AdminTransactionGroupPool />;
+      case 'transaction-person':
+        return <AdminTransactionGroupPool />;
       case 'statements':
         return <AdminStatementPool />;
       case 'emails':
         return <AdminMailPool />;
-      case 'account':
-        return <>...</>;
+      case 'accounts':
+        return <AdminBankAccountPool />;
       default:
         return <>...</>;
     }

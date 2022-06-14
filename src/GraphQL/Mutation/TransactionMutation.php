@@ -2,6 +2,7 @@
 
 namespace App\GraphQL\Mutation;
 
+use App\Entity\Person\Person;
 use App\Entity\Transaction\Transaction;
 use Overblog\GraphQLBundle\Annotation as GQL;
 
@@ -37,6 +38,34 @@ class TransactionMutation extends AbstractMutation
 
     /**
      * @GQL\Field(type="String!")
+     * @GQL\Description("Create transaction.")
+     * @GQL\Access("isAuthenticated()")
+     */
+    public function createTransactionWithPerson(Transaction $transaction, string $personId): string
+    {
+        $dbtransaction = new Transaction();
+        $dbtransaction->cloneFrom($transaction);
+
+        // Check validation errors.
+        $msg = $this->validate($dbtransaction);
+        if (null !== $msg) {
+            return $msg;
+        }
+
+        $dbperson = $this->em->getRepository(Person::class)->findOneBy(['id' => $personId]);
+        if (null === $dbperson) {
+            return "failure: person with id {$personId} was not found";
+        }
+
+        $dbtransaction->setPerson($dbperson);
+        $this->em->persist($dbtransaction);
+        $this->em->flush();
+
+        return 'succes';
+    }
+
+    /**
+     * @GQL\Field(type="String!")
      * @GQL\Description("Update transaction.")
      * @GQL\Access("isAuthenticated()")
      */
@@ -55,21 +84,6 @@ class TransactionMutation extends AbstractMutation
             $this->em->persist($dbtransaction);
             $this->em->flush();
 
-            return 'success';
-        }
-
-        return "failure: transaction with id {$id} was not found";
-    }
-
-    /**
-     * @GQL\Field(type="String!")
-     * @GQL\Description("Send transaction reminder.")
-     * @GQL\Access("isAuthenticated()")
-     */
-    public function sendTransactionReminder(string $id): string
-    {
-        $dbtransaction = $this->em->getRepository(Transaction::class)->findOneBy(['id' => $id]);
-        if (null !== $dbtransaction) {
             return 'success';
         }
 
