@@ -3,7 +3,6 @@
 namespace App\GraphQL\Mutation;
 
 use App\Entity\Person\Person;
-use App\Entity\Transaction\Transaction;
 use App\GraphQL\Mutation;
 use Overblog\GraphQLBundle\Annotation as GQL;
 
@@ -56,25 +55,6 @@ class PersonMutation extends AbstractMutation
 
             $this->em->persist($dbperson);
             $this->em->flush();
-
-            return 'success';
-        }
-
-        return "failure: person with id {$id} was not found";
-    }
-
-    /**
-     * @GQL\Field(type="String!")
-     * @GQL\Description("Send transaction reminder.")
-     * @GQL\Access("isAuthenticated()")
-     */
-    public function sendAllRemindersByPerson(string $id): string
-    {
-        $dbperson = $this->em->getRepository(Person::class)->findOneBy(['id' => $id]);
-        if (null !== $dbperson) {
-            $transaction = $this->em->getRepository(Transaction::class)->findBy(['person' => $dbperson]);
-
-            // Email stuff.
 
             return 'success';
         }

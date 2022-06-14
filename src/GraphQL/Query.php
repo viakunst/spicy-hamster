@@ -9,6 +9,7 @@ use App\Entity\Person\Person;
 use App\Entity\Statement\Statement;
 use App\Entity\Transaction\Transaction;
 use App\Entity\Transaction\TransactionGroup;
+use App\GraphQL\Types\PersonTransactions;
 use Doctrine\ORM\EntityManagerInterface;
 use Overblog\GraphQLBundle\Annotation as GQL;
 
@@ -38,6 +39,60 @@ class Query
     public function persons()
     {
         return $this->em->getRepository(Person::class)->findAll();
+    }
+
+    /**
+     * @GQL\Field(type="[Person]")
+     * @GQL\Description("All persons with outstanding transactions.")
+     * @GQL\Access("isAuthenticated()")
+     *
+     * @return Person[]
+     */
+    public function getAllPersonsWithOutstandingTransactions()
+    {
+        $persons = $this->em->getRepository(Person::class)->findAll();
+        $outstanding_persons = [];
+
+        foreach ($persons as $person) {
+            $transactions = $this->em->getRepository(Transaction::class)->findBy([
+                'person' => $person,
+                'status' => Transaction::OUTSTANDING,
+            ]);
+
+            if (0 != count($transactions)) {
+                array_push($outstanding_persons, $person);
+            }
+        }
+
+        return $outstanding_persons;
+    }
+
+    /**
+     * @GQL\Field(type="[PersonTransactions]")
+     * @GQL\Description("All persons with outstanding transactions.")
+     * @GQL\Access("isAuthenticated()")
+     *
+     * @return PersonTransactions[]
+     */
+    public function getAllOutstandingTransactionsCoupledWithPerson()
+    {
+        $persons = $this->em->getRepository(Person::class)->findAll();
+        $outstanding_person_transactions_array = [];
+
+        foreach ($persons as $person) {
+            $transactions = $this->em->getRepository(Transaction::class)->findBy([
+                'person' => $person,
+                'status' => Transaction::OUTSTANDING,
+            ]);
+
+            if (0 != count($transactions)) {
+                $outstanding_person_transactions = new PersonTransactions($person, $transactions);
+
+                array_push($outstanding_person_transactions_array, $outstanding_person_transactions);
+            }
+        }
+
+        return $outstanding_person_transactions_array;
     }
 
     /**

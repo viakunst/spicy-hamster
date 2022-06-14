@@ -20,7 +20,7 @@ class EmailMutation extends AbstractMutation
      * @GQL\Description("Send transaction reminder.")
      * @GQL\Access("isAuthenticated()")
      */
-    public function sendAllReminders(string $id): string
+    public function sendAllReminders(): string
     {
         $persons = $this->em->getRepository(Person::class)->findAll();
 
@@ -31,6 +31,30 @@ class EmailMutation extends AbstractMutation
             ]);
             $hmtl = $this->mailGenerator->generateBaseEmail($person, $transactions);
             $this->mailer->message([$person], 'Viakunst Betaalherrinnering', $hmtl);
+        }
+
+        return 'success';
+    }
+
+    /**
+     * @GQL\Field(type="String!")
+     * @GQL\Description("Send transaction reminder.")
+     * @GQL\Access("isAuthenticated()")
+     */
+    public function getAllPersonWithOutstandingTransactions(): string
+    {
+        $persons = $this->em->getRepository(Person::class)->findAll();
+        $outstanding_persons = [];
+
+        foreach ($persons as $person) {
+            $transactions = $this->em->getRepository(Transaction::class)->findBy([
+                'person' => $person,
+                'status' => Transaction::OUTSTANDING,
+            ]);
+
+            if (0 != count($transactions)) {
+                array_push($outstanding_persons, $person);
+            }
         }
 
         return 'success';

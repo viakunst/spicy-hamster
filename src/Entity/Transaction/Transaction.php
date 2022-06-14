@@ -16,7 +16,7 @@ use Overblog\GraphQLBundle\Annotation as GQL;
  */
 class Transaction
 {
-    public const PAID = 'Betaald';
+    public const PAID = 'Voldaan';
     public const OUTSTANDING = 'Openstaand';
 
     /**

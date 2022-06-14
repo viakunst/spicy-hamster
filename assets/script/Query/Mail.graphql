@@ -7,14 +7,24 @@ query GetMails {
   }
 }
 
+query GetAllOutstandingTransactionsCoupledWithPerson {
+  getAllOutstandingTransactionsCoupledWithPerson {
+    person {
+      getId
+    }
+    transactions {
+      getId
+    }
+  }
+}
 
-mutation sendAllReminders($id: String!, $person: PersonInput!) {
+mutation sendAllReminders {
   emailMutation {
-    sendAllReminders(id: $id)
+    sendAllReminders
   }
 } 
 
-mutation sendAllRemindersByPerson($id: String!, $person: PersonInput!) {
+mutation sendAllRemindersByPerson($id: String!) {
   emailMutation {
     sendAllRemindersByPerson(id: $id)
   }
