@@ -11,9 +11,13 @@ query GetAllOutstandingTransactionsCoupledWithPerson {
   getAllOutstandingTransactionsCoupledWithPerson {
     person {
       getId
+      getName
+      email
     }
     transactions {
       getId
+      amount
+      comment
     }
   }
 }

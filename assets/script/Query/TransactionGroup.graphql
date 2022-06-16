@@ -14,9 +14,9 @@ query GetTransactionGroups {
 }
 
 
-mutation CreateTransactionGroup($transactionGroup: TransactionGroupInput!) {
+mutation CreateTransactionGroup($transactionGroupTypeInput: TransactionGroupTypeInput!) {
   transactionGroupMutation {
-    createTransactionGroup(transactionGroup: $transactionGroup)
+    createTransactionGroup(transactionGroupTypeInput: $transactionGroupTypeInput)
   }
 } 
 

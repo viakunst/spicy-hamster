@@ -1,23 +1,15 @@
 import React from 'react';
 
-import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import {
-  Form, Input, Checkbox, Table, Select, Button, InputNumber, Divider, Row, Col, Space,
+  Form, Badge, Table, Button, Divider,
 } from 'antd';
+import { ColumnsType } from 'antd/lib/table';
 
 import {
-  BankAccount, Transaction, TransactionGroup, Person, useGetPersonsQuery, useGetBankAccountsQuery,
+  PersonTransactions, Transaction, useGetAllOutstandingTransactionsCoupledWithPersonQuery, useCreateTransactionGroupMutation,
 } from '../../Api/Backend';
 
 import GraphqlService from '../../helpers/GraphqlService';
-
-import { FormType, basicForm } from './FormHelper';
-
-const { Option } = Select;
-
-interface TransactionCreatorProps {
-
-}
 
 const formItemLayout = {
   labelCol: {
@@ -30,13 +22,6 @@ const formItemLayout = {
   },
 };
 
-const formItemLayoutWithOutLabel = {
-  wrapperCol: {
-    xs: { span: 22, offset: 0 },
-    sm: { span: 20, offset: 4 },
-  },
-};
-
 const buttonLayout = {
   wrapperCol: {
     xs: { span: 6, offset: 9 },
@@ -44,19 +29,65 @@ const buttonLayout = {
   },
 };
 
-function ReminderForm(props:TransactionCreatorProps) {
+function ReminderForm() {
   const [form] = Form.useForm();
   const {
-    data: data1, isLoading: isLoading1, isError: isError1,
-  } = useGetPersonsQuery(GraphqlService.getClient());
+    data, isLoading, isError, refetch,
+  } = useGetAllOutstandingTransactionsCoupledWithPersonQuery(GraphqlService.getClient());
 
-  const onFinish = async () => {
-    // Send emails.
+  if (isLoading || isError || data === undefined) {
+    return <span>Loading...</span>;
+  }
 
+  console.log(data);
+
+  // Put data in table
+
+  const expandedRowRender = (record:PersonTransactions) => {
+    const columns: ColumnsType<Transaction> = [
+      { title: 'Date', dataIndex: 'date', key: 'date' },
+      { title: 'Name', dataIndex: 'name', key: 'name' },
+      {
+        title: 'Status',
+        key: 'state',
+        render: () => (
+          <span>
+            <Badge status="success" />
+            design
+          </span>
+        ),
+      },
+    ];
+
+    const data = record.transactions as Transaction[];
+    return <Table columns={columns} dataSource={data} pagination={false} />;
   };
 
-  return (
-    <div style={{ padding: 24, background: '#fff' }}>
+  const columns: ColumnsType<PersonTransactions> = [
+    { title: 'Name', dataIndex: 'name', key: 'person.getName' },
+    { title: 'Email', dataIndex: 'email', key: 'person.email' },
+  ];
+
+  const onFinish = async (values: any) => {
+    console.log(values);
+
+    // TO-DO: Send emails.
+  };
+
+  const personTransactions = data.getAllOutstandingTransactionsCoupledWithPerson as PersonTransactions[];
+
+  let content = (
+    <>
+      <Divider>Overzicht wie herrinnerd word.</Divider>
+      <Table
+        className="components-table-demo-nested"
+        columns={columns}
+        expandable={{ expandedRowRender }}
+        dataSource={personTransactions}
+      />
+
+      <Divider />
+
       <Form
         labelCol={formItemLayout?.labelCol}
         wrapperCol={formItemLayout?.wrapperCol}
@@ -67,7 +98,20 @@ function ReminderForm(props:TransactionCreatorProps) {
           <Button type="primary" htmlType="submit">Verstuur de Betaalherrinneringen!</Button>
         </Form.Item>
       </Form>
+    </>
+  );
 
+  if (personTransactions.length === 0) {
+    content = (
+      <Divider>Geen openstaande transacties.</Divider>
+    );
+  }
+
+  return (
+    <div style={{ padding: 24, background: '#fff' }}>
+      {content}
     </div>
   );
 }
+
+export default ReminderForm;

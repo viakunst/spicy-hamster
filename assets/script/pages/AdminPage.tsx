@@ -17,6 +17,7 @@ import AdminPersonPool from '../components/admin-components/AdminPersonPool';
 import AdminStatementPool from '../components/admin-components/AdminStatementPool';
 import TransactionCreator from '../components/form/TransactionCreator';
 import AdminBankAccountPool from '../components/admin-components/AdminBankAccountPool';
+import ReminderForm from '../components/form/ReminderForm';
 
 const queryClient = new QueryClient();
 
@@ -86,7 +87,7 @@ export default function AdminPage() {
       case 'transaction-new':
         return <TransactionCreator />;
       case 'transaction-reminder':
-        return <AdminTransactionGroupPool />;
+        return <ReminderForm />;
       case 'transaction-group':
         return <AdminTransactionGroupPool />;
       case 'transaction-person':
