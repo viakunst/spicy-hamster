@@ -1,9 +1,6 @@
 
 {% extends 'layout.html.twig' %}
 
-{% set acoTransaction = transactions|filter((t) => t.IBAN == acoIBAN }
-{% set mainTransaction = transactions|filter((t) => t.IBAN == mainIBAN }
-
 {% block body_root %}
 <div  class="transaction email" >
     <p>Hallo {{person.name}},</p>

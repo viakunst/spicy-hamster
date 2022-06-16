@@ -75,7 +75,7 @@ class TransactionMailGenerator
             ]);
         }
 
-        $htmlContents = $this->twig->render('email/baseMail.html.twig', [
+        $htmlContents = $this->twig->render('reminderEmail.html.twig', [
             'person' => $person,
             'transactionsByAccount' => $transactionsByAccount,
         ]);

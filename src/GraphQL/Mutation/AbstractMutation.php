@@ -6,6 +6,7 @@ use App\Mail\MailService;
 use App\Mail\TransactionMailGenerator;
 use Doctrine\ORM\EntityManagerInterface;
 use Overblog\GraphQLBundle\Definition\Resolver\MutationInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class AbstractMutation implements MutationInterface
@@ -14,6 +15,9 @@ class AbstractMutation implements MutationInterface
      * @var EntityManagerInterface
      */
     protected $em;
+
+    /** @var LoggerInterface */
+    protected $logger;
 
     /**
      * @var ValidatorInterface
@@ -30,8 +34,9 @@ class AbstractMutation implements MutationInterface
      */
     protected $mailGenerator;
 
-    public function __construct(EntityManagerInterface $em, ValidatorInterface $validator, MailService $mailer, TransactionMailGenerator $mailGenerator)
+    public function __construct(LoggerInterface $logger, EntityManagerInterface $em, ValidatorInterface $validator, MailService $mailer, TransactionMailGenerator $mailGenerator)
     {
+        $this->logger = $logger;
         $this->em = $em;
         $this->validator = $validator;
         $this->mailer = $mailer;

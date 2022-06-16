@@ -23,12 +23,23 @@ class EmailMutation extends AbstractMutation
     public function sendAllReminders(): string
     {
         $persons = $this->em->getRepository(Person::class)->findAll();
+        $this->logger->debug('Sending emails.');
 
         foreach ($persons as $person) {
             $transactions = $this->em->getRepository(Transaction::class)->findBy([
                 'person' => $person,
                 'status' => Transaction::OUTSTANDING,
             ]);
+
+            // Only send if open transactions.
+            if (0 == count($transactions)) {
+                continue;
+            }
+
+            $count = count($transactions);
+            $name = $person->getName();
+            $this->logger->debug("Sending email to $name for $count transactions.");
+
             $hmtl = $this->mailGenerator->generateBaseEmail($person, $transactions);
             $this->mailer->message([$person], 'Viakunst Betaalherrinnering', $hmtl);
         }
