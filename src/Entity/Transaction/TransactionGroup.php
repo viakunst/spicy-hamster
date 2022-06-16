@@ -40,7 +40,13 @@ class TransactionGroup
      */
     private \DateTime $date;
 
-    private BankAccount $bankAccount;
+    /**
+     * @ORM\ManyToOne(targetEntity=BankAccount::class)
+     * @ORM\JoinColumn(name="bank_account_id", nullable=false)
+     *
+     * @var BankAccount
+     */
+    private $bankAccount;
 
     /**
      * @ORM\OneToMany(targetEntity=Transaction::class, mappedBy="transactionGroup")
@@ -109,9 +115,14 @@ class TransactionGroup
     /**
      * @GQL\Field(type="BankAccount")
      */
-    public function getBankAccount(): ?BankAccount
+    public function getBankAccount(): BankAccount
     {
         return $this->bankAccount;
+    }
+
+    public function getBankAccountName(): string
+    {
+        return $this->getBankAccountName();
     }
 
     public function setBankAccount(BankAccount $bankAccount): self

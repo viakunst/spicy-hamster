@@ -16,6 +16,8 @@ query GetAllOutstandingTransactionsCoupledWithPerson {
     }
     transactions {
       getId
+      getTitle
+      getDate
       amount
       comment
     }

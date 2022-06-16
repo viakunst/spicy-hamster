@@ -6,7 +6,7 @@ import {
 import { ColumnsType } from 'antd/lib/table';
 
 import {
-  PersonTransactions, Transaction, useGetAllOutstandingTransactionsCoupledWithPersonQuery, useCreateTransactionGroupMutation,
+  PersonTransactions, Transaction, useGetAllOutstandingTransactionsCoupledWithPersonQuery, useSendAllRemindersMutation,
 } from '../../Api/Backend';
 
 import GraphqlService from '../../helpers/GraphqlService';
@@ -34,26 +34,24 @@ function ReminderForm() {
   const {
     data, isLoading, isError, refetch,
   } = useGetAllOutstandingTransactionsCoupledWithPersonQuery(GraphqlService.getClient());
+  const sendMutation = useSendAllRemindersMutation(GraphqlService.getClient());
 
   if (isLoading || isError || data === undefined) {
     return <span>Loading...</span>;
   }
 
-  console.log(data);
-
-  // Put data in table
-
   const expandedRowRender = (record:PersonTransactions) => {
     const columns: ColumnsType<Transaction> = [
-      { title: 'Date', dataIndex: 'date', key: 'date' },
-      { title: 'Name', dataIndex: 'name', key: 'name' },
+      { title: 'Datum', dataIndex: 'getDate', key: 'getDate' },
+      { title: 'Titel', dataIndex: 'getTitle', key: 'getTitle' },
+      { title: 'Bedrag', dataIndex: 'amount', key: 'amount' },
       {
         title: 'Status',
         key: 'state',
         render: () => (
           <span>
             <Badge status="success" />
-            design
+            Openstaand
           </span>
         ),
       },
@@ -64,17 +62,16 @@ function ReminderForm() {
   };
 
   const columns: ColumnsType<PersonTransactions> = [
-    { title: 'Name', dataIndex: 'name', key: 'person.getName' },
-    { title: 'Email', dataIndex: 'email', key: 'person.email' },
+    { title: 'Name', dataIndex: ['person', 'getName'], key: 'name' },
+    { title: 'Email', dataIndex: ['person', 'email'], key: 'email' },
   ];
 
-  const onFinish = async (values: any) => {
-    console.log(values);
-
-    // TO-DO: Send emails.
+  const onFinish = async () => {
+    sendMutation.mutate({});
   };
 
   const personTransactions = data.getAllOutstandingTransactionsCoupledWithPerson as PersonTransactions[];
+  console.log(personTransactions);
 
   let content = (
     <>

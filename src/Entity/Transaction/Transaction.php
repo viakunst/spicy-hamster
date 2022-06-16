@@ -161,6 +161,9 @@ class Transaction
 
     // Utility functions
 
+    /**
+     * @GQL\Field(type="String")
+     */
     public function getTitle(): ?string
     {
         $transactionGroup = $this->getTransactionGroup();
@@ -171,6 +174,9 @@ class Transaction
         return null;
     }
 
+    /**
+     * @GQL\Field(type="String")
+     */
     public function getDescription(): ?string
     {
         $transactionGroup = $this->getTransactionGroup();
@@ -181,6 +187,9 @@ class Transaction
         return null;
     }
 
+    /**
+     * @GQL\Field(type="DateTimeScalar")
+     */
     public function getDate(): ?\DateTimeInterface
     {
         $transactionGroup = $this->getTransactionGroup();
@@ -196,6 +205,19 @@ class Transaction
         $transactionGroup = $this->getTransactionGroup();
         if (null !== $transactionGroup) {
             return $transactionGroup->getBankAccount();
+        }
+
+        return null;
+    }
+
+    /**
+     * @GQL\Field(type="String")
+     */
+    public function getBankAccountName(): ?string
+    {
+        $transactionGroup = $this->getTransactionGroup();
+        if (null !== $transactionGroup) {
+            return $transactionGroup->getBankAccountName();
         }
 
         return null;
