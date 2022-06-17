@@ -78,9 +78,11 @@ function ReminderForm() {
       <Divider>Overzicht wie herrinnerd word.</Divider>
       <Table
         className="components-table-demo-nested"
+        rowKey={(record) => record.person.getId}
         columns={columns}
         expandable={{ expandedRowRender }}
         dataSource={personTransactions}
+        pagination={false}
       />
 
       <Divider />
