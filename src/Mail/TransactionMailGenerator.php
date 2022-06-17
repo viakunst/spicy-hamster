@@ -4,6 +4,7 @@ namespace App\Mail;
 
 use App\Entity\Person\Person;
 use App\Entity\Transaction\Transaction;
+use Psr\Log\LoggerInterface;
 use Twig\Environment;
 
 /**
@@ -13,9 +14,12 @@ class TransactionMailGenerator
 {
     private Environment $twig;
 
-    public function __construct(Environment $twig)
+    private LoggerInterface $logger;
+
+    public function __construct(Environment $twig, LoggerInterface $logger)
     {
         $this->twig = $twig;
+        $this->logger = $logger;
     }
 
     /**
@@ -23,6 +27,8 @@ class TransactionMailGenerator
      */
     public function generateBaseEmail(Person $person, $transactions): string
     {
+        $this->logger->debug('Generating emails');
+
         // Sanity check. ONLY transaction assoc to the person allowed.
         $transactions = array_filter(
             $transactions,
@@ -67,15 +73,15 @@ class TransactionMailGenerator
                 }
             );
 
-            array_push($transactionsByAccount, [
+            array_push($transactionsByAccount,
                 [
                     'account' => $account,
                     'transaction' => $filteredTransactions,
-                ],
-            ]);
+                ]
+            );
         }
 
-        $htmlContents = $this->twig->render('reminderEmail.html.twig', [
+        $htmlContents = $this->twig->render('email/reminderEmail.html.twig', [
             'person' => $person,
             'transactionsByAccount' => $transactionsByAccount,
         ]);

@@ -1,0 +1,77 @@
+
+{% extends 'email/baseMail.html.twig' %}
+
+
+{% block body_root %}
+<div  class="transaction email" >
+    <p>Hallo {{person.name}},</p>
+    <br>
+    <br>
+    <p>Je hebt nog een aantal betalingen openstaan.</p>
+    {% for transactionSet in transactionsByAccount %}
+        {% if transactionSet.transaction|length > 0 %}
+            <div class="card">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Openstaande betalingsherinneringen van de {{transactionSet.account.name}} </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for transaction in  transactionSet.transaction %}
+                        <tr>
+                            <td>
+                                <span> {{ transaction.title }} : &euro; {{  '%01.2f'|format(transaction.amount / 100) }} </span>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <br>
+            <br>
+            {% set total = transactionSet.transaction|reduce((carry, t) => carry + t.amount)  %}
+            Zou je daarom {{ '%01.2f'|format(total / 100) }} willen overmaken naar de <b>{{transactionSet.account.name}}</b>:
+            <br>
+            <br>
+            {{transactionSet.account.IBAN}}
+            <br>
+            T.n.v. ViaKunst 
+            <br>
+            O.v.v. {{person.name}} 
+            {% for transaction in transactionSet.transaction %}
+                {{transaction.title}}        
+            {% endfor %}
+        {% endif %}
+    {% endfor %}
+    <br>
+    <br>
+    Bij een deel van jullie zal het zo zijn dat de namen van alle activiteiten niet helemaal in 
+    de omschrijving bij de bank passen, vul alsjeblieft dan als omschrijving in afrekening t/m maart, 
+    maar splits wel nogsteeds de activiteitencommissie van de hoofdrekening :)
+    <br>
+    <br>
+    Mocht het zo zijn dat je een negatief bedrag hebt staan stuur dan even als reactie op deze mail een mailtje terug, 
+    dan maak ik het zo snel mogelijk over.
+    <br>
+    <br>
+    Als je vragen of problemen hebt, neem gerust contact met me op!
+    <br>
+    <br>
+    <i>* De bank kan soms vertraging hebben met het verwerken van overboekingen. 
+    Als je deze betalingsherinnering krijgt terwijl je bevestiging van je bank hebt dat je al betaald hebt, 
+    kan je deze mail als niet verzonden beschouwen. 
+    Zou je mij op de hoogte willen stellen als je het meer dan 3 dagen geleden het overgemaakt?</i>
+    <br>
+    <br>
+    Met vriendelijke groet,
+    <br>
+    <br>
+    Nica Odinot,
+    <br>
+    Penningmeester ViaKunst
+</div>
+{% endblock %}
+
+
+        
