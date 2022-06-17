@@ -3,9 +3,14 @@ import React from 'react';
 import {
   Form, Input, Checkbox, Table,
 } from 'antd';
-import { Transaction } from '../../Api/Backend';
+import { GraphQLClient } from 'graphql-request';
+import { Mutation } from 'react-query';
+import {
+  Transaction, useCreateTransactionMutation, useUpdateTransactionMutation, TransactionInput, useDeleteTransactionMutation,
+} from '../../Api/Backend';
 
 import { FormType, basicForm } from './FormHelper';
+import GraphqlService from '../../helpers/GraphqlService';
 
 interface TransactionCRUDprops {
   onAttributesUpdate: () => Promise<void>;
@@ -16,28 +21,43 @@ interface TransactionCRUDprops {
 function TransactionCRUD(props:TransactionCRUDprops) {
   const [form] = Form.useForm();
 
+  console.log('transaction crud on');
+  const createMutation = useCreateTransactionMutation(GraphqlService.getClient());
+  const updateMutation = useUpdateTransactionMutation(GraphqlService.getClient());
+  const deleteMutation = useDeleteTransactionMutation(GraphqlService.getClient());
+
   const {
     onAttributesUpdate,
     transaction,
     formtype,
   } = props;
 
-  const onCreateFinish = async () => {
+  const onCreateFinish = async (values: any) => {
     // Push attributes, that are actually editable, to list.
-
+    values.amount = parseInt(values.amount);
+    values.timesReminded = parseInt(values.timesReminded);
+    const transactionInput = values as TransactionInput;
+    createMutation.mutate({ transaction: transactionInput });
     onAttributesUpdate();
   };
 
-  const onUpdateFinish = async () => {
+  const onUpdateFinish = async (values:any) => {
     // Push attributes, that are actually editable, to list.
-
-    onAttributesUpdate();
+    values.timesReminded = parseInt(values.timesReminded);
+    values.amount = parseInt(values.amount);
+    const transactionInput = values as TransactionInput;
+    if (transaction !== undefined) {
+      updateMutation.mutate({ id: transaction.getId, transaction: transactionInput });
+      onAttributesUpdate();
+    }
   };
 
   const onDeleteFinish = async () => {
     // Push attributes, that are actually editable, to list.
-
-    onAttributesUpdate();
+    if (transaction !== undefined) {
+      deleteMutation.mutate({ id: transaction.getId });
+      onAttributesUpdate();
+    }
   };
 
   let content = (<>empty</>);
@@ -63,6 +83,12 @@ function TransactionCRUD(props:TransactionCRUDprops) {
       <Form.Item label="Status" name="status" rules={[{ required: true }]}>
         <Input />
       </Form.Item>
+      <Form.Item label="Reminders" name="timesReminded" rules={[{ required: true }]}>
+        <Input />
+      </Form.Item>
+      <Form.Item label="Bedrag" name="amount" rules={[{ required: true }]}>
+        <Input />
+      </Form.Item>
     </>
   );
 
@@ -71,6 +97,9 @@ function TransactionCRUD(props:TransactionCRUDprops) {
       <Checkbox>Ja, ik wil dit account echt verwijderen.</Checkbox>
     </Form.Item>
   );
+
+  console.log(formtype);
+  console.log(transaction);
 
   if (formtype === FormType.CREATE && transaction === undefined) {
     content = (

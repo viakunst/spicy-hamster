@@ -3,9 +3,13 @@ import React from 'react';
 import {
   Form, Input, Checkbox, Table,
 } from 'antd';
-import { Statement } from '../../Api/Backend';
+import { GraphQLClient } from 'graphql-request';
+import {
+  Statement, useCreateStatementMutation, useUpdateStatementMutation, useDeleteStatementMutation, StatementInput,
+} from '../../Api/Backend';
 
 import { FormType, basicForm } from './FormHelper';
+import GraphqlService from '../../helpers/GraphqlService';
 
 interface StatementCRUDProps {
   onAttributesUpdate: () => Promise<void>;
@@ -17,6 +21,11 @@ interface StatementCRUDProps {
 function StatementCRUD(props:StatementCRUDProps) {
   const [form] = Form.useForm();
 
+  console.log('statement crud on');
+  const createMutation = useCreateStatementMutation(GraphqlService.getClient());
+  const updateMutation = useUpdateStatementMutation(GraphqlService.getClient());
+  const deleteMutation = useDeleteStatementMutation(GraphqlService.getClient());
+
   const {
     onAttributesUpdate,
     statement,
@@ -25,22 +34,28 @@ function StatementCRUD(props:StatementCRUDProps) {
   } = props;
   console.log(admin);
 
-  const onCreateFinish = async () => {
+  const onCreateFinish = async (values : any) => {
     // Push attributes, that are actually editable, to list.
-
+    const statementInput = values as StatementInput;
+    createMutation.mutate({ statement: statementInput });
     onAttributesUpdate();
   };
 
-  const onUpdateFinish = async () => {
+  const onUpdateFinish = async (values : any) => {
     // Push attributes, that are actually editable, to list.
-
-    onAttributesUpdate();
+    const statementInput = values as StatementInput;
+    if (statement !== undefined) {
+      updateMutation.mutate({ id: statement.getId, statement: statementInput });
+      onAttributesUpdate();
+    }
   };
 
   const onDeleteFinish = async () => {
     // Push attributes, that are actually editable, to list.
-
-    onAttributesUpdate();
+    if (statement !== undefined) {
+      deleteMutation.mutate({ id: statement.getId });
+      onAttributesUpdate();
+    }
   };
 
   let content = (<>empty</>);
@@ -92,7 +107,7 @@ function StatementCRUD(props:StatementCRUDProps) {
 
   const deleteFormItems = (
     <Form.Item name="sure" valuePropName="checked" noStyle>
-      <Checkbox>Ja, ik wil dit account echt verwijderen.</Checkbox>
+      <Checkbox>Ja, ik wil deze declaratie echt verwijderen.</Checkbox>
     </Form.Item>
   );
 
@@ -129,7 +144,7 @@ function StatementCRUD(props:StatementCRUDProps) {
       { key: 'IBAN', value: statement.IBAN },
       { key: 'Bedrag', value: statement.amount },
       { key: 'Opmerking', value: statement.comment },
-      { key: 'Feedcak', value: statement.feedback },
+      { key: 'Feedback', value: statement.feedback },
       { key: 'email', value: statement.mail },
       { key: 'naam', value: statement.name },
       { key: 'reden', value: statement.reason },

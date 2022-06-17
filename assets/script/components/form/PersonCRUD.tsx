@@ -73,7 +73,7 @@ function PersonCRUD(props:PersonCreateProps) {
       <Form.Item label="Voornaam" name="givenName" rules={[{ required: true }]}>
         <Input />
       </Form.Item>
-      <Form.Item label="Voornaam" name="familyName" rules={[{ required: true }]}>
+      <Form.Item label="Achternaam" name="familyName" rules={[{ required: true }]}>
         <Input />
       </Form.Item>
       <Form.Item label="email" name="email" rules={[{ required: true, type: 'email' }]}>

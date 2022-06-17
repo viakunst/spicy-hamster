@@ -3,9 +3,12 @@ import React from 'react';
 import {
   Form, Input, Checkbox, Table,
 } from 'antd';
-import { TransactionGroup } from '../../Api/Backend';
+import {
+  TransactionGroup, useCreateTransactionGroupMutation, useDeleteTransactionGroupMutation, useUpdateTransactionGroupMutation, TransactionGroupInput,
+} from '../../Api/Backend';
 
 import { FormType, basicForm } from './FormHelper';
+import GraphqlService from '../../helpers/GraphqlService';
 
 interface TransactionGroupCRUDProps {
   onAttributesUpdate: () => Promise<void>;
@@ -16,28 +19,39 @@ interface TransactionGroupCRUDProps {
 function TransactionGroupCRUD(props:TransactionGroupCRUDProps) {
   const [form] = Form.useForm();
 
+  console.log('transaction group crud on');
+  const createMutation = useCreateTransactionGroupMutation(GraphqlService.getClient());
+  const updateMutation = useUpdateTransactionGroupMutation(GraphqlService.getClient());
+  const deleteMutation = useDeleteTransactionGroupMutation(GraphqlService.getClient());
+
   const {
     onAttributesUpdate,
     transactionGroup,
     formtype,
   } = props;
 
-  const onCreateFinish = async () => {
+  const onCreateFinish = async (values: any) => {
     // Push attributes, that are actually editable, to list.
-
+    const transactionGroupInput = values as TransactionGroupInput;
+    createMutation.mutate({ transactionGroup: transactionGroupInput });
     onAttributesUpdate();
   };
 
-  const onUpdateFinish = async () => {
+  const onUpdateFinish = async (values: any) => {
     // Push attributes, that are actually editable, to list.
-
-    onAttributesUpdate();
+    const transactionGroupInput = values as TransactionGroupInput;
+    if (transactionGroup !== undefined) {
+      updateMutation.mutate({ id: transactionGroup.getId, transactionGroup: transactionGroupInput });
+      onAttributesUpdate();
+    }
   };
 
   const onDeleteFinish = async () => {
     // Push attributes, that are actually editable, to list.
-
-    onAttributesUpdate();
+    if (transactionGroup !== undefined) {
+      deleteMutation.mutate({ id: transactionGroup.getId });
+      onAttributesUpdate();
+    }
   };
 
   let content = (<>empty</>);
@@ -60,9 +74,6 @@ function TransactionGroupCRUD(props:TransactionGroupCRUDProps) {
       <Form.Item label="IBAN" name="givenName" rules={[{ required: true }]}>
         <Input />
       </Form.Item>
-      <Form.Item label="Bedrag" name="amount" rules={[{ required: true }]}>
-        <Input />
-      </Form.Item>
       <Form.Item label="Omschrijving" name="description" rules={[{ required: true, type: 'email' }]}>
         <Input />
       </Form.Item>
@@ -74,9 +85,12 @@ function TransactionGroupCRUD(props:TransactionGroupCRUDProps) {
 
   const deleteFormItems = (
     <Form.Item name="sure" valuePropName="checked" noStyle>
-      <Checkbox>Ja, ik wil dit account echt verwijderen.</Checkbox>
+      <Checkbox>Ja, ik wil deze transactiegroep echt verwijderen.</Checkbox>
     </Form.Item>
   );
+
+  console.log(formtype);
+  console.log(transactionGroup);
 
   if (formtype === FormType.CREATE && transactionGroup === undefined) {
     content = (
