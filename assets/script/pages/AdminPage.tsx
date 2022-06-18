@@ -11,7 +11,6 @@ import {
 } from '@ant-design/icons';
 
 import AdminTransactionPool from '../components/admin-components/AdminTransactionPool';
-import AdminTransactionGroupPool from '../components/admin-components/AdminTransactionGroupPool';
 import AdminMailPool from '../components/admin-components/AdminMailPool';
 import AdminPersonPool from '../components/admin-components/AdminPersonPool';
 import AdminStatementPool from '../components/admin-components/AdminStatementPool';
@@ -46,7 +45,7 @@ const items: MenuProps['items'] = [
     getItem('Nieuwe transactie groep', 'transaction-new'),
     getItem('Per persoon', 'transaction-person'),
     getItem('Per activiteit', 'transaction-group'),
-    getItem('Totaal', 'total'),
+    getItem('Totaal', 'transaction-total'),
     getItem('Verstuur betaalherrinneringen', 'transaction-reminder'),
   ]),
 
@@ -80,18 +79,16 @@ export default function AdminPage() {
     switch (menuState) {
       case 'persons':
         return <AdminPersonPool />;
-      case 'group':
-        return <AdminTransactionGroupPool />;
-      case 'total':
-        return <AdminTransactionPool />;
       case 'transaction-new':
         return <TransactionCreator />;
       case 'transaction-reminder':
         return <ReminderForm />;
       case 'transaction-group':
-        return <AdminTransactionGroupPool />;
+        return <AdminTransactionPool mode="group" />;
       case 'transaction-person':
-        return <AdminTransactionGroupPool />;
+        return <AdminTransactionPool mode="person" />;
+      case 'transaction-total':
+        return <AdminTransactionPool mode="total" />;
       case 'statements':
         return <AdminStatementPool />;
       case 'emails':

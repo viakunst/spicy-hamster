@@ -37,6 +37,7 @@ class TransactionGroup
 
     /**
      * @ORM\Column(type="datetime")
+     * @GQL\Field(type="DateTimeScalar")
      */
     private \DateTime $date;
 

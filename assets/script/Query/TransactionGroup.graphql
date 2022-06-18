@@ -3,12 +3,19 @@ query GetTransactionGroups {
   transactionGroups {
     getId
     description
+    date
     title
     getTransactions {
       getId
+      getPerson {
+        getName
+      }
+      amount
+      comment
+      status
     }
     getBankAccount {
-      getId
+      name
     }
   }
 }

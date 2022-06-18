@@ -28,6 +28,12 @@ query GetAllTransactionsCoupledWithPerson {
       getDate
       amount
       comment
+      status
+      getTransactionGroup {
+        getBankAccount {
+          name
+        }
+      }
     }
   }
 }

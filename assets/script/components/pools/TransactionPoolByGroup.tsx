@@ -1,36 +1,40 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
-  Modal, Table, Button, Space,
+  Modal, Table, Button, Space, Badge,
 } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 
 import 'antd/dist/antd.css';
 
-import { Transaction, useGetTransactionsQuery } from '../../Api/Backend';
+import {
+  Transaction, TransactionGroup, useGetTransactionGroupsQuery, useSwitchTransactionStatusMutation,
+} from '../../Api/Backend';
 import { FormType } from '../form/FormHelper';
+import TransactionGroupCRUD from '../form/TransactionGroupCRUD';
 import TransactionCRUD from '../form/TransactionCRUD';
 import GraphqlService from '../../helpers/GraphqlService';
 
-interface TransactionPoolState {
+interface TransactionGroupPoolState {
   searchAttribute: string | null,
   modelTitle: string,
   modelVisible: boolean,
   modelContent: JSX.Element,
-  selectedTransaction: Transaction | null,
+  selectedTransactionGroup: TransactionGroup | null,
 }
 
-function TransactionPool() {
+function TransactionPoolByGroup() {
   const {
     data, isLoading, isError, refetch,
-  } = useGetTransactionsQuery(GraphqlService.getClient());
+  } = useGetTransactionGroupsQuery(GraphqlService.getClient());
 
-  const [state, setState] = useState<TransactionPoolState>({
+  const switchStatusMutation = useSwitchTransactionStatusMutation(GraphqlService.getClient());
+  const [state, setState] = useState<TransactionGroupPoolState>({
     searchAttribute: '',
     modelTitle: 'unknown',
     modelVisible: false,
-    modelContent: <>empty</>,
-    selectedTransaction: null,
+    modelContent: (<>empty</>),
+    selectedTransactionGroup: null,
   });
 
   if (isLoading || isError || data === undefined) {
@@ -41,55 +45,117 @@ function TransactionPool() {
     refetch();
   };
 
-  const openModal = async (e: MouseEvent, formType: string, transaction?: Transaction) => {
+  const onSwitchStatus = async (transaction : any) => {
+    if (transaction.status !== 'Loading') {
+      switchStatusMutation.mutate({ id: transaction.getId });
+      transaction.status = 'Loading';
+      handleChange();
+    }
+  };
+
+  const openModal = async (
+    e: MouseEvent,
+    formType: string,
+    transactionGroup?: TransactionGroup,
+    transaction?: Transaction,
+  ) => {
     let modelTitle = 'unknown';
     let modelContent = <>empty</>;
     const modelVisible = true;
 
-    switch (formType) {
-      case FormType.CREATE:
-        modelTitle = 'Maak nieuw persoon aan.';
-        modelContent = (
-          <TransactionCRUD
-            formtype={FormType.CREATE}
-            onAttributesUpdate={handleChange}
-            transaction={transaction}
-          />
-        );
-        break;
-      case FormType.READ:
-        modelTitle = 'Details van persoon';
-        modelContent = (
-          <TransactionCRUD
-            formtype={FormType.READ}
-            onAttributesUpdate={handleChange}
-            transaction={transaction}
-          />
-        );
-        break;
-      case FormType.UPDATE:
-        modelTitle = 'Bewerk persoon';
-        modelContent = (
-          <TransactionCRUD
-            formtype={FormType.UPDATE}
-            onAttributesUpdate={handleChange}
-            transaction={transaction}
-          />
-        );
-        break;
-      case FormType.DELETE:
-        modelTitle = 'Verwijder persoon';
-        modelContent = (
-          <TransactionCRUD
-            formtype={FormType.DELETE}
-            onAttributesUpdate={handleChange}
-            transaction={transaction}
-          />
-        );
-        break;
-      default:
-        console.log('error');
-        break;
+    if (transaction !== null) {
+      switch (formType) {
+        case FormType.CREATE:
+          modelTitle = 'Maak nieuw persoon aan.';
+          modelContent = (
+            <TransactionCRUD
+              formtype={FormType.CREATE}
+              onAttributesUpdate={handleChange}
+              transaction={transaction}
+            />
+          );
+          break;
+        case FormType.READ:
+          modelTitle = 'Details van persoon';
+          modelContent = (
+            <TransactionCRUD
+              formtype={FormType.READ}
+              onAttributesUpdate={handleChange}
+              transaction={transaction}
+            />
+          );
+          break;
+        case FormType.UPDATE:
+          modelTitle = 'Bewerk persoon';
+          modelContent = (
+            <TransactionCRUD
+              formtype={FormType.UPDATE}
+              onAttributesUpdate={handleChange}
+              transaction={transaction}
+            />
+          );
+          break;
+        case FormType.DELETE:
+          modelTitle = 'Verwijder persoon';
+          modelContent = (
+            <TransactionCRUD
+              formtype={FormType.DELETE}
+              onAttributesUpdate={handleChange}
+              transaction={transaction}
+            />
+          );
+          break;
+        default:
+          console.log('error');
+          break;
+      }
+    }
+    if (transactionGroup !== null) {
+      switch (formType) {
+        case FormType.CREATE:
+          modelTitle = 'Maak nieuw persoon aan.';
+          modelContent = (
+            <TransactionGroupCRUD
+              formtype={FormType.CREATE}
+              onAttributesUpdate={handleChange}
+              transactionGroup={transactionGroup}
+            />
+          );
+          break;
+        case FormType.READ:
+          modelTitle = 'Details van persoon';
+          modelContent = (
+            <TransactionGroupCRUD
+              formtype={FormType.READ}
+              onAttributesUpdate={handleChange}
+              transactionGroup={transactionGroup}
+            />
+          );
+          break;
+        case FormType.UPDATE:
+          modelTitle = 'Bewerk persoon';
+          modelContent = (
+            <TransactionGroupCRUD
+              formtype={FormType.UPDATE}
+              onAttributesUpdate={handleChange}
+              transactionGroup={transactionGroup}
+            />
+          );
+          break;
+        case FormType.DELETE:
+          modelTitle = 'Verwijder persoon';
+          modelContent = (
+            <TransactionGroupCRUD
+              formtype={FormType.DELETE}
+              onAttributesUpdate={handleChange}
+              transactionGroup={transactionGroup}
+            />
+          );
+          break;
+        default:
+          console.log('error');
+          break;
+      }
     }
 
     setState({
@@ -101,46 +167,101 @@ function TransactionPool() {
     setState({ ...state, modelVisible: false });
   };
 
+  const expandedRowRender = (record:TransactionGroup) => {
+    const columns: ColumnsType<Transaction> = [
+      { title: 'Persoon', dataIndex: ['getPerson', 'getName'], key: 'name' },
+      { title: 'Bedrag', dataIndex: 'amount', key: 'amount' },
+      { title: 'Opmerking', dataIndex: 'comment', key: 'comment' },
+      {
+        title: 'Status',
+        key: 'state',
+        render: (_, { status }) => {
+          if (status === 'Openstaand') {
+            return (<span><Badge status="error" />Openstaand</span>);
+          }
+          if (status === 'Loading') {
+            return (<span><Badge status="warning" />Laden</span>);
+          }
+          if (status === 'Voldaan') {
+            return (<span><Badge status="success" />Voldaan</span>);
+          }
+          return (<span><Badge status="warning" />Onbekend</span>);
+        },
+      },
+      {
+        title: 'Details',
+        key: 'action',
+        render: (text, transactionRecord) => (
+          <Space>
+            <Button onClick={
+              (e) => openModal(e.nativeEvent, FormType.READ, undefined, transactionRecord)
+              }
+            >Details
+            </Button>
+            <Button onClick={() => onSwitchStatus(transactionRecord)}>Status
+            </Button>
+            <Button onClick={
+              (e) => openModal(e.nativeEvent, FormType.UPDATE, undefined, transactionRecord)
+              }
+            >Bewerken
+            </Button>
+            <Button onClick={
+              (e) => openModal(e.nativeEvent, FormType.DELETE, undefined, transactionRecord)
+              }
+            >verwijderen
+            </Button>
+          </Space>
+        ),
+      },
+    ];
+
+    const data = record.getTransactions as Transaction[];
+    return <Table columns={columns} dataSource={data} pagination={false} />;
+  };
+
   // These are the columns of the table.
-  const columns: ColumnsType<Transaction> = [
+  const columns: ColumnsType<TransactionGroup> = [
     {
-      title: 'Opmerking',
-      dataIndex: 'comment',
-      key: 'comment',
+      title: 'Naam',
+      dataIndex: 'title',
+      key: 'title',
     },
     {
-      title: 'Status',
-      dataIndex: 'status',
-      key: 'status',
+      title: 'Omschrijving',
+      dataIndex: 'description',
+      key: 'description',
+    },
+    {
+      title: 'Datum',
+      dataIndex: 'date',
+      key: 'date',
+    },
+    {
+      title: 'Bankrekening',
+      dataIndex: ['getBankAccount', 'name'],
+      key: 'account',
     },
     {
       title: 'Details',
       key: 'action',
       render: (text, record) => (
-        <>
-          <span>
-            <Button onClick={
-              (e) => openModal(e.nativeEvent, FormType.READ, record)
-              }
-            >Details
-            </Button>
-          </span>
-          <span>
-            <Button onClick={
-              (e) => openModal(e.nativeEvent, FormType.UPDATE, record)
-              }
-            >Bewerken
-            </Button>
-          </span>
-          <span>
-            <Button onClick={
-              (e) => openModal(e.nativeEvent, FormType.DELETE, record)
-              }
-            >verwijderen
-            </Button>
-          </span>
-
-        </>
+        <Space>
+          <Button onClick={
+            (e) => openModal(e.nativeEvent, FormType.READ, record)
+            }
+          >Details
+          </Button>
+          <Button onClick={
+            (e) => openModal(e.nativeEvent, FormType.UPDATE, record)
+            }
+          >Bewerken
+          </Button>
+          <Button onClick={
+            (e) => openModal(e.nativeEvent, FormType.DELETE, record)
+            }
+          >verwijderen
+          </Button>
+        </Space>
       ),
     },
   ];
@@ -149,7 +270,7 @@ function TransactionPool() {
     modelContent, modelTitle, modelVisible,
   } = state;
 
-  const transactions = data.transactions as Transaction[];
+  const transactionGroups = data.transactionGroups as TransactionGroup[];
 
   return (
     <div>
@@ -158,11 +279,17 @@ function TransactionPool() {
 
         <Space>
           <Button type="primary" onClick={(e) => openModal(e.nativeEvent, FormType.CREATE)}>
-            Nieuwe transactie
+            Nieuwe transactie groep
           </Button>
         </Space>
 
-        <Table pagination={false} columns={columns} rowKey="id" dataSource={transactions} />
+        <Table
+          rowKey={(record) => record.getId}
+          columns={columns}
+          expandable={{ expandedRowRender }}
+          dataSource={transactionGroups}
+          pagination={false}
+        />
 
         <Modal
           title={modelTitle}
@@ -179,4 +306,4 @@ function TransactionPool() {
   );
 }
 
-export default TransactionPool;
+export default TransactionPoolByGroup;
