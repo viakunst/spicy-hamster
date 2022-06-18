@@ -96,6 +96,33 @@ class Query
     }
 
     /**
+     * @GQL\Field(type="[PersonTransactions]")
+     * @GQL\Description("All persons with outstanding transactions.")
+     * @GQL\Access("isAuthenticated()")
+     *
+     * @return PersonTransactions[]
+     */
+    public function getAllTransactionsCoupledWithPerson()
+    {
+        $persons = $this->em->getRepository(Person::class)->findAll();
+        $person_transactions_array = [];
+
+        foreach ($persons as $person) {
+            $transactions = $this->em->getRepository(Transaction::class)->findBy([
+                'person' => $person,
+            ]);
+
+            if (0 != count($transactions)) {
+                $person_transactions = new PersonTransactions($person, $transactions);
+
+                array_push($person_transactions_array, $person_transactions);
+            }
+        }
+
+        return $person_transactions_array;
+    }
+
+    /**
      * @GQL\Field(type="[Statement]")
      * @GQL\Description("All statements stored in the database.")
      * @GQL\Access("isAuthenticated()")

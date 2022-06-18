@@ -92,14 +92,31 @@ class TransactionMutation extends AbstractMutation
 
     /**
      * @GQL\Field(type="String!")
-     * @GQL\Description("Send transaction reminder.")
+     * @GQL\Description("Switch transaction status.")
      * @GQL\Access("isAuthenticated()")
      */
     public function switchTransactionStatus(string $id): string
     {
         $dbtransaction = $this->em->getRepository(Transaction::class)->findOneBy(['id' => $id]);
         if (null !== $dbtransaction) {
-            // ??
+            $currentStatus = $dbtransaction->getStatus();
+            $new_status = null;
+
+            if (null === $currentStatus) {
+                $new_status = Transaction::OUTSTANDING;
+                $dbtransaction->setStatus($new_status);
+            }
+            if (Transaction::OUTSTANDING === $currentStatus) {
+                $new_status = Transaction::PAID;
+                $dbtransaction->setStatus($new_status);
+            }
+            if (Transaction::PAID === $currentStatus) {
+                $new_status = Transaction::OUTSTANDING;
+                $dbtransaction->setStatus($new_status);
+            }
+
+            $this->em->persist($dbtransaction);
+            $this->em->flush();
 
             return 'success';
         }

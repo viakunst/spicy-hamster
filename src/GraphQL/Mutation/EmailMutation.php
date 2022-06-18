@@ -49,24 +49,52 @@ class EmailMutation extends AbstractMutation
 
     /**
      * @GQL\Field(type="String!")
+     * @GQL\Arg(name="ids", type="[String]")
+     * @GQL\Description("Send transaction reminder.")
+     * @GQL\Access("isAuthenticated()")
+     *
+     * @param array<string> $ids
+     */
+    public function sendAllRemindersByPerson($ids): string
+    {
+        $persons = $this->em->getRepository(Person::class)->findBy(['id' => $ids]);
+
+        if (0 !== count($persons)) {
+            foreach ($persons as $person) {
+                $transactions = $this->em->getRepository(Transaction::class)->findBy([
+                    'person' => $person,
+                    'status' => Transaction::OUTSTANDING,
+                ]);
+                $hmtl = $this->mailGenerator->generateBaseEmail($person, $transactions);
+                $this->mailer->message([$person], 'Viakunst Betaalherrinnering', $hmtl);
+            }
+
+            return 'success';
+        }
+
+        return 'failure: no persons found.';
+    }
+
+    /**
+     * @GQL\Field(type="String!")
      * @GQL\Description("Send transaction reminder.")
      * @GQL\Access("isAuthenticated()")
      */
-    public function sendAllRemindersByPerson(string $id): string
+    public function getReminderExampleByPerson(string $id): string
     {
         $person = $this->em->getRepository(Person::class)->findOneBy(['id' => $id]);
+
         if (null !== $person) {
             $transactions = $this->em->getRepository(Transaction::class)->findBy([
                 'person' => $person,
                 'status' => Transaction::OUTSTANDING,
             ]);
             $hmtl = $this->mailGenerator->generateBaseEmail($person, $transactions);
-            $this->mailer->message([$person], 'Viakunst Betaalherrinnering', $hmtl);
 
-            return 'success';
+            return $hmtl;
         }
 
-        return "failure: person with id {$id} was not found";
+        return 'failure: no person found.';
     }
 
     /**

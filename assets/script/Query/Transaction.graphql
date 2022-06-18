@@ -15,11 +15,34 @@ query GetTransactions {
   }
 }
 
+query GetAllTransactionsCoupledWithPerson {
+  getAllTransactionsCoupledWithPerson {
+    person {
+      getId
+      getName
+      email
+    }
+    transactions {
+      getId
+      getTitle
+      getDate
+      amount
+      comment
+    }
+  }
+}
+
 mutation CreateTransaction($transaction: TransactionInput!) {
   transactionMutation {
     createTransaction(transaction: $transaction)
   }
 } 
+
+mutation SwitchTransactionStatus($id: String!) {
+  transactionMutation {
+    switchTransactionStatus(id: $id)
+  }
+}
 
 mutation UpdateTransaction($id: String!, $transaction: TransactionInput!) {
   transactionMutation {

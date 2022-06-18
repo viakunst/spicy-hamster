@@ -30,8 +30,14 @@ mutation sendAllReminders {
   }
 } 
 
-mutation sendAllRemindersByPerson($id: String!) {
+mutation sendAllRemindersByPerson($ids: [String]) {
   emailMutation {
-    sendAllRemindersByPerson(id: $id)
+    sendAllRemindersByPerson(ids: $ids)
   }
 } 
+
+mutation GetReminderExampleByPerson($id: String!) {
+  emailMutation {
+    getReminderExampleByPerson(id: $id)
+  }
+}
