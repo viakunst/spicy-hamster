@@ -1,7 +1,7 @@
 import React from 'react';
 
 import {
-  Form, Input, Checkbox, Table, message
+  Form, Input, Checkbox, Table, message,
 } from 'antd';
 import { GraphQLClient } from 'graphql-request';
 import {
@@ -32,7 +32,7 @@ function StatementCRUD(props:StatementCRUDProps) {
     formtype,
     admin,
   } = props;
-  
+
   let disabled = false;
   if (createMutation.isLoading || updateMutation.isLoading || deleteMutation.isLoading) {
     disabled = true;
@@ -60,7 +60,6 @@ function StatementCRUD(props:StatementCRUDProps) {
     deleteMutation.reset();
     message.error('Er is iets fout gegaan.');
   }
-
 
   const onCreateFinish = async (values : any) => {
     // Push attributes, that are actually editable, to list.
@@ -131,7 +130,14 @@ function StatementCRUD(props:StatementCRUDProps) {
   );
 
   const deleteFormItems = (
-    <Form.Item name="sure" valuePropName="checked" noStyle>
+    <Form.Item
+      name="sure"
+      valuePropName="checked"
+      wrapperCol={{
+        xs: { span: 24, offset: 0 },
+        sm: { span: 16, offset: 4 },
+      }}
+    >
       <Checkbox>Ja, ik wil deze declaratie echt verwijderen.</Checkbox>
     </Form.Item>
   );
@@ -159,7 +165,7 @@ function StatementCRUD(props:StatementCRUDProps) {
 
     content = (
       <>
-        {basicForm(form, onUpdateFinish, 'Opslaan',  'Opslaan...', disabled, updateCreateFormItems, updateInitial)}
+        {basicForm(form, onUpdateFinish, 'Opslaan', 'Opslaan...', disabled, updateCreateFormItems, updateInitial)}
       </>
     );
   }
@@ -186,7 +192,7 @@ function StatementCRUD(props:StatementCRUDProps) {
   if (formtype === FormType.DELETE && statement !== undefined) {
     content = (
       <>
-        {basicForm(form, onDeleteFinish, 'Verwijder',  'Verwijderen...', disabled,  deleteFormItems)}
+        {basicForm(form, onDeleteFinish, 'Verwijder', 'Verwijderen...', disabled, deleteFormItems)}
       </>
     );
   }

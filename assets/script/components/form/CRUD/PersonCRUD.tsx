@@ -1,7 +1,7 @@
 import React from 'react';
 
 import {
-  Form, Input, Checkbox, Table, message
+  Form, Input, Checkbox, Table, message,
 } from 'antd';
 import {
   Person, useCreatePersonMutation, useUpdatePersonMutation, useDeletePersonMutation, PersonInput,
@@ -9,7 +9,7 @@ import {
 
 import GraphqlService from '../../../helpers/GraphqlService';
 
-import { FormType, basicForm } from './../FormHelper';
+import { FormType, basicForm } from '../FormHelper';
 
 interface PersonCreateProps {
   onAttributesUpdate: () => void;
@@ -36,7 +36,6 @@ function PersonCRUD(props:PersonCreateProps) {
     disabled = true;
   }
 
-  
   if (createMutation.isSuccess) {
     createMutation.reset();
     message.success('Persoon succesvol aangemaakt.');
@@ -115,7 +114,14 @@ function PersonCRUD(props:PersonCreateProps) {
   );
 
   const deleteFormItems = (
-    <Form.Item name="sure" valuePropName="checked" noStyle>
+    <Form.Item
+      name="sure"
+      valuePropName="checked"
+      wrapperCol={{
+        xs: { span: 24, offset: 0 },
+        sm: { span: 16, offset: 4 },
+      }}
+    >
       <Checkbox>Ja, ik wil dit account echt verwijderen.</Checkbox>
     </Form.Item>
   );
@@ -126,7 +132,7 @@ function PersonCRUD(props:PersonCreateProps) {
   if (formtype === FormType.CREATE && person === undefined) {
     content = (
       <>
-        {basicForm(form, onCreateFinish,  'Maak aan', 'Aanmaken...', disabled,  updateCreateFormItems)}
+        {basicForm(form, onCreateFinish, 'Maak aan', 'Aanmaken...', disabled, updateCreateFormItems)}
       </>
     );
   }

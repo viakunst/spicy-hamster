@@ -1,7 +1,7 @@
 import React from 'react';
 
 import {
-  Form, Input, Checkbox, Table, message
+  Form, Input, Checkbox, Table, message,
 } from 'antd';
 import { GraphQLClient } from 'graphql-request';
 import { Mutation } from 'react-query';
@@ -117,7 +117,14 @@ function TransactionCRUD(props:TransactionCRUDprops) {
   );
 
   const deleteFormItems = (
-    <Form.Item name="sure" valuePropName="checked" noStyle>
+    <Form.Item
+      name="sure"
+      valuePropName="checked"
+      wrapperCol={{
+        xs: { span: 24, offset: 0 },
+        sm: { span: 16, offset: 4 },
+      }}
+    >
       <Checkbox>Ja, ik wil dit account echt verwijderen.</Checkbox>
     </Form.Item>
   );
@@ -128,7 +135,7 @@ function TransactionCRUD(props:TransactionCRUDprops) {
   if (formtype === FormType.CREATE && transaction === undefined) {
     content = (
       <>
-        {basicForm(form, onCreateFinish, 'Maak aan', 'Aanmaken...' , disabled, updateCreateFormItems)}
+        {basicForm(form, onCreateFinish, 'Maak aan', 'Aanmaken...', disabled, updateCreateFormItems)}
       </>
     );
   }
@@ -141,7 +148,7 @@ function TransactionCRUD(props:TransactionCRUDprops) {
 
     content = (
       <>
-        {basicForm(form, onUpdateFinish, 'Opslaan', 'Opslaan...' , disabled, updateCreateFormItems, updateInitial)}
+        {basicForm(form, onUpdateFinish, 'Opslaan', 'Opslaan...', disabled, updateCreateFormItems, updateInitial)}
       </>
     );
   }
@@ -162,7 +169,7 @@ function TransactionCRUD(props:TransactionCRUDprops) {
   if (formtype === FormType.DELETE && transaction !== undefined) {
     content = (
       <>
-        {basicForm(form, onDeleteFinish, 'Verwijder', 'Verwijderen...' , disabled, deleteFormItems)}
+        {basicForm(form, onDeleteFinish, 'Verwijder', 'Verwijderen...', disabled, deleteFormItems)}
       </>
     );
   }

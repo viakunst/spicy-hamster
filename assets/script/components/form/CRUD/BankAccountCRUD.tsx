@@ -1,7 +1,7 @@
 import React from 'react';
 
 import {
-  Form, Input, Checkbox, Table, message
+  Form, Input, Checkbox, Table, message,
 } from 'antd';
 import {
   BankAccount, useCreateBankAccountMutation, useUpdateBankAccountMutation, useDeleteBankAccountMutation, BankAccountInput,
@@ -57,7 +57,7 @@ function BankAccountCRUD(props:BankAccountCreateProps) {
     deleteMutation.reset();
     message.error('Er is iets fout gegaan.');
   }
-  
+
   const onCreateFinish = async (values: any) => {
     const bankaccountInput = values as BankAccountInput;
     createMutation.mutate({ bankaccount: bankaccountInput });
@@ -71,8 +71,8 @@ function BankAccountCRUD(props:BankAccountCreateProps) {
     }
   };
 
-  const onDeleteFinish = async () => {
-    if (bankaccount !== undefined) {
+  const onDeleteFinish = async (values:any) => {
+    if (bankaccount !== undefined && values.sure === true) {
       deleteMutation.mutate({ id: bankaccount.getId });
     }
   };
@@ -104,18 +104,22 @@ function BankAccountCRUD(props:BankAccountCreateProps) {
   );
 
   const deleteFormItems = (
-    <Form.Item name="sure" valuePropName="checked" noStyle>
-      <Checkbox>Ja, ik wil dit account echt verwijderen.</Checkbox>
+    <Form.Item
+      name="sure"
+      valuePropName="checked"
+      wrapperCol={{
+        xs: { span: 24, offset: 0 },
+        sm: { span: 16, offset: 4 },
+      }}
+    >
+      <Checkbox> Ja, ik wil dit bank account echt verwijderen. </Checkbox>
     </Form.Item>
   );
-
-  console.log(formtype);
-  console.log(bankaccount);
 
   if (formtype === FormType.CREATE && bankaccount === undefined) {
     content = (
       <>
-        {basicForm(form, onCreateFinish, 'Maak aan', 'Aanmaken...', disabled,  updateCreateFormItems)}
+        {basicForm(form, onCreateFinish, 'Maak aan', 'Aanmaken...', disabled, updateCreateFormItems)}
       </>
     );
   }
@@ -139,11 +143,7 @@ function BankAccountCRUD(props:BankAccountCreateProps) {
       { key: 'IBAN', value: bankaccount.IBAN },
     ];
 
-    content = (
-      <div style={{ padding: 24, background: '#fff', minHeight: 360 }}>
-        <Table dataSource={readData} columns={readColumns} />
-      </div>
-    );
+    content = (<Table dataSource={readData} columns={readColumns} pagination={false} />);
   }
 
   if (formtype === FormType.DELETE && bankaccount !== undefined) {
@@ -155,7 +155,10 @@ function BankAccountCRUD(props:BankAccountCreateProps) {
   }
 
   return (
-    <div style={{ padding: 24, background: '#fff', minHeight: 360 }}>
+    <div style={{
+      padding: 5, background: '#fff', width: '100%', resize: 'both',
+    }}
+    >
       {content}
     </div>
   );

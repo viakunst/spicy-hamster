@@ -1,13 +1,13 @@
 import React from 'react';
 
 import {
-  Form, Input, Checkbox, Table, message
+  Form, Input, Checkbox, Table, message,
 } from 'antd';
 import {
   TransactionGroup, useCreateTransactionGroupMutation, useDeleteTransactionGroupMutation, useUpdateTransactionGroupMutation, TransactionGroupInput,
 } from '../../../Api/Backend';
 
-import { FormType, basicForm } from './../FormHelper';
+import { FormType, basicForm } from '../FormHelper';
 import GraphqlService from '../../../helpers/GraphqlService';
 
 interface TransactionGroupCRUDProps {
@@ -57,7 +57,6 @@ function TransactionGroupCRUD(props:TransactionGroupCRUDProps) {
     deleteMutation.reset();
     message.error('Er is iets fout gegaan.');
   }
-
 
   const onCreateFinish = async (values: any) => {
     // Push attributes, that are actually editable, to list.
@@ -110,7 +109,14 @@ function TransactionGroupCRUD(props:TransactionGroupCRUDProps) {
   );
 
   const deleteFormItems = (
-    <Form.Item name="sure" valuePropName="checked" noStyle>
+    <Form.Item
+      name="sure"
+      valuePropName="checked"
+      wrapperCol={{
+        xs: { span: 24, offset: 0 },
+        sm: { span: 16, offset: 4 },
+      }}
+    >
       <Checkbox>Ja, ik wil deze transactiegroep echt verwijderen.</Checkbox>
     </Form.Item>
   );
@@ -121,7 +127,7 @@ function TransactionGroupCRUD(props:TransactionGroupCRUDProps) {
   if (formtype === FormType.CREATE && transactionGroup === undefined) {
     content = (
       <>
-        {basicForm(form, onCreateFinish, 'Maak aan', 'Aanmaken...' , disabled, updateCreateFormItems)}
+        {basicForm(form, onCreateFinish, 'Maak aan', 'Aanmaken...', disabled, updateCreateFormItems)}
       </>
     );
   }
@@ -134,7 +140,7 @@ function TransactionGroupCRUD(props:TransactionGroupCRUDProps) {
 
     content = (
       <>
-        {basicForm(form, onUpdateFinish, 'Opslaan', 'Opslaan...' , disabled,updateCreateFormItems, updateInitial)}
+        {basicForm(form, onUpdateFinish, 'Opslaan', 'Opslaan...', disabled, updateCreateFormItems, updateInitial)}
       </>
     );
   }
@@ -155,7 +161,7 @@ function TransactionGroupCRUD(props:TransactionGroupCRUDProps) {
   if (formtype === FormType.DELETE && transactionGroup !== undefined) {
     content = (
       <>
-        {basicForm(form, onDeleteFinish, 'Verwijder', 'Verwijderen...' , disabled,  deleteFormItems)}
+        {basicForm(form, onDeleteFinish, 'Verwijder', 'Verwijderen...', disabled, deleteFormItems)}
       </>
     );
   }

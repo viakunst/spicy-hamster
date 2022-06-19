@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
-  Modal, Table, Button,
+  Modal, Table, Button, Space,
 } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 
@@ -117,23 +117,19 @@ function MailPool() {
       title: 'Details',
       key: 'action',
       render: (text, record) => (
-        <>
-          <span>
-            <Button onClick={
-              (e) => openModal(e.nativeEvent, FormType.READ, record)
-              }
-            >Details
-            </Button>
-          </span>
-          <span>
-            <Button onClick={
-              (e) => openModal(e.nativeEvent, FormType.DELETE, record)
-              }
-            >verwijderen
-            </Button>
-          </span>
+        <Space>
+          <Button onClick={
+            (e) => openModal(e.nativeEvent, FormType.READ, record)
+            }
+          >Details
+          </Button>
 
-        </>
+          <Button onClick={
+            (e) => openModal(e.nativeEvent, FormType.DELETE, record)
+            }
+          >verwijderen
+          </Button>
+        </Space>
       ),
     },
   ];

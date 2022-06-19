@@ -122,30 +122,23 @@ function BankAccountPool() {
       title: 'Details',
       key: 'action',
       render: (text, record) => (
-        <>
-          <span>
-            <Button onClick={
-              (e) => openModal(e.nativeEvent, FormType.READ, record)
-              }
-            >Details
-            </Button>
-          </span>
-          <span>
-            <Button onClick={
-              (e) => openModal(e.nativeEvent, FormType.UPDATE, record)
-              }
-            >Bewerken
-            </Button>
-          </span>
-          <span>
-            <Button onClick={
-              (e) => openModal(e.nativeEvent, FormType.DELETE, record)
-              }
-            >Verwijderen
-            </Button>
-          </span>
-
-        </>
+        <Space>
+          <Button onClick={
+            (e) => openModal(e.nativeEvent, FormType.READ, record)
+            }
+          >Details
+          </Button>
+          <Button onClick={
+            (e) => openModal(e.nativeEvent, FormType.UPDATE, record)
+            }
+          >Bewerken
+          </Button>
+          <Button onClick={
+            (e) => openModal(e.nativeEvent, FormType.DELETE, record)
+            }
+          >Verwijderen
+          </Button>
+        </Space>
       ),
     },
   ];

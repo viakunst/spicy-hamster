@@ -5,9 +5,7 @@ import {
 } from 'antd';
 import { Mail, useDeleteMailMutation } from '../../../Api/Backend';
 
-
 import GraphqlService from '../../../helpers/GraphqlService';
-
 
 import { FormType, basicForm } from '../FormHelper';
 
@@ -28,12 +26,11 @@ function MailCRUD(props:MailCRUDProps) {
 
   const deleteMutation = useDeleteMailMutation(GraphqlService.getClient());
 
-  
   let disabled = false;
   if (deleteMutation.isLoading) {
     disabled = true;
   }
- 
+
   if (deleteMutation.isSuccess) {
     deleteMutation.reset();
     message.success('Persoon succesvol verwijdered.');
@@ -67,7 +64,14 @@ function MailCRUD(props:MailCRUDProps) {
   ];
 
   const deleteFormItems = (
-    <Form.Item name="sure" valuePropName="checked" noStyle>
+    <Form.Item
+      name="sure"
+      valuePropName="checked"
+      wrapperCol={{
+        xs: { span: 24, offset: 0 },
+        sm: { span: 16, offset: 4 },
+      }}
+    >
       <Checkbox>Ja, ik wil dit account echt verwijderen.</Checkbox>
     </Form.Item>
   );
@@ -90,7 +94,7 @@ function MailCRUD(props:MailCRUDProps) {
   if (formtype === FormType.DELETE && mail !== undefined) {
     content = (
       <>
-        {basicForm(form, onDeleteFinish, 'Verwijder', 'Verwijderen...', disabled , deleteFormItems)}
+        {basicForm(form, onDeleteFinish, 'Verwijder', 'Verwijderen...', disabled, deleteFormItems)}
       </>
     );
   }

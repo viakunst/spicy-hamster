@@ -13,11 +13,11 @@ export enum FormType {
 export const formItemLayout = {
   labelCol: {
     xs: { span: 24 },
-    sm: { span: 8 },
+    sm: { span: 4, offset: 2 },
   },
   wrapperCol: {
     xs: { span: 24 },
-    sm: { span: 20 },
+    sm: { span: 16 },
   },
 };
 
@@ -46,7 +46,7 @@ export const basicForm = (
       {formItems}
       <Form.Item wrapperCol={{
         xs: { span: 24, offset: 0 },
-        sm: { span: 20, offset: 4 },
+        sm: { span: 12, offset: 6 },
       }}
       >
         {submitButton}
