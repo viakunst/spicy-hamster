@@ -24,6 +24,13 @@ query GetAllOutstandingTransactionsCoupledWithPerson {
   }
 }
 
+mutation DeleteMail($id: String!) {
+  emailMutation {
+    deleteMail(id: $id)
+  } 
+}
+  
+
 mutation sendAllReminders {
   emailMutation {
     sendAllReminders

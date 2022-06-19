@@ -10,7 +10,7 @@ import {
   PersonTransactions, Transaction, useGetAllTransactionsCoupledWithPersonQuery, useSwitchTransactionStatusMutation,
 } from '../../Api/Backend';
 import { FormType } from '../form/FormHelper';
-import TransactionCRUD from '../form/TransactionCRUD';
+import TransactionCRUD from '../form/CRUD/TransactionCRUD';
 import GraphqlService from '../../helpers/GraphqlService';
 
 interface TransactionPoolState {
@@ -23,7 +23,7 @@ interface TransactionPoolState {
 
 function TransactionPoolByPerson() {
   const {
-    data, isLoading, isError, refetch,
+    data, isLoading, isError, refetch, isFetching,
   } = useGetAllTransactionsCoupledWithPersonQuery(GraphqlService.getClient());
   const switchStatusMutation = useSwitchTransactionStatusMutation(GraphqlService.getClient());
 
@@ -39,15 +39,19 @@ function TransactionPoolByPerson() {
     return <span>Loading...</span>;
   }
 
-  const handleChange = async () => {
+  const handleChange = () => {
     refetch();
   };
 
+  if (switchStatusMutation.isSuccess) {
+    switchStatusMutation.reset();
+    refetch();
+  }
+
   const onSwitchStatus = async (transaction : any) => {
-    if (transaction.status !== 'Loading') {
+    if (transaction.status !== 'Loading' && switchStatusMutation.isLoading === false && isFetching === false) {
       switchStatusMutation.mutate({ id: transaction.getId });
       transaction.status = 'Loading';
-      handleChange();
     }
   };
 
@@ -139,7 +143,7 @@ function TransactionPoolByPerson() {
               }
             >Details
             </Button>
-            <Button onClick={() => onSwitchStatus(transactionRecord)}>Status
+            <Button onClick={() => onSwitchStatus(transactionRecord)}>Switch status
             </Button>
             <Button onClick={
               (e) => openModal(e.nativeEvent, FormType.UPDATE, transactionRecord)

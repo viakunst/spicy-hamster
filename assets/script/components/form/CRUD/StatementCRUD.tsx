@@ -1,18 +1,18 @@
 import React from 'react';
 
 import {
-  Form, Input, Checkbox, Table,
+  Form, Input, Checkbox, Table, message
 } from 'antd';
 import { GraphQLClient } from 'graphql-request';
 import {
   Statement, useCreateStatementMutation, useUpdateStatementMutation, useDeleteStatementMutation, StatementInput,
-} from '../../Api/Backend';
+} from '../../../Api/Backend';
 
-import { FormType, basicForm } from './FormHelper';
-import GraphqlService from '../../helpers/GraphqlService';
+import { FormType, basicForm } from '../FormHelper';
+import GraphqlService from '../../../helpers/GraphqlService';
 
 interface StatementCRUDProps {
-  onAttributesUpdate: () => Promise<void>;
+  onAttributesUpdate: () => void;
   statement? : Statement;
   formtype : FormType;
   admin? : boolean
@@ -32,13 +32,40 @@ function StatementCRUD(props:StatementCRUDProps) {
     formtype,
     admin,
   } = props;
-  console.log(admin);
+  
+  let disabled = false;
+  if (createMutation.isLoading || updateMutation.isLoading || deleteMutation.isLoading) {
+    disabled = true;
+  }
+
+  if (createMutation.isSuccess) {
+    createMutation.reset();
+    message.success('Declaratie succesvol aangemaakt.');
+    onAttributesUpdate();
+  }
+  if (updateMutation.isSuccess) {
+    updateMutation.reset();
+    message.success('Declaratie succesvol geupdated.');
+    onAttributesUpdate();
+  }
+  if (deleteMutation.isSuccess) {
+    deleteMutation.reset();
+    message.success('Declaratie succesvol verwijdered.');
+    onAttributesUpdate();
+  }
+
+  if (createMutation.isError || updateMutation.isError || deleteMutation.isError) {
+    createMutation.reset();
+    updateMutation.reset();
+    deleteMutation.reset();
+    message.error('Er is iets fout gegaan.');
+  }
+
 
   const onCreateFinish = async (values : any) => {
     // Push attributes, that are actually editable, to list.
     const statementInput = values as StatementInput;
     createMutation.mutate({ statement: statementInput });
-    onAttributesUpdate();
   };
 
   const onUpdateFinish = async (values : any) => {
@@ -46,7 +73,6 @@ function StatementCRUD(props:StatementCRUDProps) {
     const statementInput = values as StatementInput;
     if (statement !== undefined) {
       updateMutation.mutate({ id: statement.getId, statement: statementInput });
-      onAttributesUpdate();
     }
   };
 
@@ -54,7 +80,6 @@ function StatementCRUD(props:StatementCRUDProps) {
     // Push attributes, that are actually editable, to list.
     if (statement !== undefined) {
       deleteMutation.mutate({ id: statement.getId });
-      onAttributesUpdate();
     }
   };
 
@@ -114,7 +139,7 @@ function StatementCRUD(props:StatementCRUDProps) {
   if (formtype === FormType.CREATE && statement === undefined) {
     content = (
       <>
-        {basicForm(form, onCreateFinish, 'Maak aan', updateCreateFormItems)}
+        {basicForm(form, onCreateFinish, 'Maak aan', 'Aanmaken', disabled, updateCreateFormItems)}
       </>
     );
   }
@@ -134,7 +159,7 @@ function StatementCRUD(props:StatementCRUDProps) {
 
     content = (
       <>
-        {basicForm(form, onUpdateFinish, 'Opslaan', updateCreateFormItems, updateInitial)}
+        {basicForm(form, onUpdateFinish, 'Opslaan',  'Opslaan...', disabled, updateCreateFormItems, updateInitial)}
       </>
     );
   }
@@ -161,7 +186,7 @@ function StatementCRUD(props:StatementCRUDProps) {
   if (formtype === FormType.DELETE && statement !== undefined) {
     content = (
       <>
-        {basicForm(form, onDeleteFinish, 'Verwijder', deleteFormItems)}
+        {basicForm(form, onDeleteFinish, 'Verwijder',  'Verwijderen...', disabled,  deleteFormItems)}
       </>
     );
   }

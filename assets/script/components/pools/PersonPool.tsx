@@ -9,7 +9,7 @@ import 'antd/dist/antd.css';
 
 import { Person, useGetPersonsQuery, useImportPersonMutation } from '../../Api/Backend';
 import { FormType } from '../form/FormHelper';
-import PersonCRUD from '../form/PersonCRUD';
+import PersonCRUD from '../form/CRUD/PersonCRUD';
 import GraphqlService from '../../helpers/GraphqlService';
 import OidcService from '../../helpers/OidcService';
 
@@ -40,7 +40,7 @@ function PersonPool() {
     return <span>Loading...</span>;
   }
 
-  const handleChange = async () => {
+  const handleChange = () => {
     refetch();
   };
 

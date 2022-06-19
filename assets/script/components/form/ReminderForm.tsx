@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import {
-  Form, Badge, Table, Button, Divider,
+  Form, Badge, Table, Button, Divider, message,
 } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 
@@ -31,6 +31,7 @@ const buttonLayout = {
 
 function ReminderForm() {
   const [form] = Form.useForm();
+
   const {
     data, isLoading, isError, refetch,
   } = useGetAllOutstandingTransactionsCoupledWithPersonQuery(GraphqlService.getClient());
@@ -39,6 +40,23 @@ function ReminderForm() {
   if (isLoading || isError || data === undefined) {
     return <span>Loading...</span>;
   }
+
+  let submitButton = (<Button type="primary" style={{ width: '100%' }} htmlType="submit">Verstuur de Betaalherrinneringen!</Button>);
+  if (sendMutation.isLoading) {
+    submitButton = (<Button type="primary" style={{ width: '100%' }} htmlType="submit" disabled>Versturen...</Button>);
+  }
+  if (sendMutation.isSuccess) {
+    sendMutation.reset();
+    message.success('De herrineringen zijn succesful verstuurd!');
+  }
+  if (sendMutation.isError) {
+    sendMutation.reset();
+    message.error('Er is iets fout gegaan.');
+  }
+
+  const onFinish = async () => {
+    sendMutation.mutate({});
+  };
 
   const expandedRowRender = (record:PersonTransactions) => {
     const columns: ColumnsType<Transaction> = [
@@ -66,10 +84,6 @@ function ReminderForm() {
     { title: 'Email', dataIndex: ['person', 'email'], key: 'email' },
   ];
 
-  const onFinish = async () => {
-    sendMutation.mutate({});
-  };
-
   const personTransactions = data.getAllOutstandingTransactionsCoupledWithPerson as PersonTransactions[];
   console.log(personTransactions);
 
@@ -94,7 +108,7 @@ function ReminderForm() {
         onFinish={onFinish}
       >
         <Form.Item wrapperCol={buttonLayout.wrapperCol}>
-          <Button type="primary" htmlType="submit">Verstuur de Betaalherrinneringen!</Button>
+          {submitButton}
         </Form.Item>
       </Form>
     </>

@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
-  Modal, Table, Button, Space,
+  Modal, Table, Button, Space, Badge,
 } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 
 import 'antd/dist/antd.css';
 
-import { Transaction, useGetTransactionsQuery } from '../../Api/Backend';
+import { Transaction, useGetTransactionsQuery, useSwitchTransactionStatusMutation } from '../../Api/Backend';
 import { FormType } from '../form/FormHelper';
-import TransactionCRUD from '../form/TransactionCRUD';
+import TransactionCRUD from '../form/CRUD/TransactionCRUD';
 import GraphqlService from '../../helpers/GraphqlService';
 
 interface TransactionPoolState {
@@ -22,8 +22,10 @@ interface TransactionPoolState {
 
 function TransactionPool() {
   const {
-    data, isLoading, isError, refetch,
+    data, isLoading, isError, refetch, isFetching,
   } = useGetTransactionsQuery(GraphqlService.getClient());
+
+  const switchStatusMutation = useSwitchTransactionStatusMutation(GraphqlService.getClient());
 
   const [state, setState] = useState<TransactionPoolState>({
     searchAttribute: '',
@@ -37,8 +39,20 @@ function TransactionPool() {
     return <span>Loading...</span>;
   }
 
-  const handleChange = async () => {
+  const handleChange = () => {
     refetch();
+  };
+
+  if (switchStatusMutation.isSuccess) {
+    switchStatusMutation.reset();
+    refetch();
+  }
+
+  const onSwitchStatus = async (transaction : any) => {
+    if (transaction.status !== 'Loading' && switchStatusMutation.isLoading === false && isFetching === false) {
+      switchStatusMutation.mutate({ id: transaction.getId });
+      transaction.status = 'Loading';
+    }
   };
 
   const openModal = async (e: MouseEvent, formType: string, transaction?: Transaction) => {
@@ -103,44 +117,49 @@ function TransactionPool() {
 
   // These are the columns of the table.
   const columns: ColumnsType<Transaction> = [
-    {
-      title: 'Opmerking',
-      dataIndex: 'comment',
-      key: 'comment',
-    },
+    { title: 'Titel', dataIndex: 'getTitle', key: 'title' },
+    { title: 'Datum', dataIndex: 'getDate', key: 'date' },
+    { title: 'Bedrag', dataIndex: 'amount', key: 'amount' },
+    { title: 'Bankaccount', dataIndex: ['getTransactionGroup', 'getBankAccount', 'name'], key: 'account' },
     {
       title: 'Status',
-      dataIndex: 'status',
-      key: 'status',
+      key: 'state',
+      render: (_, { status }) => {
+        if (status === 'Openstaand') {
+          return (<span><Badge status="error" />Openstaand</span>);
+        }
+        if (status === 'Loading') {
+          return (<span><Badge status="warning" />Laden</span>);
+        }
+        if (status === 'Voldaan') {
+          return (<span><Badge status="success" />Voldaan</span>);
+        }
+        return (<span><Badge status="warning" />Onbekend</span>);
+      },
     },
     {
       title: 'Details',
       key: 'action',
-      render: (text, record) => (
-        <>
-          <span>
-            <Button onClick={
-              (e) => openModal(e.nativeEvent, FormType.READ, record)
-              }
-            >Details
-            </Button>
-          </span>
-          <span>
-            <Button onClick={
-              (e) => openModal(e.nativeEvent, FormType.UPDATE, record)
-              }
-            >Bewerken
-            </Button>
-          </span>
-          <span>
-            <Button onClick={
-              (e) => openModal(e.nativeEvent, FormType.DELETE, record)
-              }
-            >verwijderen
-            </Button>
-          </span>
-
-        </>
+      render: (text, transactionRecord) => (
+        <Space>
+          <Button onClick={
+            (e) => openModal(e.nativeEvent, FormType.READ, transactionRecord)
+            }
+          >Details
+          </Button>
+          <Button onClick={() => onSwitchStatus(transactionRecord)}>Switch status
+          </Button>
+          <Button onClick={
+            (e) => openModal(e.nativeEvent, FormType.UPDATE, transactionRecord)
+            }
+          >Bewerken
+          </Button>
+          <Button onClick={
+            (e) => openModal(e.nativeEvent, FormType.DELETE, transactionRecord)
+            }
+          >verwijderen
+          </Button>
+        </Space>
       ),
     },
   ];

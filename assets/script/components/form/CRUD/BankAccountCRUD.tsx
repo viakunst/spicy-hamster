@@ -1,18 +1,18 @@
 import React from 'react';
 
 import {
-  Form, Input, Checkbox, Table,
+  Form, Input, Checkbox, Table, message
 } from 'antd';
 import {
   BankAccount, useCreateBankAccountMutation, useUpdateBankAccountMutation, useDeleteBankAccountMutation, BankAccountInput,
-} from '../../Api/Backend';
+} from '../../../Api/Backend';
 
-import GraphqlService from '../../helpers/GraphqlService';
+import GraphqlService from '../../../helpers/GraphqlService';
 
-import { FormType, basicForm } from './FormHelper';
+import { FormType, basicForm } from '../FormHelper';
 
 interface BankAccountCreateProps {
-  onAttributesUpdate: () => Promise<void>;
+  onAttributesUpdate: () => void;
   bankaccount? : BankAccount;
   formtype : FormType
 }
@@ -20,7 +20,6 @@ interface BankAccountCreateProps {
 function BankAccountCRUD(props:BankAccountCreateProps) {
   const [form] = Form.useForm();
 
-  console.log('bankaccount crud on');
   const createMutation = useCreateBankAccountMutation(GraphqlService.getClient());
   const updateMutation = useUpdateBankAccountMutation(GraphqlService.getClient());
   const deleteMutation = useDeleteBankAccountMutation(GraphqlService.getClient());
@@ -31,10 +30,37 @@ function BankAccountCRUD(props:BankAccountCreateProps) {
     formtype,
   } = props;
 
+  let disabled = false;
+  if (createMutation.isLoading || updateMutation.isLoading || deleteMutation.isLoading) {
+    disabled = true;
+  }
+
+  if (createMutation.isSuccess) {
+    createMutation.reset();
+    message.success('Bankrekening succesvol aangemaakt.');
+    onAttributesUpdate();
+  }
+  if (updateMutation.isSuccess) {
+    updateMutation.reset();
+    message.success('Bankrekening succesvol geupdated.');
+    onAttributesUpdate();
+  }
+  if (deleteMutation.isSuccess) {
+    deleteMutation.reset();
+    message.success('Bankrekening succesvol verwijdered.');
+    onAttributesUpdate();
+  }
+
+  if (createMutation.isError || updateMutation.isError || deleteMutation.isError) {
+    createMutation.reset();
+    updateMutation.reset();
+    deleteMutation.reset();
+    message.error('Er is iets fout gegaan.');
+  }
+  
   const onCreateFinish = async (values: any) => {
     const bankaccountInput = values as BankAccountInput;
     createMutation.mutate({ bankaccount: bankaccountInput });
-    onAttributesUpdate();
   };
 
   const onUpdateFinish = async (values: any) => {
@@ -42,14 +68,12 @@ function BankAccountCRUD(props:BankAccountCreateProps) {
     const bankaccountInput = values as BankAccountInput;
     if (bankaccount !== undefined) {
       updateMutation.mutate({ id: bankaccount.getId, bankaccount: bankaccountInput });
-      onAttributesUpdate();
     }
   };
 
   const onDeleteFinish = async () => {
     if (bankaccount !== undefined) {
       deleteMutation.mutate({ id: bankaccount.getId });
-      onAttributesUpdate();
     }
   };
 
@@ -91,7 +115,7 @@ function BankAccountCRUD(props:BankAccountCreateProps) {
   if (formtype === FormType.CREATE && bankaccount === undefined) {
     content = (
       <>
-        {basicForm(form, onCreateFinish, 'Maak aan', updateCreateFormItems)}
+        {basicForm(form, onCreateFinish, 'Maak aan', 'Aanmaken...', disabled,  updateCreateFormItems)}
       </>
     );
   }
@@ -104,7 +128,7 @@ function BankAccountCRUD(props:BankAccountCreateProps) {
 
     content = (
       <>
-        {basicForm(form, onUpdateFinish, 'Opslaan', updateCreateFormItems, updateInitial)}
+        {basicForm(form, onUpdateFinish, 'Opslaan', 'Opslaan...', disabled, updateCreateFormItems, updateInitial)}
       </>
     );
   }
@@ -125,7 +149,7 @@ function BankAccountCRUD(props:BankAccountCreateProps) {
   if (formtype === FormType.DELETE && bankaccount !== undefined) {
     content = (
       <>
-        {basicForm(form, onDeleteFinish, 'Verwijder', deleteFormItems)}
+        {basicForm(form, onDeleteFinish, 'Verwijder', 'Verwijderen...', disabled, deleteFormItems)}
       </>
     );
   }

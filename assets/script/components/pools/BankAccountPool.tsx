@@ -9,7 +9,7 @@ import 'antd/dist/antd.css';
 
 import { BankAccount, useGetBankAccountsQuery } from '../../Api/Backend';
 import { FormType } from '../form/FormHelper';
-import BankAccountCRUD from '../form/BankAccountCRUD';
+import BankAccountCRUD from '../form/CRUD/BankAccountCRUD';
 import GraphqlService from '../../helpers/GraphqlService';
 import OidcService from '../../helpers/OidcService';
 
@@ -38,7 +38,7 @@ function BankAccountPool() {
     return <span>Loading...</span>;
   }
 
-  const handleChange = async () => {
+  const handleChange = () => {
     console.log('refetching');
     refetch();
 

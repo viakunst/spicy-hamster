@@ -11,8 +11,8 @@ import {
   Transaction, TransactionGroup, useGetTransactionGroupsQuery, useSwitchTransactionStatusMutation,
 } from '../../Api/Backend';
 import { FormType } from '../form/FormHelper';
-import TransactionGroupCRUD from '../form/TransactionGroupCRUD';
-import TransactionCRUD from '../form/TransactionCRUD';
+import TransactionGroupCRUD from '../form/CRUD/TransactionGroupCRUD';
+import TransactionCRUD from '../form/CRUD/TransactionCRUD';
 import GraphqlService from '../../helpers/GraphqlService';
 
 interface TransactionGroupPoolState {
@@ -25,7 +25,7 @@ interface TransactionGroupPoolState {
 
 function TransactionPoolByGroup() {
   const {
-    data, isLoading, isError, refetch,
+    data, isLoading, isError, refetch, isFetching,
   } = useGetTransactionGroupsQuery(GraphqlService.getClient());
 
   const switchStatusMutation = useSwitchTransactionStatusMutation(GraphqlService.getClient());
@@ -41,15 +41,19 @@ function TransactionPoolByGroup() {
     return <span>Loading...</span>;
   }
 
-  const handleChange = async () => {
+  const handleChange = () => {
     refetch();
   };
 
+  if (switchStatusMutation.isSuccess) {
+    switchStatusMutation.reset();
+    refetch();
+  }
+
   const onSwitchStatus = async (transaction : any) => {
-    if (transaction.status !== 'Loading') {
+    if (transaction.status !== 'Loading' && switchStatusMutation.isLoading === false && isFetching === false) {
       switchStatusMutation.mutate({ id: transaction.getId });
       transaction.status = 'Loading';
-      handleChange();
     }
   };
 
@@ -198,7 +202,7 @@ function TransactionPoolByGroup() {
               }
             >Details
             </Button>
-            <Button onClick={() => onSwitchStatus(transactionRecord)}>Status
+            <Button onClick={() => onSwitchStatus(transactionRecord)}>Switch Status
             </Button>
             <Button onClick={
               (e) => openModal(e.nativeEvent, FormType.UPDATE, undefined, transactionRecord)

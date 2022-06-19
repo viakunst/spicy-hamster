@@ -1,19 +1,19 @@
 import React from 'react';
 
 import {
-  Form, Input, Checkbox, Table,
+  Form, Input, Checkbox, Table, message
 } from 'antd';
 import { GraphQLClient } from 'graphql-request';
 import { Mutation } from 'react-query';
 import {
   Transaction, useCreateTransactionMutation, useUpdateTransactionMutation, TransactionInput, useDeleteTransactionMutation,
-} from '../../Api/Backend';
+} from '../../../Api/Backend';
 
-import { FormType, basicForm } from './FormHelper';
-import GraphqlService from '../../helpers/GraphqlService';
+import { FormType, basicForm } from '../FormHelper';
+import GraphqlService from '../../../helpers/GraphqlService';
 
 interface TransactionCRUDprops {
-  onAttributesUpdate: () => Promise<void>;
+  onAttributesUpdate: () => void;
   transaction? : Transaction;
   formtype : FormType
 }
@@ -21,7 +21,6 @@ interface TransactionCRUDprops {
 function TransactionCRUD(props:TransactionCRUDprops) {
   const [form] = Form.useForm();
 
-  console.log('transaction crud on');
   const createMutation = useCreateTransactionMutation(GraphqlService.getClient());
   const updateMutation = useUpdateTransactionMutation(GraphqlService.getClient());
   const deleteMutation = useDeleteTransactionMutation(GraphqlService.getClient());
@@ -32,13 +31,40 @@ function TransactionCRUD(props:TransactionCRUDprops) {
     formtype,
   } = props;
 
+  let disabled = false;
+  if (createMutation.isLoading || updateMutation.isLoading || deleteMutation.isLoading) {
+    disabled = true;
+  }
+
+  if (createMutation.isSuccess) {
+    createMutation.reset();
+    message.success('Transactie succesvol aangemaakt.');
+    onAttributesUpdate();
+  }
+  if (updateMutation.isSuccess) {
+    updateMutation.reset();
+    message.success('Transactie succesvol geupdated.');
+    onAttributesUpdate();
+  }
+  if (deleteMutation.isSuccess) {
+    deleteMutation.reset();
+    message.success('Transactie succesvol verwijdered.');
+    onAttributesUpdate();
+  }
+
+  if (createMutation.isError || updateMutation.isError || deleteMutation.isError) {
+    createMutation.reset();
+    updateMutation.reset();
+    deleteMutation.reset();
+    message.error('Er is iets fout gegaan.');
+  }
+
   const onCreateFinish = async (values: any) => {
     // Push attributes, that are actually editable, to list.
     values.amount = parseInt(values.amount);
     values.timesReminded = parseInt(values.timesReminded);
     const transactionInput = values as TransactionInput;
     createMutation.mutate({ transaction: transactionInput });
-    onAttributesUpdate();
   };
 
   const onUpdateFinish = async (values:any) => {
@@ -48,7 +74,6 @@ function TransactionCRUD(props:TransactionCRUDprops) {
     const transactionInput = values as TransactionInput;
     if (transaction !== undefined) {
       updateMutation.mutate({ id: transaction.getId, transaction: transactionInput });
-      onAttributesUpdate();
     }
   };
 
@@ -56,7 +81,6 @@ function TransactionCRUD(props:TransactionCRUDprops) {
     // Push attributes, that are actually editable, to list.
     if (transaction !== undefined) {
       deleteMutation.mutate({ id: transaction.getId });
-      onAttributesUpdate();
     }
   };
 
@@ -104,7 +128,7 @@ function TransactionCRUD(props:TransactionCRUDprops) {
   if (formtype === FormType.CREATE && transaction === undefined) {
     content = (
       <>
-        {basicForm(form, onCreateFinish, 'Maak aan', updateCreateFormItems)}
+        {basicForm(form, onCreateFinish, 'Maak aan', 'Aanmaken...' , disabled, updateCreateFormItems)}
       </>
     );
   }
@@ -117,7 +141,7 @@ function TransactionCRUD(props:TransactionCRUDprops) {
 
     content = (
       <>
-        {basicForm(form, onUpdateFinish, 'Opslaan', updateCreateFormItems, updateInitial)}
+        {basicForm(form, onUpdateFinish, 'Opslaan', 'Opslaan...' , disabled, updateCreateFormItems, updateInitial)}
       </>
     );
   }
@@ -138,7 +162,7 @@ function TransactionCRUD(props:TransactionCRUDprops) {
   if (formtype === FormType.DELETE && transaction !== undefined) {
     content = (
       <>
-        {basicForm(form, onDeleteFinish, 'Verwijder', deleteFormItems)}
+        {basicForm(form, onDeleteFinish, 'Verwijder', 'Verwijderen...' , disabled, deleteFormItems)}
       </>
     );
   }

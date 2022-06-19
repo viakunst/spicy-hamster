@@ -1,17 +1,17 @@
 import React from 'react';
 
 import {
-  Form, Input, Checkbox, Table,
+  Form, Input, Checkbox, Table, message
 } from 'antd';
 import {
   TransactionGroup, useCreateTransactionGroupMutation, useDeleteTransactionGroupMutation, useUpdateTransactionGroupMutation, TransactionGroupInput,
-} from '../../Api/Backend';
+} from '../../../Api/Backend';
 
-import { FormType, basicForm } from './FormHelper';
-import GraphqlService from '../../helpers/GraphqlService';
+import { FormType, basicForm } from './../FormHelper';
+import GraphqlService from '../../../helpers/GraphqlService';
 
 interface TransactionGroupCRUDProps {
-  onAttributesUpdate: () => Promise<void>;
+  onAttributesUpdate: () => void;
   transactionGroup? : TransactionGroup;
   formtype : FormType
 }
@@ -30,11 +30,39 @@ function TransactionGroupCRUD(props:TransactionGroupCRUDProps) {
     formtype,
   } = props;
 
+  let disabled = false;
+  if (createMutation.isLoading || updateMutation.isLoading || deleteMutation.isLoading) {
+    disabled = true;
+  }
+
+  if (createMutation.isSuccess) {
+    createMutation.reset();
+    message.success('Transactie Groep succesvol aangemaakt.');
+    onAttributesUpdate();
+  }
+  if (updateMutation.isSuccess) {
+    updateMutation.reset();
+    message.success('Transactie Groep succesvol geupdated.');
+    onAttributesUpdate();
+  }
+  if (deleteMutation.isSuccess) {
+    deleteMutation.reset();
+    message.success('Transactie Groep succesvol verwijdered.');
+    onAttributesUpdate();
+  }
+
+  if (createMutation.isError || updateMutation.isError || deleteMutation.isError) {
+    createMutation.reset();
+    updateMutation.reset();
+    deleteMutation.reset();
+    message.error('Er is iets fout gegaan.');
+  }
+
+
   const onCreateFinish = async (values: any) => {
     // Push attributes, that are actually editable, to list.
     const transactionGroupInput = values as TransactionGroupInput;
     // createMutation.mutate({ transactionGroup: transactionGroupInput });
-    onAttributesUpdate();
   };
 
   const onUpdateFinish = async (values: any) => {
@@ -42,7 +70,6 @@ function TransactionGroupCRUD(props:TransactionGroupCRUDProps) {
     const transactionGroupInput = values as TransactionGroupInput;
     if (transactionGroup !== undefined) {
       updateMutation.mutate({ id: transactionGroup.getId, transactionGroup: transactionGroupInput });
-      onAttributesUpdate();
     }
   };
 
@@ -50,7 +77,6 @@ function TransactionGroupCRUD(props:TransactionGroupCRUDProps) {
     // Push attributes, that are actually editable, to list.
     if (transactionGroup !== undefined) {
       deleteMutation.mutate({ id: transactionGroup.getId });
-      onAttributesUpdate();
     }
   };
 
@@ -95,7 +121,7 @@ function TransactionGroupCRUD(props:TransactionGroupCRUDProps) {
   if (formtype === FormType.CREATE && transactionGroup === undefined) {
     content = (
       <>
-        {basicForm(form, onCreateFinish, 'Maak aan', updateCreateFormItems)}
+        {basicForm(form, onCreateFinish, 'Maak aan', 'Aanmaken...' , disabled, updateCreateFormItems)}
       </>
     );
   }
@@ -108,7 +134,7 @@ function TransactionGroupCRUD(props:TransactionGroupCRUDProps) {
 
     content = (
       <>
-        {basicForm(form, onUpdateFinish, 'Opslaan', updateCreateFormItems, updateInitial)}
+        {basicForm(form, onUpdateFinish, 'Opslaan', 'Opslaan...' , disabled,updateCreateFormItems, updateInitial)}
       </>
     );
   }
@@ -129,7 +155,7 @@ function TransactionGroupCRUD(props:TransactionGroupCRUDProps) {
   if (formtype === FormType.DELETE && transactionGroup !== undefined) {
     content = (
       <>
-        {basicForm(form, onDeleteFinish, 'Verwijder', deleteFormItems)}
+        {basicForm(form, onDeleteFinish, 'Verwijder', 'Verwijderen...' , disabled,  deleteFormItems)}
       </>
     );
   }

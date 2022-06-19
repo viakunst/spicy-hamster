@@ -9,7 +9,7 @@ import 'antd/dist/antd.css';
 
 import { Mail, useGetMailsQuery } from '../../Api/Backend';
 import { FormType } from '../form/FormHelper';
-import MailCRUD from '../form/MailCRUD';
+import MailCRUD from '../form/CRUD/MailCRUD';
 import GraphqlService from '../../helpers/GraphqlService';
 
 interface MailPoolState {
@@ -37,7 +37,7 @@ function MailPool() {
     return <span>Loading...</span>;
   }
 
-  const handleChange = async () => {
+  const handleChange = () => {
     refetch();
   };
 

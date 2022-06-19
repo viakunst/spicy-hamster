@@ -46,11 +46,14 @@ const items: MenuProps['items'] = [
     getItem('Per persoon', 'transaction-person'),
     getItem('Per activiteit', 'transaction-group'),
     getItem('Totaal', 'transaction-total'),
-    getItem('Verstuur betaalherrinneringen', 'transaction-reminder'),
+
   ]),
 
   getItem('Declaraties', 'statements', <ContainerOutlined />),
-  getItem('Emails', 'emails', <MailOutlined />),
+  getItem('Emails', 'emails', <MailOutlined />, [
+    getItem('Overzicht', 'email-pool'),
+    getItem('Verstuur betaalherrinneringen', 'email-reminder'),
+  ]),
 
   getItem('Instellingen', 'settings', <SettingOutlined />, [
     getItem('Bank rekenigen', 'accounts'),
@@ -81,7 +84,9 @@ export default function AdminPage() {
         return <AdminPersonPool />;
       case 'transaction-new':
         return <TransactionCreator />;
-      case 'transaction-reminder':
+      case 'email-pool':
+        return <AdminMailPool />;
+      case 'email-reminder':
         return <ReminderForm />;
       case 'transaction-group':
         return <AdminTransactionPool mode="group" />;
@@ -91,8 +96,6 @@ export default function AdminPage() {
         return <AdminTransactionPool mode="total" />;
       case 'statements':
         return <AdminStatementPool />;
-      case 'emails':
-        return <AdminMailPool />;
       case 'accounts':
         return <AdminBankAccountPool />;
       default:

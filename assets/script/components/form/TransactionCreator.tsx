@@ -2,7 +2,7 @@ import React from 'react';
 
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import {
-  Form, Input, Checkbox, DatePicker, Select, Button, InputNumber, Divider, Row, Col, Space, Tag,
+  Form, Input, Checkbox, DatePicker, Select, Button, InputNumber, Divider, message, Space, Tag,
 } from 'antd';
 
 import type { CustomTagProps } from 'rc-select/lib/BaseSelect';
@@ -55,6 +55,20 @@ function TransactionCreator(props:TransactionCreatorProps) {
   if (isLoading1 || isError1 || data1 === undefined || isLoading2 || isError2 || data2 === undefined) {
     return <span>Loading...</span>;
   }
+
+  let submitButton = (<Button type="primary" htmlType="submit" style={{ width: '100%' }}>Maak deze transacties aan!</Button>);
+  if (createMutation.isLoading) {
+    submitButton = (<Button type="primary" style={{ width: '100%' }} htmlType="submit" disabled>Aanmaken...</Button>);
+  }
+  if (createMutation.isSuccess) {
+    createMutation.reset();
+    message.success('Transactie succesful aangemaakt!');
+  }
+  if (createMutation.isError) {
+    createMutation.reset();
+    message.error('Er is iets fout gegaan.');
+  }
+
   const persons = data1.persons as Person[];
   const accounts = data2.bankAccounts as BankAccount[];
 
@@ -92,7 +106,7 @@ function TransactionCreator(props:TransactionCreatorProps) {
     createMutation.mutate({ transactionGroupTypeInput: createInput });
   };
 
-  let content = (<>Loading</>);
+  const content = (<>Loading</>);
 
   const personOptions = (
     <>
@@ -239,12 +253,6 @@ function TransactionCreator(props:TransactionCreatorProps) {
     </>
   );
 
-  content = (
-    <>
-      {basicForm(form, onCreateFinish, 'Maak aan', updateCreateFormItems)}
-    </>
-  );
-
   return (
     <div style={{ padding: 24, background: '#fff' }}>
       <Form
@@ -255,7 +263,7 @@ function TransactionCreator(props:TransactionCreatorProps) {
       >
         {updateCreateFormItems}
         <Form.Item wrapperCol={buttonLayout.wrapperCol}>
-          <Button type="primary" htmlType="submit" style={{ width: '100%' }}>Maak deze transacties aan!</Button>
+          {submitButton}
         </Form.Item>
       </Form>
     </div>

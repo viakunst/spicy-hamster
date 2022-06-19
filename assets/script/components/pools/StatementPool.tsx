@@ -8,7 +8,7 @@ import 'antd/dist/antd.css';
 
 import { Statement, useGetStatementsQuery } from '../../Api/Backend';
 import { FormType } from '../form/FormHelper';
-import StatementCRUD from '../form/StatementCRUD';
+import StatementCRUD from '../form/CRUD/StatementCRUD';
 import GraphqlService from '../../helpers/GraphqlService';
 
 interface StatementPoolState {
@@ -36,7 +36,7 @@ function StatementPool() {
     return <span>Loading...</span>;
   }
 
-  const handleChange = async () => {
+  const handleChange = () => {
     refetch();
   };
 

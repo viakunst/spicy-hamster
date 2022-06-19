@@ -1,18 +1,18 @@
 import React from 'react';
 
 import {
-  Form, Input, Checkbox, Table,
+  Form, Input, Checkbox, Table, message
 } from 'antd';
 import {
   Person, useCreatePersonMutation, useUpdatePersonMutation, useDeletePersonMutation, PersonInput,
-} from '../../Api/Backend';
+} from '../../../Api/Backend';
 
-import GraphqlService from '../../helpers/GraphqlService';
+import GraphqlService from '../../../helpers/GraphqlService';
 
-import { FormType, basicForm } from './FormHelper';
+import { FormType, basicForm } from './../FormHelper';
 
 interface PersonCreateProps {
-  onAttributesUpdate: () => Promise<void>;
+  onAttributesUpdate: () => void;
   person? : Person;
   formtype : FormType
 }
@@ -31,10 +31,38 @@ function PersonCRUD(props:PersonCreateProps) {
     formtype,
   } = props;
 
+  let disabled = false;
+  if (createMutation.isLoading || updateMutation.isLoading || deleteMutation.isLoading) {
+    disabled = true;
+  }
+
+  
+  if (createMutation.isSuccess) {
+    createMutation.reset();
+    message.success('Persoon succesvol aangemaakt.');
+    onAttributesUpdate();
+  }
+  if (updateMutation.isSuccess) {
+    updateMutation.reset();
+    message.success('Persoon succesvol geupdated.');
+    onAttributesUpdate();
+  }
+  if (deleteMutation.isSuccess) {
+    deleteMutation.reset();
+    message.success('Persoon succesvol verwijdered.');
+    onAttributesUpdate();
+  }
+
+  if (createMutation.isError || updateMutation.isError || deleteMutation.isError) {
+    createMutation.reset();
+    updateMutation.reset();
+    deleteMutation.reset();
+    message.error('Er is iets fout gegaan.');
+  }
+
   const onCreateFinish = async (values: any) => {
     const personInput = values as PersonInput;
     createMutation.mutate({ person: personInput });
-    onAttributesUpdate();
   };
 
   const onUpdateFinish = async (values: any) => {
@@ -42,14 +70,12 @@ function PersonCRUD(props:PersonCreateProps) {
     const personInput = values as PersonInput;
     if (person !== undefined) {
       updateMutation.mutate({ id: person.getId, person: personInput });
-      onAttributesUpdate();
     }
   };
 
   const onDeleteFinish = async () => {
     if (person !== undefined) {
       deleteMutation.mutate({ id: person.getId });
-      onAttributesUpdate();
     }
   };
 
@@ -100,7 +126,7 @@ function PersonCRUD(props:PersonCreateProps) {
   if (formtype === FormType.CREATE && person === undefined) {
     content = (
       <>
-        {basicForm(form, onCreateFinish, 'Maak aan', updateCreateFormItems)}
+        {basicForm(form, onCreateFinish,  'Maak aan', 'Aanmaken...', disabled,  updateCreateFormItems)}
       </>
     );
   }
@@ -116,7 +142,7 @@ function PersonCRUD(props:PersonCreateProps) {
 
     content = (
       <>
-        {basicForm(form, onUpdateFinish, 'Opslaan', updateCreateFormItems, updateInitial)}
+        {basicForm(form, onUpdateFinish, 'Opslaan', 'Opslaan...', disabled, updateCreateFormItems, updateInitial)}
       </>
     );
   }
@@ -139,7 +165,7 @@ function PersonCRUD(props:PersonCreateProps) {
   if (formtype === FormType.DELETE && person !== undefined) {
     content = (
       <>
-        {basicForm(form, onDeleteFinish, 'Verwijder', deleteFormItems)}
+        {basicForm(form, onDeleteFinish, 'Verwijder', 'Verwijderen...', disabled, deleteFormItems)}
       </>
     );
   }

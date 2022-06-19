@@ -1,14 +1,18 @@
 import React, { useEffect } from 'react';
 
 import {
-  Form, Checkbox, Table,
+  Form, Checkbox, Table, message,
 } from 'antd';
-import { Mail } from '../../Api/Backend';
+import { Mail, useDeleteMailMutation } from '../../../Api/Backend';
 
-import { FormType, basicForm } from './FormHelper';
+
+import GraphqlService from '../../../helpers/GraphqlService';
+
+
+import { FormType, basicForm } from '../FormHelper';
 
 interface MailCRUDProps {
-  onAttributesUpdate: () => Promise<void>;
+  onAttributesUpdate: () => void;
   mail? : Mail;
   formtype : FormType
 }
@@ -22,10 +26,24 @@ function MailCRUD(props:MailCRUDProps) {
     formtype,
   } = props;
 
-  // componentDidMount
-  useEffect(() => {
+  const deleteMutation = useDeleteMailMutation(GraphqlService.getClient());
 
-  }, []);
+  
+  let disabled = false;
+  if (deleteMutation.isLoading) {
+    disabled = true;
+  }
+ 
+  if (deleteMutation.isSuccess) {
+    deleteMutation.reset();
+    message.success('Persoon succesvol verwijdered.');
+    onAttributesUpdate();
+  }
+
+  if (deleteMutation.isError) {
+    deleteMutation.reset();
+    message.error('Er is iets fout gegaan.');
+  }
 
   const onDeleteFinish = async () => {
     // Push attributes, that are actually editable, to list.
@@ -72,7 +90,7 @@ function MailCRUD(props:MailCRUDProps) {
   if (formtype === FormType.DELETE && mail !== undefined) {
     content = (
       <>
-        {basicForm(form, onDeleteFinish, 'Verwijder', deleteFormItems)}
+        {basicForm(form, onDeleteFinish, 'Verwijder', 'Verwijderen...', disabled , deleteFormItems)}
       </>
     );
   }
