@@ -3,41 +3,20 @@ import React from 'react';
 import {
   Form, Input, Checkbox, Table, message, InputNumber,
 } from 'antd';
-import { GraphQLClient } from 'graphql-request';
-import { Mutation } from 'react-query';
+
 import {
   Transaction, useCreateTransactionMutation, useUpdateTransactionMutation, TransactionInput, useDeleteTransactionMutation,
 } from '../../../Api/Backend';
 
 import { FormType, basicForm } from '../FormHelper';
 import GraphqlService from '../../../helpers/GraphqlService';
+import { amountRender, amountInput, parseFloatString } from '../../../helpers/AmountInput';
 
 interface TransactionCRUDprops {
   onAttributesUpdate: () => void;
   transaction? : Transaction;
   formtype : FormType
 }
-
-const formatterNumber = (val:any) => `${val}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-
-const parseFloatString = (value:any) => {
-  const val = `${value}`;
-  const indexpoint = val.indexOf('.');
-
-  if (indexpoint === -1) {
-    return `${val.replace('.', '')}00`;
-  }
-  if (val.length - indexpoint == 2) {
-    return `${val.replace('.', '')}0`;
-  }
-  if (val.length - indexpoint == 3) {
-    return val.replace('.', '');
-  }
-
-  return val;
-};
-
-const parserNumber = (val:any) => val!.replace(/\$\s?|(,*)/g, '');
 
 function TransactionCRUD(props:TransactionCRUDprops) {
   const [form] = Form.useForm();
@@ -142,11 +121,7 @@ function TransactionCRUD(props:TransactionCRUDprops) {
         <Input />
       </Form.Item>
       <Form.Item label="Bedrag" name="amount" rules={[{ required: true }]}>
-        <InputNumber
-          prefix="€"
-          formatter={(value:any) => formatterNumber(value)}
-          parser={(value:any) => parserNumber(value)}
-        />
+        {amountInput()}
       </Form.Item>
     </>
   );

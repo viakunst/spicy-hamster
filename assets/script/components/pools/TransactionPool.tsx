@@ -12,6 +12,8 @@ import { FormType } from '../form/FormHelper';
 import TransactionCRUD from '../form/CRUD/TransactionCRUD';
 import GraphqlService from '../../helpers/GraphqlService';
 import { searchFilter, searchSelector } from '../../helpers/SearchHelper';
+import { amountRender } from '../../helpers/AmountInput';
+import { dateRender } from '../../helpers/DateHelper';
 
 interface TransactionPoolState {
   searchAttribute: string | Array<string> | null,
@@ -121,8 +123,8 @@ function TransactionPool() {
   // These are the columns of the table.
   const columns: ColumnsType<Transaction> = [
     { title: 'Titel', dataIndex: 'getTitle', key: 'title' },
-    { title: 'Datum', dataIndex: 'getDate', key: 'date' },
-    { title: 'Bedrag', dataIndex: 'amount', key: 'amount' },
+    { title: 'Datum', key: 'date', render: (_, { getDate }) => dateRender(getDate) },
+    { title: 'Bedrag', key: 'amount', render: (_, { amount }) => amountRender(amount) },
     { title: 'Bankaccount', dataIndex: ['getTransactionGroup', 'getBankAccount', 'name'], key: 'account' },
     {
       title: 'Status',

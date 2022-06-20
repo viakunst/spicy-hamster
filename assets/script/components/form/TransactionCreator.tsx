@@ -14,34 +14,9 @@ import {
 
 import GraphqlService from '../../helpers/GraphqlService';
 
-import { FormType, basicForm } from './FormHelper';
+import { amountInput, parseFloatString } from '../../helpers/AmountInput';
 
 const { Option } = Select;
-
-interface TransactionCreatorProps {
-
-}
-
-const formatterNumber = (val:any) => `${val}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-
-const parseFloatString = (value:any) => {
-  const val = `${value}`;
-  const indexpoint = val.indexOf('.');
-
-  if (indexpoint === -1) {
-    return `${val.replace('.', '')}00`;
-  }
-  if (val.length - indexpoint == 2) {
-    return `${val.replace('.', '')}0`;
-  }
-  if (val.length - indexpoint == 3) {
-    return val.replace('.', '');
-  }
-
-  return val;
-};
-
-const parserNumber = (val:any) => val!.replace(/\$\s?|(,*)/g, '');
 
 const formItemLayout = {
   labelCol: {
@@ -61,7 +36,7 @@ const buttonLayout = {
   },
 };
 
-function TransactionCreator(props:TransactionCreatorProps) {
+function TransactionCreator() {
   const [form] = Form.useForm();
   const {
     data: data1, isLoading: isLoading1, isError: isError1,
@@ -92,9 +67,6 @@ function TransactionCreator(props:TransactionCreatorProps) {
 
   const persons = data1.persons as Person[];
   const accounts = data2.bankAccounts as BankAccount[];
-
-  const {
-  } = props;
 
   const onCreateFinish = async (values:any) => {
     console.log(values);
@@ -192,11 +164,7 @@ function TransactionCreator(props:TransactionCreatorProps) {
                 name={[field.name, 'amount']}
                 fieldKey={[field.key, 'amount']}
               >
-                <InputNumber
-                  prefix="€"
-                  formatter={(value:any) => formatterNumber(value)}
-                  parser={(value:any) => parserNumber(value)}
-                />
+                {amountInput()}
               </Form.Item>
               <FormItem
                 label="Betaalgerechtingen"

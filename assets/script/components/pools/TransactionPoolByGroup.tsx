@@ -15,6 +15,8 @@ import TransactionGroupCRUD from '../form/CRUD/TransactionGroupCRUD';
 import TransactionCRUD from '../form/CRUD/TransactionCRUD';
 import GraphqlService from '../../helpers/GraphqlService';
 import { searchFilter, searchSelector } from '../../helpers/SearchHelper';
+import { amountRender } from '../../helpers/AmountInput';
+import { dateRender } from '../../helpers/DateHelper';
 
 interface TransactionGroupPoolState {
   searchAttribute: string | Array<string> | null,
@@ -177,7 +179,7 @@ function TransactionPoolByGroup() {
   const expandedRowRender = (record:TransactionGroup) => {
     const columns: ColumnsType<Transaction> = [
       { title: 'Persoon', dataIndex: ['getPerson', 'getName'], key: 'name' },
-      { title: 'Bedrag', dataIndex: 'amount', key: 'amount' },
+      { title: 'Bedrag', key: 'amount', render: (_, { amount }) => amountRender(amount) },
       { title: 'Opmerking', dataIndex: 'comment', key: 'comment' },
       {
         title: 'Status',
@@ -241,8 +243,8 @@ function TransactionPoolByGroup() {
     },
     {
       title: 'Datum',
-      dataIndex: 'date',
       key: 'date',
+      render: (_, { date }) => dateRender(date),
     },
     {
       title: 'Bankrekening',

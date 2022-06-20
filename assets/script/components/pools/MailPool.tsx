@@ -12,6 +12,7 @@ import { FormType } from '../form/FormHelper';
 import MailCRUD from '../form/CRUD/MailCRUD';
 import GraphqlService from '../../helpers/GraphqlService';
 import { searchFilter, searchSelector } from '../../helpers/SearchHelper';
+import { dateRender } from '../../helpers/DateHelper';
 
 interface MailPoolState {
   searchAttribute: string | Array<string> | null,
@@ -118,8 +119,8 @@ function MailPool() {
     },
     {
       title: 'Datum van versturen',
-      dataIndex: 'sentAt',
-      key: 'sentAt',
+      key: 'sendAt',
+      render: (_, { sendAt }) => dateRender(sendAt),
     },
     {
       title: 'Verstuurd door',
