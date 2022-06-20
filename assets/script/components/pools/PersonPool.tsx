@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+
 import {
   Modal, Table, Button, Space,
 } from 'antd';
@@ -11,10 +11,13 @@ import { Person, useGetPersonsQuery, useImportPersonMutation } from '../../Api/B
 import { FormType } from '../form/FormHelper';
 import PersonCRUD from '../form/CRUD/PersonCRUD';
 import GraphqlService from '../../helpers/GraphqlService';
+import { searchFilter, searchSelector } from '../../helpers/SearchHelper';
+
 import OidcService from '../../helpers/OidcService';
 
 interface PersonPoolState {
-  searchAttribute: string | null,
+  searchAttribute: string | Array<string> | null,
+  searchTerm: string | null,
   modelTitle: string,
   modelVisible: boolean,
   modelContent: JSX.Element,
@@ -29,7 +32,8 @@ function PersonPool() {
   const importMutation = useImportPersonMutation(GraphqlService.getClient());
 
   const [state, setState] = useState<PersonPoolState>({
-    searchAttribute: '',
+    searchAttribute: null,
+    searchTerm: '',
     modelTitle: 'unknown',
     modelVisible: false,
     modelContent: (<>empty</>),
@@ -151,23 +155,40 @@ function PersonPool() {
   ];
 
   const {
-    modelContent, modelTitle, modelVisible,
+    modelContent, modelTitle, modelVisible, searchAttribute, searchTerm,
   } = state;
-  const persons = data.persons as Person[];
+
+  let persons = data.persons as Person[];
+  persons = searchFilter(persons, searchAttribute, searchTerm);
+
+  const searchConfigAttributes = [
+    {
+      name: 'Volledige naam',
+      attribute: 'getName',
+    },
+  ];
 
   return (
     <div>
 
       <div style={{ padding: 24, background: '#fff', minHeight: 360 }}>
 
-        <Space>
-          <Button type="primary" onClick={(e) => openModal(e.nativeEvent, FormType.CREATE)}>
-            Nieuw persoon
-          </Button>
-          <Button type="primary" onClick={() => importPerson()}>
-            Importeer
-          </Button>
-        </Space>
+        <div style={{ padding: 5, background: '#fff' }}>
+          <Space>
+            {searchSelector(
+              searchConfigAttributes,
+              searchAttribute,
+              (searchAttribute:string | Array<string>) => setState({ ...state, searchAttribute }),
+              (searchTerm:string) => setState({ ...state, searchTerm }),
+            )}
+            <Button type="primary" onClick={(e) => openModal(e.nativeEvent, FormType.CREATE)}>
+              Nieuw persoon
+            </Button>
+            <Button type="primary" onClick={() => importPerson()}>
+              Importeer
+            </Button>
+          </Space>
+        </div>
 
         <Table pagination={false} columns={columns} rowKey="id" dataSource={persons} />
 

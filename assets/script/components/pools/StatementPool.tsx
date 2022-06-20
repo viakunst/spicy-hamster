@@ -10,9 +10,11 @@ import { Statement, useGetStatementsQuery } from '../../Api/Backend';
 import { FormType } from '../form/FormHelper';
 import StatementCRUD from '../form/CRUD/StatementCRUD';
 import GraphqlService from '../../helpers/GraphqlService';
+import { searchFilter, searchSelector } from '../../helpers/SearchHelper';
 
 interface StatementPoolState {
-  searchAttribute: string | null,
+  searchAttribute: string | Array<string> | null,
+  searchTerm: string | null,
   modelTitle: string,
   modelVisible: boolean,
   modelContent: JSX.Element,
@@ -25,7 +27,8 @@ function StatementPool() {
   } = useGetStatementsQuery(GraphqlService.getClient());
 
   const [state, setState] = useState<StatementPoolState>({
-    searchAttribute: '',
+    searchAttribute: null,
+    searchTerm: '',
     modelTitle: 'unknown',
     modelVisible: false,
     modelContent: (<>empty</>),
@@ -148,21 +151,38 @@ function StatementPool() {
   ];
 
   const {
-    modelContent, modelTitle, modelVisible,
+    modelContent, modelTitle, modelVisible, searchAttribute, searchTerm,
   } = state;
 
-  const statements = data.statements as Statement[];
+  let statements = data.statements as Statement[];
+  statements = searchFilter(statements, searchAttribute, searchTerm);
+
+  const searchConfigAttributes = [
+    {
+      name: 'Titel activiteit',
+      attribute: 'title',
+    },
+  ];
 
   return (
     <div>
 
       <div style={{ padding: 24, background: '#fff', minHeight: 360 }}>
 
-        <Space>
-          <Button type="primary" onClick={(e) => openModal(e.nativeEvent, FormType.CREATE)}>
-            Nieuwe declaratie
-          </Button>
-        </Space>
+        <div style={{ padding: 5, background: '#fff' }}>
+
+          <Space>
+            {searchSelector(
+              searchConfigAttributes,
+              searchAttribute,
+              (searchAttribute:string | Array<string>) => setState({ ...state, searchAttribute }),
+              (searchTerm:string) => setState({ ...state, searchTerm }),
+            )}
+            <Button type="primary" onClick={(e) => openModal(e.nativeEvent, FormType.CREATE)}>
+              Nieuwe declaratie
+            </Button>
+          </Space>
+        </div>
 
         <Table pagination={false} columns={columns} rowKey="id" dataSource={statements} />
 

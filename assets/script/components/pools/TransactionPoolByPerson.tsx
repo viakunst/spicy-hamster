@@ -12,9 +12,11 @@ import {
 import { FormType } from '../form/FormHelper';
 import TransactionCRUD from '../form/CRUD/TransactionCRUD';
 import GraphqlService from '../../helpers/GraphqlService';
+import { searchFilter, searchSelector } from '../../helpers/SearchHelper';
 
 interface TransactionPoolState {
-  searchAttribute: string | null,
+  searchAttribute: string | Array<string> | null,
+  searchTerm: string | null,
   modelTitle: string,
   modelVisible: boolean,
   modelContent: JSX.Element,
@@ -28,7 +30,8 @@ function TransactionPoolByPerson() {
   const switchStatusMutation = useSwitchTransactionStatusMutation(GraphqlService.getClient());
 
   const [state, setState] = useState<TransactionPoolState>({
-    searchAttribute: '',
+    searchAttribute: null,
+    searchTerm: '',
     modelTitle: 'unknown',
     modelVisible: false,
     modelContent: <>empty</>,
@@ -185,22 +188,37 @@ function TransactionPoolByPerson() {
   ];
 
   const {
-    modelContent, modelTitle, modelVisible,
+    modelContent, modelTitle, modelVisible, searchAttribute, searchTerm,
   } = state;
 
-  const personTransactions = data.getAllTransactionsCoupledWithPerson as PersonTransactions[];
-  console.log(personTransactions);
+  let personTransactions = data.getAllTransactionsCoupledWithPerson as PersonTransactions[];
+  personTransactions = searchFilter(personTransactions, searchAttribute, searchTerm);
+
+  const searchConfigAttributes = [
+    {
+      name: 'Volledige naam',
+      attribute: ['person', 'getName'],
+    },
+  ];
 
   return (
     <div>
 
       <div style={{ padding: 24, background: '#fff', minHeight: 360 }}>
 
-        <Space>
-          <Button type="primary" onClick={(e) => openModal(e.nativeEvent, FormType.CREATE)}>
-            Nieuwe transactie
-          </Button>
-        </Space>
+        <div style={{ padding: 5, background: '#fff' }}>
+          <Space>
+            {searchSelector(
+              searchConfigAttributes,
+              searchAttribute,
+              (searchAttribute:string | Array<string>) => setState({ ...state, searchAttribute }),
+              (searchTerm:string) => setState({ ...state, searchTerm }),
+            )}
+            <Button type="primary" onClick={(e) => openModal(e.nativeEvent, FormType.CREATE)}>
+              Nieuwe transactie
+            </Button>
+          </Space>
+        </div>
 
         <Table
           rowKey={(record) => record.person.getId}

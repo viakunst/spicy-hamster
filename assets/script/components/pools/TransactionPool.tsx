@@ -11,9 +11,11 @@ import { Transaction, useGetTransactionsQuery, useSwitchTransactionStatusMutatio
 import { FormType } from '../form/FormHelper';
 import TransactionCRUD from '../form/CRUD/TransactionCRUD';
 import GraphqlService from '../../helpers/GraphqlService';
+import { searchFilter, searchSelector } from '../../helpers/SearchHelper';
 
 interface TransactionPoolState {
-  searchAttribute: string | null,
+  searchAttribute: string | Array<string> | null,
+  searchTerm: string | null,
   modelTitle: string,
   modelVisible: boolean,
   modelContent: JSX.Element,
@@ -28,7 +30,8 @@ function TransactionPool() {
   const switchStatusMutation = useSwitchTransactionStatusMutation(GraphqlService.getClient());
 
   const [state, setState] = useState<TransactionPoolState>({
-    searchAttribute: '',
+    searchAttribute: null,
+    searchTerm: '',
     modelTitle: 'unknown',
     modelVisible: false,
     modelContent: <>empty</>,
@@ -166,21 +169,37 @@ function TransactionPool() {
   ];
 
   const {
-    modelContent, modelTitle, modelVisible,
+    modelContent, modelTitle, modelVisible, searchAttribute, searchTerm,
   } = state;
 
-  const transactions = data.transactions as Transaction[];
+  let transactions = data.transactions as Transaction[];
+  transactions = searchFilter(transactions, searchAttribute, searchTerm);
+
+  const searchConfigAttributes = [
+    {
+      name: 'Titel activiteit',
+      attribute: 'title',
+    },
+  ];
 
   return (
     <div>
 
       <div style={{ padding: 24, background: '#fff', minHeight: 360 }}>
 
-        <Space>
-          <Button type="primary" onClick={(e) => openModal(e.nativeEvent, FormType.CREATE)}>
-            Nieuwe transactie
-          </Button>
-        </Space>
+        <div style={{ padding: 5, background: '#fff' }}>
+          <Space>
+            {searchSelector(
+              searchConfigAttributes,
+              searchAttribute,
+              (searchAttribute:string | Array<string>) => setState({ ...state, searchAttribute }),
+              (searchTerm:string) => setState({ ...state, searchTerm }),
+            )}
+            <Button type="primary" onClick={(e) => openModal(e.nativeEvent, FormType.CREATE)}>
+              Nieuwe transactie
+            </Button>
+          </Space>
+        </div>
 
         <Table pagination={false} columns={columns} rowKey="id" dataSource={transactions} />
 

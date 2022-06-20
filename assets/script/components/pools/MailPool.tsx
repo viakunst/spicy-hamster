@@ -11,9 +11,11 @@ import { Mail, useGetMailsQuery } from '../../Api/Backend';
 import { FormType } from '../form/FormHelper';
 import MailCRUD from '../form/CRUD/MailCRUD';
 import GraphqlService from '../../helpers/GraphqlService';
+import { searchFilter, searchSelector } from '../../helpers/SearchHelper';
 
 interface MailPoolState {
-  searchAttribute: string | null,
+  searchAttribute: string | Array<string> | null,
+  searchTerm: string | null,
   modelTitle: string,
   modelVisible: boolean,
   modelContent: JSX.Element,
@@ -26,7 +28,8 @@ function MailPool() {
   } = useGetMailsQuery(GraphqlService.getClient());
 
   const [state, setState] = useState<MailPoolState>({
-    searchAttribute: '',
+    searchAttribute: null,
+    searchTerm: '',
     modelTitle: 'unknown',
     modelVisible: false,
     modelContent: (<>empty</>),
@@ -145,16 +148,33 @@ function MailPool() {
   ];
 
   const {
-    modelContent, modelTitle, modelVisible,
+    modelContent, modelTitle, modelVisible, searchAttribute, searchTerm,
   } = state;
 
-  const mails = data.mails as Mail[];
+  let mails = data.mails as Mail[];
+  mails = searchFilter(mails, searchAttribute, searchTerm);
   console.log(mails);
+  const searchConfigAttributes = [
+    {
+      name: 'Ontvanger',
+      attribute: ['recipients', '0', 'person', 'getName'],
+    },
+  ];
 
   return (
     <div>
 
       <div style={{ padding: 0, background: '#fff', minHeight: 360 }}>
+        <div style={{ padding: 5, background: '#fff' }}>
+          <Space>
+            {searchSelector(
+              searchConfigAttributes,
+              searchAttribute,
+              (searchAttribute:string | Array<string>) => setState({ ...state, searchAttribute }),
+              (searchTerm:string) => setState({ ...state, searchTerm }),
+            )}
+          </Space>
+        </div>
 
         <Table pagination={false} columns={columns} rowKey="id" dataSource={mails} />
 
