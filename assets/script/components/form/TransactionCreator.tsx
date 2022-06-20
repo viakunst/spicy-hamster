@@ -22,6 +22,27 @@ interface TransactionCreatorProps {
 
 }
 
+const formatterNumber = (val:any) => `${val}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+
+const parseFloatString = (value:any) => {
+  const val = `${value}`;
+  const indexpoint = val.indexOf('.');
+
+  if (indexpoint === -1) {
+    return `${val.replace('.', '')}00`;
+  }
+  if (val.length - indexpoint == 2) {
+    return `${val.replace('.', '')}0`;
+  }
+  if (val.length - indexpoint == 3) {
+    return val.replace('.', '');
+  }
+
+  return val;
+};
+
+const parserNumber = (val:any) => val!.replace(/\$\s?|(,*)/g, '');
+
 const formItemLayout = {
   labelCol: {
     xs: { span: 22 },
@@ -81,9 +102,10 @@ function TransactionCreator(props:TransactionCreatorProps) {
 
     values.fields.forEach((val:any) => {
       console.log(val);
+      const parsedAmount = parseInt(parseFloatString(val.amount));
       val.person.forEach((person:any) => {
         const transaction = {
-          amount: val.amount,
+          amount: parsedAmount,
           comment: undefined,
           personId: person,
           status: 'Openstaand',
@@ -170,7 +192,11 @@ function TransactionCreator(props:TransactionCreatorProps) {
                 name={[field.name, 'amount']}
                 fieldKey={[field.key, 'amount']}
               >
-                <InputNumber />
+                <InputNumber
+                  prefix="€"
+                  formatter={(value:any) => formatterNumber(value)}
+                  parser={(value:any) => parserNumber(value)}
+                />
               </Form.Item>
               <FormItem
                 label="Betaalgerechtingen"

@@ -1,7 +1,7 @@
 import React from 'react';
 
 import {
-  Form, Input, Checkbox, Table, message,
+  Form, Input, Checkbox, Table, message, InputNumber,
 } from 'antd';
 import { GraphQLClient } from 'graphql-request';
 import { Mutation } from 'react-query';
@@ -17,6 +17,27 @@ interface TransactionCRUDprops {
   transaction? : Transaction;
   formtype : FormType
 }
+
+const formatterNumber = (val:any) => `${val}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+
+const parseFloatString = (value:any) => {
+  const val = `${value}`;
+  const indexpoint = val.indexOf('.');
+
+  if (indexpoint === -1) {
+    return `${val.replace('.', '')}00`;
+  }
+  if (val.length - indexpoint == 2) {
+    return `${val.replace('.', '')}0`;
+  }
+  if (val.length - indexpoint == 3) {
+    return val.replace('.', '');
+  }
+
+  return val;
+};
+
+const parserNumber = (val:any) => val!.replace(/\$\s?|(,*)/g, '');
 
 function TransactionCRUD(props:TransactionCRUDprops) {
   const [form] = Form.useForm();
@@ -61,17 +82,27 @@ function TransactionCRUD(props:TransactionCRUDprops) {
 
   const onCreateFinish = async (values: any) => {
     // Push attributes, that are actually editable, to list.
-    values.amount = parseInt(values.amount);
+    console.log(values);
+
+    const amount = values.amount as string;
+    values.amount = parseInt(parseFloatString(amount.toString()));
+
     values.timesReminded = parseInt(values.timesReminded);
+    console.log(values);
     const transactionInput = values as TransactionInput;
     createMutation.mutate({ transaction: transactionInput });
   };
 
   const onUpdateFinish = async (values:any) => {
     // Push attributes, that are actually editable, to list.
+
+    console.log(values);
+    values.amount = parseInt(parseFloatString(values.amount));
     values.timesReminded = parseInt(values.timesReminded);
-    values.amount = parseInt(values.amount);
+    console.log(values);
+
     const transactionInput = values as TransactionInput;
+
     if (transaction !== undefined) {
       updateMutation.mutate({ id: transaction.getId, transaction: transactionInput });
     }
@@ -111,7 +142,11 @@ function TransactionCRUD(props:TransactionCRUDprops) {
         <Input />
       </Form.Item>
       <Form.Item label="Bedrag" name="amount" rules={[{ required: true }]}>
-        <Input />
+        <InputNumber
+          prefix="€"
+          formatter={(value:any) => formatterNumber(value)}
+          parser={(value:any) => parserNumber(value)}
+        />
       </Form.Item>
     </>
   );
@@ -128,9 +163,6 @@ function TransactionCRUD(props:TransactionCRUDprops) {
       <Checkbox>Ja, ik wil dit account echt verwijderen.</Checkbox>
     </Form.Item>
   );
-
-  console.log(formtype);
-  console.log(transaction);
 
   if (formtype === FormType.CREATE && transaction === undefined) {
     content = (
