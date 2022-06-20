@@ -1,7 +1,9 @@
 import React, { useEffect } from 'react';
 
+import HtmlParser from 'react-html-parser';
+
 import {
-  Form, Checkbox, Table, message,
+  Form, Checkbox, Table, message, Space, Divider,
 } from 'antd';
 import { Mail, useDeleteMailMutation } from '../../../Api/Backend';
 
@@ -60,6 +62,16 @@ function MailCRUD(props:MailCRUDProps) {
       title: 'Waarde',
       dataIndex: 'value',
       key: 'age',
+      onCell: (record:any, rowIndex:any) => {
+        console.log(record);
+        if (record.value.html !== undefined) {
+          const html_content = record.value.html.match(/<body>*>((.|\n)*?)<\/body>/)[0].replace(/<[\/]?body>/g, '');
+          console.log(html_content);
+          record.value = (<>{HtmlParser(html_content)}</>);
+          return record;
+        }
+        return record;
+      },
     },
   ];
 
@@ -77,15 +89,29 @@ function MailCRUD(props:MailCRUDProps) {
   );
 
   if (formtype === FormType.READ && mail !== undefined) {
+    let sendTo = '';
+    if (mail.recipients !== undefined
+      && mail.recipients !== null
+      && mail.recipients[0] !== null
+      && mail.recipients[0].person !== undefined
+      && mail.recipients[0].person !== null
+    ) {
+      sendTo = mail.recipients[0].person.getName;
+    }
+
+    const parsed_content = JSON.parse(mail.content);
     const readData = [
       { key: 'Titel', value: mail.title },
-      { key: 'Content', value: mail.content },
-      { key: 'verzonden naar', value: mail.recipients },
+      { key: 'verzonden naar', value: sendTo },
       { key: 'verzonden door', value: mail.sendBy },
+      { key: 'Content', value: parsed_content },
     ];
 
     content = (
-      <div style={{ padding: 24, background: '#fff', minHeight: 360 }}>
+      <div style={{
+        padding: 5, background: '#fff', minHeight: 360, minWidth: 600,
+      }}
+      >
         <Table dataSource={readData} columns={readColumns} />
       </div>
     );

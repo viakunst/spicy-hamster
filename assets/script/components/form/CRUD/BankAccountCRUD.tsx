@@ -97,6 +97,9 @@ function BankAccountCRUD(props:BankAccountCreateProps) {
       <Form.Item label="Naam" name="name" rules={[{ required: true }]}>
         <Input />
       </Form.Item>
+      <Form.Item label="Manager" name="manager" rules={[{ required: true }]}>
+        <Input />
+      </Form.Item>
       <Form.Item label="IBAN" name="IBAN" rules={[{ required: true }]}>
         <Input />
       </Form.Item>
@@ -127,6 +130,7 @@ function BankAccountCRUD(props:BankAccountCreateProps) {
   if (formtype === FormType.UPDATE && bankaccount !== undefined) {
     const updateInitial = {
       name: bankaccount.name,
+      manager: bankaccount.manager,
       IBAN: bankaccount.IBAN,
     };
 
@@ -140,6 +144,7 @@ function BankAccountCRUD(props:BankAccountCreateProps) {
   if (formtype === FormType.READ && bankaccount !== undefined) {
     const readData = [
       { key: 'Naam', value: bankaccount.name },
+      { key: 'Manager', value: bankaccount.manager },
       { key: 'IBAN', value: bankaccount.IBAN },
     ];
 

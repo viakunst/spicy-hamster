@@ -109,9 +109,19 @@ function MailPool() {
       key: 'title',
     },
     {
-      title: 'Content',
-      dataIndex: 'content',
-      key: 'content',
+      title: 'Ontvanger',
+      dataIndex: ['recipients', 0, 'person', 'getName'],
+      key: 'recipient',
+    },
+    {
+      title: 'Datum van versturen',
+      dataIndex: 'sentAt',
+      key: 'sentAt',
+    },
+    {
+      title: 'Verstuurd door',
+      dataIndex: 'sendBy',
+      key: 'sendBy',
     },
     {
       title: 'Details',
@@ -139,6 +149,7 @@ function MailPool() {
   } = state;
 
   const mails = data.mails as Mail[];
+  console.log(mails);
 
   return (
     <div>
@@ -153,6 +164,7 @@ function MailPool() {
           visible={modelVisible}
           onCancel={closeModal}
           footer={null}
+          style={{ width: 1000, minWidth: 700 }}
         >
           { modelContent }
         </Modal>

@@ -14,7 +14,7 @@
                 <table>
                     <thead>
                         <tr>
-                            <th>Openstaande betalingsherinneringen van de {{transactionSet.account.name}} </th>
+                            <th>Openstaande betalingsherinneringen van {{transactionSet.account.manager}} </th>
                         </tr>
                     </thead>
                     <tbody>
@@ -28,7 +28,6 @@
                     </tbody>
                 </table>
             </div>
-            <br>
             <br>
             {% set total = transactionSet.transaction|reduce((carry, t) => carry + t.amount)  %}
             Zou je daarom {{ '%01.2f'|format(total / 100) }} willen overmaken naar de <b>{{transactionSet.account.name}}</b>:

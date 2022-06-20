@@ -2,6 +2,7 @@ query GetBankAccounts {
   bankAccounts {
     getId,
     name,
+    manager,
     IBAN
   }
 }

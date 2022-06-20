@@ -31,6 +31,12 @@ class BankAccount
      * @ORM\Column(type="string", length=255)
      * @GQL\Field(type="String!")
      */
+    private string $manager;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     * @GQL\Field(type="String!")
+     */
     private string $IBAN;
 
     /**
@@ -61,6 +67,18 @@ class BankAccount
         return $this;
     }
 
+    public function getManager(): ?string
+    {
+        return $this->manager;
+    }
+
+    public function setManager(string $manager): self
+    {
+        $this->manager = $manager;
+
+        return $this;
+    }
+
     public function getIBAN(): ?string
     {
         return $this->IBAN;
@@ -77,6 +95,9 @@ class BankAccount
     {
         if (null !== $bankAccount->getName()) {
             $this->name = $bankAccount->getName();
+        }
+        if (null !== $bankAccount->getManager()) {
+            $this->manager = $bankAccount->getManager();
         }
         if (null !== $bankAccount->getIBAN()) {
             $this->IBAN = $bankAccount->getIBAN();

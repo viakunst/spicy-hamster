@@ -63,7 +63,7 @@ function BankAccountPool() {
         );
         break;
       case FormType.READ:
-        modelTitle = 'Details van bankrekening';
+        modelTitle = 'Details van bankrekening.';
         modelContent = (
           <BankAccountCRUD
             formtype={FormType.READ}
@@ -73,7 +73,7 @@ function BankAccountPool() {
         );
         break;
       case FormType.UPDATE:
-        modelTitle = 'Bewerk bankrekening';
+        modelTitle = 'Bewerkem van de bankrekening.';
         modelContent = (
           <BankAccountCRUD
             formtype={FormType.UPDATE}
@@ -83,7 +83,7 @@ function BankAccountPool() {
         );
         break;
       case FormType.DELETE:
-        modelTitle = 'Verwijder bankrekening';
+        modelTitle = 'Verwijderen van de bankrekening.';
         modelContent = (
           <BankAccountCRUD
             formtype={FormType.DELETE}
@@ -109,9 +109,14 @@ function BankAccountPool() {
   // These are the columns of the table.
   const columns: ColumnsType<BankAccount> = [
     {
-      title: 'Naam',
+      title: 'Naam van de rekening',
       dataIndex: 'name',
       key: 'name',
+    },
+    {
+      title: 'Manager van de rekening',
+      dataIndex: 'manager',
+      key: 'manager',
     },
     {
       title: 'IBAN',
@@ -123,11 +128,6 @@ function BankAccountPool() {
       key: 'action',
       render: (text, record) => (
         <Space>
-          <Button onClick={
-            (e) => openModal(e.nativeEvent, FormType.READ, record)
-            }
-          >Details
-          </Button>
           <Button onClick={
             (e) => openModal(e.nativeEvent, FormType.UPDATE, record)
             }

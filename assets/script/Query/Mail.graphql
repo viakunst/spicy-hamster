@@ -4,6 +4,13 @@ query GetMails {
     title
     content
     sender
+    sendAt
+    sendBy
+    recipients {
+      person {
+        getName
+      }
+    }
   }
 }
 

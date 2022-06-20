@@ -143,7 +143,8 @@ function TransactionPoolByPerson() {
               }
             >Details
             </Button>
-            <Button onClick={() => onSwitchStatus(transactionRecord)}>Switch status
+            <Button onClick={() => onSwitchStatus(transactionRecord)}>
+              Switch status
             </Button>
             <Button onClick={
               (e) => openModal(e.nativeEvent, FormType.UPDATE, transactionRecord)
