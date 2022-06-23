@@ -12,6 +12,7 @@ use App\Entity\Transaction\TransactionGroup;
 use App\GraphQL\Types\PersonTransactions;
 use Doctrine\ORM\EntityManagerInterface;
 use Overblog\GraphQLBundle\Annotation as GQL;
+use Symfony\Component\Security\Core\Security;
 
 /**
  * @GQL\Type
@@ -24,9 +25,15 @@ class Query
      */
     private $em;
 
-    public function __construct(EntityManagerInterface $em)
+    /**
+     * @var Security
+     */
+    private $security;
+
+    public function __construct(EntityManagerInterface $em, Security $security)
     {
         $this->em = $em;
+        $this->security = $security;
     }
 
     /**
@@ -39,6 +46,23 @@ class Query
     public function persons()
     {
         return $this->em->getRepository(Person::class)->findAll();
+    }
+
+    /**
+     * @GQL\Field(type="[String]")
+     * @GQL\Description("All persons with outstanding transactions.")
+     * @GQL\Access("isAuthenticated()")
+     *
+     * @return string[]
+     */
+    public function getOwnRoles()
+    {
+        $user = $this->security->getUser();
+        if (is_null($user)) {
+            return ['notFound'];
+        }
+
+        return $user->getRoles();
     }
 
     /**

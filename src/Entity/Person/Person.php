@@ -13,6 +13,9 @@ use Overblog\GraphQLBundle\Annotation as GQL;
  */
 class Person
 {
+    public const ADMIN_ROLE = 'admin';
+    public const NO_ROLE = 'user';
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue(strategy="UUID")
@@ -56,6 +59,13 @@ class Person
     private string $address;
 
     /**
+     * @ORM\Column(type="string", length=255)
+     * @GQL\Field(type="String!")
+     * @GQL\Description("The role of the person.")
+     */
+    private string $role;
+
+    /**
      * @GQL\Field(type="String!")
      * @GQL\Description("The subject identifier of the person.")
      */
@@ -79,6 +89,18 @@ class Person
     public function setSub(string $sub): self
     {
         $this->sub = $sub;
+
+        return $this;
+    }
+
+    public function getRole(): ?string
+    {
+        return $this->role;
+    }
+
+    public function setRole(string $role): self
+    {
+        $this->role = $role;
 
         return $this;
     }
@@ -192,6 +214,9 @@ class Person
     {
         if (null !== $person->getSub()) {
             $this->sub = $person->getSub();
+        }
+        if (null !== $person->getRole()) {
+            $this->role = $person->getRole();
         }
         if (null !== $person->getEmail()) {
             $this->email = $person->getEmail();

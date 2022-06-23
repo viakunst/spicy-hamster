@@ -130,6 +130,11 @@ function PersonPool() {
       key: 'email',
     },
     {
+      title: 'Rol',
+      dataIndex: 'role',
+      key: 'role',
+    },
+    {
       title: 'Details',
       key: 'action',
       render: (text, record) => (

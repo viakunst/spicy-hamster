@@ -87,9 +87,9 @@ function TransactionCRUD(props:TransactionCRUDprops) {
     }
   };
 
-  const onDeleteFinish = async () => {
+  const onDeleteFinish = async (values: any) => {
     // Push attributes, that are actually editable, to list.
-    if (transaction !== undefined) {
+    if (transaction !== undefined && values.sure === true) {
       deleteMutation.mutate({ id: transaction.getId });
     }
   };

@@ -72,9 +72,9 @@ function TransactionGroupCRUD(props:TransactionGroupCRUDProps) {
     }
   };
 
-  const onDeleteFinish = async () => {
+  const onDeleteFinish = async (values: any) => {
     // Push attributes, that are actually editable, to list.
-    if (transactionGroup !== undefined) {
+    if (transactionGroup !== undefined && values.sure === true) {
       deleteMutation.mutate({ id: transactionGroup.getId });
     }
   };

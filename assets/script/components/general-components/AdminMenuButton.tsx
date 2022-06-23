@@ -4,24 +4,36 @@ import { Link } from 'react-router-dom';
 import {
   Button,
 } from 'antd';
+import { useGetOwnRolesQuery } from '../../Api/Backend';
+import GraphqlService from '../../helpers/GraphqlService';
 
 export default function AdminMenuButton() {
   const [state, setState] = useState({
     admin: 'user',
   });
 
-  // componentDidMount
-  useEffect(() => {
-    // TO-DO: check if Mighty-Eagly has determined if admin.
-    // For now always assume this.
-    setState({ admin: 'admin' });
-  }, []);
-
+  console.log('start');
   const {
-    admin,
-  } = state;
+    data, isLoading, isError, refetch,
+  } = useGetOwnRolesQuery(GraphqlService.getClient());
 
-  if (admin === 'admin') {
+  console.log(isLoading);
+  if (isLoading || isError || data === undefined) {
+    return null;
+  }
+
+  console.log(data);
+  const roles = data.getOwnRoles as string[];
+  console.log(roles);
+
+  let admin = false;
+  roles.forEach((role) => {
+    if (role === 'ROLE_ADMIN') {
+      admin = true;
+    }
+  });
+
+  if (admin) {
     return (
       <>
         <Link to="/admin">

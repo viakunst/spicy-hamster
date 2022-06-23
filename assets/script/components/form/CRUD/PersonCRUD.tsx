@@ -20,7 +20,6 @@ interface PersonCreateProps {
 function PersonCRUD(props:PersonCreateProps) {
   const [form] = Form.useForm();
 
-  console.log('person crud on');
   const createMutation = useCreatePersonMutation(GraphqlService.getClient());
   const updateMutation = useUpdatePersonMutation(GraphqlService.getClient());
   const deleteMutation = useDeletePersonMutation(GraphqlService.getClient());
@@ -66,7 +65,16 @@ function PersonCRUD(props:PersonCreateProps) {
 
   const onUpdateFinish = async (values: any) => {
     // Push attributes, that are actually editable, to list.
+    const { admin } = values;
+    delete values.admin;
+
     const personInput = values as PersonInput;
+    if (admin) {
+      personInput.role = 'admin';
+    } else {
+      personInput.role = '';
+    }
+
     if (person !== undefined) {
       updateMutation.mutate({ id: person.getId, person: personInput });
     }
@@ -107,6 +115,9 @@ function PersonCRUD(props:PersonCreateProps) {
       <Form.Item label="Adress" name="address" rules={[{ required: true }]}>
         <Input />
       </Form.Item>
+      <Form.Item label="Admin" name="admin" valuePropName="checked" rules={[{ required: false }]}>
+        <Checkbox>Deze gebruiker is admin.</Checkbox>
+      </Form.Item>
       <Form.Item label="AWS Identifier" name="sub" rules={[{ required: false }]}>
         <Input />
       </Form.Item>
@@ -126,9 +137,6 @@ function PersonCRUD(props:PersonCreateProps) {
     </Form.Item>
   );
 
-  console.log(formtype);
-  console.log(person);
-
   if (formtype === FormType.CREATE && person === undefined) {
     content = (
       <>
@@ -138,14 +146,21 @@ function PersonCRUD(props:PersonCreateProps) {
   }
 
   if (formtype === FormType.UPDATE && person !== undefined) {
+    let admin = false;
+    if (person.role === 'admin') {
+      admin = true;
+    }
+
     const updateInitial = {
       sub: person.sub,
       email: person.email,
       address: person.address,
       givenName: person.givenName,
       familyName: person.familyName,
+      admin,
     };
 
+    console.log(updateInitial);
     content = (
       <>
         {basicForm(form, onUpdateFinish, 'Opslaan', 'Opslaan...', disabled, updateCreateFormItems, updateInitial)}
@@ -158,6 +173,7 @@ function PersonCRUD(props:PersonCreateProps) {
       { key: 'Volledige naam', value: person.getName },
       { key: 'email', value: person.email },
       { key: 'address', value: person.address },
+      { key: 'Rol', value: person.role },
       { key: 'AWS identifier', value: person.sub },
     ];
 

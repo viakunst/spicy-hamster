@@ -75,9 +75,9 @@ function StatementCRUD(props:StatementCRUDProps) {
     }
   };
 
-  const onDeleteFinish = async () => {
+  const onDeleteFinish = async (values: any) => {
     // Push attributes, that are actually editable, to list.
-    if (statement !== undefined) {
+    if (statement !== undefined && values.sure === true) {
       deleteMutation.mutate({ id: statement.getId });
     }
   };

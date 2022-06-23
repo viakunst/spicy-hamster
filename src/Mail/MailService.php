@@ -100,7 +100,7 @@ class MailService
         }
         $this->em->flush();
 
-        // $this->mailer->send($message);
+        $this->mailer->send($message);
     }
 
     /**
