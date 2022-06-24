@@ -30,7 +30,8 @@ export default function AdminMenuButton() {
     }
     if (role === 'noAdmin') {
       const tok = OidcService.getIdToken();
-      if (tok !== null && importMutation.isLoading === false && importMutation.isSuccess === false) {
+      if (tok !== null && importMutation.isLoading === false
+        && importMutation.isSuccess === false) {
         importMutation.mutate({ token: tok });
       }
     }
