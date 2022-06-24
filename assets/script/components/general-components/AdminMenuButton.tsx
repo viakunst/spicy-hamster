@@ -35,13 +35,11 @@ export default function AdminMenuButton() {
 
   if (admin) {
     return (
-      <>
-        <Link to="/admin">
-          <Button>
-            Beheer
-          </Button>
-        </Link> | {' '}
-      </>
+      <Link to="/admin">
+        <Button>
+          Beheer
+        </Button>
+      </Link>
     );
   }
 

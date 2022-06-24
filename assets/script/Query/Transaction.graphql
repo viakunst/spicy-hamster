@@ -20,6 +20,29 @@ query GetTransactions {
   }
 }
 
+
+query GetOwnTransactions {
+  getOwnTransactions {
+    getId
+    comment
+    status
+    amount
+    getTitle
+    getDate
+    getPerson {
+      getId
+      getName
+    }
+    getTransactionGroup {
+      getId
+      getBankAccount {
+        name
+      }
+    }
+  }
+}
+
+
 query GetAllTransactionsCoupledWithPerson {
   getAllTransactionsCoupledWithPerson {
     person {

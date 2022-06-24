@@ -10,6 +10,7 @@ use App\Entity\Statement\Statement;
 use App\Entity\Transaction\Transaction;
 use App\Entity\Transaction\TransactionGroup;
 use App\GraphQL\Types\PersonTransactions;
+use App\Security\TokenUser;
 use Doctrine\ORM\EntityManagerInterface;
 use Overblog\GraphQLBundle\Annotation as GQL;
 use Symfony\Component\Security\Core\Security;
@@ -63,6 +64,34 @@ class Query
         }
 
         return $user->getRoles();
+    }
+
+    /**
+     * @GQL\Field(type="[Transaction]")
+     * @GQL\Description("All persons with outstanding transactions.")
+     * @GQL\Access("isAuthenticated()")
+     *
+     * @return Transaction[]
+     */
+    public function getOwnTransactions()
+    {
+        $user = $this->security->getUser();
+        if (is_null($user)) {
+            return [];
+        }
+        if (!($user instanceof TokenUser)) {
+            return [];
+        }
+        if (is_null($user->getSub())) {
+            return [];
+        }
+
+        $person = $this->em->getRepository(Person::class)->findOneBy(['sub' => $user->getSub()]);
+        if (is_null($person)) {
+            return [];
+        }
+
+        return $this->em->getRepository(Transaction::class)->findBy(['person' => $person->getId()]);
     }
 
     /**

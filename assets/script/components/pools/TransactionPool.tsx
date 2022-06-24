@@ -15,6 +15,7 @@ import { searchFilter, searchSelector } from '../../helpers/SearchHelper';
 import { amountRender } from '../../helpers/AmountHelper';
 import { dateRender } from '../../helpers/DateHelper';
 import { stateRender } from '../../helpers/StateHelper';
+import { capitalize } from '../../helpers/StringHelper';
 
 interface TransactionPoolState {
   searchAttribute: string | Array<string> | null,
@@ -130,7 +131,7 @@ function TransactionPool() {
     { title: 'Datum', key: 'getDate', render: (_, { getDate }) => dateRender(getDate) },
     { title: 'Bedrag', key: 'amount', render: (_, { amount }) => amountRender(amount) },
     { title: 'Persoon', dataIndex: ['getPerson', 'getName'], key: 'person' },
-    { title: 'Bankaccount', dataIndex: ['getTransactionGroup', 'getBankAccount', 'name'], key: 'account' },
+    { title: 'Bankaccount', key: 'account', render: (_, { getTransactionGroup }) => capitalize(getTransactionGroup?.getBankAccount?.name) },
     { title: 'Status', key: 'state', render: (_, { status }) => stateRender(status) },
     {
       title: 'Details',

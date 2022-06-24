@@ -18,6 +18,7 @@ import { searchFilter, searchSelector } from '../../helpers/SearchHelper';
 import { amountRender } from '../../helpers/AmountHelper';
 import { dateRender } from '../../helpers/DateHelper';
 import { stateRender } from '../../helpers/StateHelper';
+import { capitalize } from '../../helpers/StringHelper';
 
 interface TransactionGroupPoolState {
   searchAttribute: string | Array<string> | null,
@@ -237,8 +238,8 @@ function TransactionPoolByGroup() {
     },
     {
       title: 'Bankrekening',
-      dataIndex: ['getBankAccount', 'name'],
       key: 'account',
+      render: (_, { getBankAccount }) => capitalize(getBankAccount?.name),
     },
     {
       title: 'Details',

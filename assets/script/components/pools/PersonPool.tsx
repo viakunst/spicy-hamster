@@ -12,6 +12,7 @@ import { FormType } from '../form/FormHelper';
 import PersonCRUD from '../form/CRUD/PersonCRUD';
 import GraphqlService from '../../helpers/GraphqlService';
 import { searchFilter, searchSelector } from '../../helpers/SearchHelper';
+import { capitalize } from '../../helpers/StringHelper';
 
 import OidcService from '../../helpers/OidcService';
 
@@ -134,8 +135,8 @@ function PersonPool() {
     },
     {
       title: 'Rol',
-      dataIndex: 'role',
       key: 'role',
+      render: (_, { role }) => capitalize(role),
     },
     {
       title: 'Details',
