@@ -73,7 +73,7 @@ function PersonCRUD(props:PersonCreateProps) {
     if (admin) {
       personInput.role = 'admin';
     } else {
-      personInput.role = '';
+      personInput.role = 'gebruiker';
     }
 
     if (person !== undefined) {
