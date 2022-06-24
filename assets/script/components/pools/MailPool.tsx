@@ -20,6 +20,7 @@ interface MailPoolState {
   modelTitle: string,
   modelVisible: boolean,
   modelContent: JSX.Element,
+  modelWidth: string | number,
   selectedMail: Mail | null,
 }
 
@@ -33,6 +34,7 @@ function MailPool() {
     searchTerm: '',
     modelTitle: 'unknown',
     modelVisible: false,
+    modelWidth: '60%',
     modelContent: (<>empty</>),
     selectedMail: null,
   });
@@ -48,6 +50,7 @@ function MailPool() {
   const openModal = async (e: MouseEvent, formType: string, mail?: Mail) => {
     let modelTitle = 'unknown';
     let modelContent = <>empty</>;
+    const modelWidth = '60%';
     const modelVisible = true;
 
     switch (formType) {
@@ -97,7 +100,7 @@ function MailPool() {
     }
 
     setState({
-      ...state, modelVisible, modelContent, modelTitle,
+      ...state, modelVisible, modelContent, modelTitle, modelWidth,
     });
   };
 
@@ -149,7 +152,7 @@ function MailPool() {
   ];
 
   const {
-    modelContent, modelTitle, modelVisible, searchAttribute, searchTerm,
+    modelContent, modelTitle, modelVisible, modelWidth, searchAttribute, searchTerm,
   } = state;
 
   let mails = data.mails as Mail[];
@@ -184,6 +187,7 @@ function MailPool() {
           destroyOnClose
           visible={modelVisible}
           onCancel={closeModal}
+          width={modelWidth}
           footer={null}
           style={{ width: 1000, minWidth: 700 }}
         >

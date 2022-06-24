@@ -20,6 +20,7 @@ interface BankAccountPoolState {
   modelTitle: string,
   modelVisible: boolean,
   modelContent: JSX.Element,
+  modelWidth: string | number,
   selectedBankAccount: BankAccount | null,
 }
 
@@ -34,6 +35,7 @@ function BankAccountPool() {
     modelTitle: 'unknown',
     modelVisible: false,
     modelContent: (<>empty</>),
+    modelWidth: '60%',
     selectedBankAccount: null,
   });
 
@@ -51,6 +53,7 @@ function BankAccountPool() {
   const openModal = async (e: MouseEvent, formType: string, bankaccount?: BankAccount) => {
     let modelTitle = 'unknown';
     let modelContent = <>empty</>;
+    const modelWidth = '60%';
     const modelVisible = true;
 
     console.log(bankaccount);
@@ -101,7 +104,7 @@ function BankAccountPool() {
     }
 
     setState({
-      ...state, modelVisible, modelContent, modelTitle,
+      ...state, modelVisible, modelContent, modelTitle, modelWidth,
     });
   };
 
@@ -147,7 +150,7 @@ function BankAccountPool() {
   ];
 
   const {
-    modelContent, modelTitle, modelVisible, searchAttribute, searchTerm,
+    modelContent, modelTitle, modelVisible, modelWidth, searchAttribute, searchTerm,
   } = state;
 
   let bankaccounts = data.bankAccounts as BankAccount[];
@@ -188,6 +191,7 @@ function BankAccountPool() {
           title={modelTitle}
           destroyOnClose
           visible={modelVisible}
+          width={modelWidth}
           onCancel={closeModal}
           footer={null}
         >

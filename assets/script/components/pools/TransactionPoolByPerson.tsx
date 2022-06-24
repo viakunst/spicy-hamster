@@ -22,6 +22,7 @@ interface TransactionPoolState {
   modelTitle: string,
   modelVisible: boolean,
   modelContent: JSX.Element,
+  modelWidth: string | number,
   selectedTransaction: Transaction | null,
 }
 
@@ -37,6 +38,7 @@ function TransactionPoolByPerson() {
     modelTitle: 'unknown',
     modelVisible: false,
     modelContent: <>empty</>,
+    modelWidth: '60%',
     selectedTransaction: null,
   });
 
@@ -63,6 +65,7 @@ function TransactionPoolByPerson() {
   const openModal = async (e: MouseEvent, formType: string, transaction?: Transaction) => {
     let modelTitle = 'unknown';
     let modelContent = <>empty</>;
+    const modelWidth = '60%';
     const modelVisible = true;
 
     switch (formType) {
@@ -112,7 +115,7 @@ function TransactionPoolByPerson() {
     }
 
     setState({
-      ...state, modelVisible, modelContent, modelTitle,
+      ...state, modelVisible, modelContent, modelTitle, modelWidth,
     });
   };
 
@@ -190,7 +193,7 @@ function TransactionPoolByPerson() {
   ];
 
   const {
-    modelContent, modelTitle, modelVisible, searchAttribute, searchTerm,
+    modelContent, modelTitle, modelVisible, modelWidth, searchAttribute, searchTerm,
   } = state;
 
   let personTransactions = data.getAllTransactionsCoupledWithPerson as PersonTransactions[];
@@ -234,6 +237,7 @@ function TransactionPoolByPerson() {
           title={modelTitle}
           destroyOnClose
           visible={modelVisible}
+          width={modelWidth}
           onCancel={closeModal}
           footer={null}
         >

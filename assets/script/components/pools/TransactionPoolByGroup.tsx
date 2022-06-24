@@ -24,6 +24,7 @@ interface TransactionGroupPoolState {
   modelTitle: string,
   modelVisible: boolean,
   modelContent: JSX.Element,
+  modelWidth: string | number,
   selectedTransactionGroup: TransactionGroup | null,
 }
 
@@ -39,6 +40,7 @@ function TransactionPoolByGroup() {
     modelTitle: 'unknown',
     modelVisible: false,
     modelContent: (<>empty</>),
+    modelWidth: '60%',
     selectedTransactionGroup: null,
   });
 
@@ -70,6 +72,7 @@ function TransactionPoolByGroup() {
   ) => {
     let modelTitle = 'unknown';
     let modelContent = <>empty</>;
+    const modelWidth = '60%';
     const modelVisible = true;
 
     if (transaction !== null) {
@@ -168,7 +171,7 @@ function TransactionPoolByGroup() {
     }
 
     setState({
-      ...state, modelVisible, modelContent, modelTitle,
+      ...state, modelVisible, modelContent, modelTitle, modelWidth,
     });
   };
 
@@ -277,7 +280,7 @@ function TransactionPoolByGroup() {
   ];
 
   const {
-    modelContent, modelTitle, modelVisible, searchAttribute, searchTerm,
+    modelContent, modelTitle, modelVisible, modelWidth, searchAttribute, searchTerm,
   } = state;
 
   let transactionGroups = data.transactionGroups as TransactionGroup[];
@@ -322,6 +325,7 @@ function TransactionPoolByGroup() {
           destroyOnClose
           visible={modelVisible}
           onCancel={closeModal}
+          width={modelWidth}
           footer={null}
         >
           { modelContent }

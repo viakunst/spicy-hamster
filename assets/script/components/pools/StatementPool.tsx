@@ -18,6 +18,7 @@ interface StatementPoolState {
   modelTitle: string,
   modelVisible: boolean,
   modelContent: JSX.Element,
+  modelWidth: string | number,
   selectedStatement: Statement | null,
 }
 
@@ -31,6 +32,7 @@ function StatementPool() {
     searchTerm: '',
     modelTitle: 'unknown',
     modelVisible: false,
+    modelWidth: '60%',
     modelContent: (<>empty</>),
     selectedStatement: null,
   });
@@ -46,6 +48,7 @@ function StatementPool() {
   const openModal = async (e: MouseEvent, formType: string, statement?: Statement) => {
     let modelTitle = 'unknown';
     let modelContent = <>empty</>;
+    const modelWidth = '60%';
     const modelVisible = true;
 
     switch (formType) {
@@ -95,7 +98,7 @@ function StatementPool() {
     }
 
     setState({
-      ...state, modelVisible, modelContent, modelTitle,
+      ...state, modelVisible, modelContent, modelTitle, modelWidth,
     });
   };
 
@@ -151,7 +154,7 @@ function StatementPool() {
   ];
 
   const {
-    modelContent, modelTitle, modelVisible, searchAttribute, searchTerm,
+    modelContent, modelTitle, modelVisible, modelWidth, searchAttribute, searchTerm,
   } = state;
 
   let statements = data.statements as Statement[];
@@ -190,6 +193,7 @@ function StatementPool() {
           title={modelTitle}
           destroyOnClose
           visible={modelVisible}
+          width={modelWidth}
           onCancel={closeModal}
           footer={null}
         >

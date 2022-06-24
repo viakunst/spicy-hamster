@@ -14,7 +14,7 @@ import AdminTransactionPool from '../components/admin-components/AdminTransactio
 import AdminMailPool from '../components/admin-components/AdminMailPool';
 import AdminPersonPool from '../components/admin-components/AdminPersonPool';
 import AdminStatementPool from '../components/admin-components/AdminStatementPool';
-import TransactionCreator from '../components/form/TransactionCreator';
+import TransactionCreator from '../components/form/TransactionGroupCreator';
 import AdminBankAccountPool from '../components/admin-components/AdminBankAccountPool';
 import ReminderForm from '../components/form/ReminderForm';
 
@@ -42,11 +42,9 @@ const items: MenuProps['items'] = [
   getItem('Personen', 'persons', <ContainerOutlined />),
 
   getItem('Betaalherrinneringen', 'transactions', <ContainerOutlined />, [
-    getItem('Nieuwe transactie groep', 'transaction-new'),
     getItem('Per persoon', 'transaction-person'),
     getItem('Per activiteit', 'transaction-group'),
     getItem('Totaal', 'transaction-total'),
-
   ]),
 
   getItem('Declaraties', 'statements', <ContainerOutlined />),
@@ -82,8 +80,6 @@ export default function AdminPage() {
     switch (menuState) {
       case 'persons':
         return <AdminPersonPool />;
-      case 'transaction-new':
-        return <TransactionCreator />;
       case 'email-pool':
         return <AdminMailPool />;
       case 'email-reminder':

@@ -9,7 +9,7 @@ import type { CustomTagProps } from 'rc-select/lib/BaseSelect';
 
 import FormItem from 'antd/lib/form/FormItem';
 import {
-  Person, TransactionGroup, useGetPersonsQuery, useCreateTransactionMutation, useGetTransactionGroupsQuery, TransactionTypeInput,
+  BankAccount, Person, useGetPersonsQuery, useGetBankAccountsQuery, useCreateTransactionGroupMutation, TransactionTypeInput,
 } from '../../Api/Backend';
 
 import GraphqlService from '../../helpers/GraphqlService';
@@ -36,7 +36,7 @@ const buttonLayout = {
   },
 };
 
-function TransactionCreator() {
+function TransactionGroupCreator() {
   const [form] = Form.useForm();
   const {
     data: data1, isLoading: isLoading1, isError: isError1,
@@ -44,9 +44,9 @@ function TransactionCreator() {
 
   const {
     data: data2, isLoading: isLoading2, isError: isError2,
-  } = useGetTransactionGroupsQuery(GraphqlService.getClient());
+  } = useGetBankAccountsQuery(GraphqlService.getClient());
 
-  const createMutation = useCreateTransactionMutation(GraphqlService.getClient());
+  const createMutation = useCreateTransactionGroupMutation(GraphqlService.getClient());
 
   if (isLoading1 || isError1 || data1 === undefined || isLoading2 || isError2 || data2 === undefined) {
     return <span>Loading...</span>;
@@ -66,12 +66,10 @@ function TransactionCreator() {
   }
 
   const persons = data1.persons as Person[];
-  const transactionGroups = data2.transactionGroups as TransactionGroup[];
+  const accounts = data2.bankAccounts as BankAccount[];
 
   const onCreateFinish = async (values:any) => {
     const transactions:TransactionTypeInput[] = [];
-
-    const transactionGroupId = values.group;
 
     values.fields.forEach((val:any) => {
       const parsedAmount = parseInt(parseFloatString(val.amount));
@@ -86,10 +84,16 @@ function TransactionCreator() {
         transactions.push(transaction);
       });
     });
-
-    console.log(transactions);
-    console.log(transactionGroupId);
-    createMutation.mutate({ transactionTypeInputs: transactions, transactionGroupId });
+    const { date } = values;
+    const formattedDate = values.date;
+    const createInput = {
+      title: values.title,
+      bankAccountId: values.account,
+      description: values.description,
+      date: formattedDate,
+      transactions,
+    };
+    createMutation.mutate({ transactionGroupTypeInput: createInput });
   };
 
   const content = (<>Loading</>);
@@ -102,10 +106,10 @@ function TransactionCreator() {
     </>
   );
 
-  const transactionGroupOptions = (
+  const bankAccountOptions = (
     <>
-      {transactionGroups.map((group) => (
-        <Option value={group.getId}>{group.title}</Option>
+      {accounts.map((account) => (
+        <Option value={account.getId}>{account.name} {account.IBAN}</Option>
       ))}
     </>
   );
@@ -199,17 +203,42 @@ function TransactionCreator() {
   const updateCreateFormItems = (
     <>
       <Form.Item
-        name="group"
-        label="Transactie Groep"
+        label="Titel"
+        name="title"
+        rules={[{ required: true }]}
+      >
+        <Input />
+      </Form.Item>
+
+      <Form.Item
+        label="Omschrijving"
+        name="description"
+        rules={[{ required: true }]}
+      >
+        <Input />
+      </Form.Item>
+
+      <Form.Item
+        label="Datum"
+        name="date"
+        rules={[{ required: true }]}
+      >
+        <DatePicker />
+      </Form.Item>
+
+      <Form.Item
+        name="account"
+        label="Bankrekening"
         rules={[{ required: true }]}
       >
         <Select
-          placeholder="De activiteit van deze transactie(s)."
+          placeholder="De bankrekening van deze activiteit."
           allowClear
         >
-          {transactionGroupOptions}
+          {bankAccountOptions}
         </Select>
       </Form.Item>
+
       {priceList}
     </>
   );
@@ -231,4 +260,4 @@ function TransactionCreator() {
   );
 }
 
-export default TransactionCreator;
+export default TransactionGroupCreator;

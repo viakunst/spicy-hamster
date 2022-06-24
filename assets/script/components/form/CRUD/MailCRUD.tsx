@@ -126,7 +126,7 @@ function MailCRUD(props:MailCRUDProps) {
   }
 
   return (
-    <div style={{ padding: 24, background: '#fff', minHeight: 360 }}>
+    <div style={{ padding: 5, background: '#fff', minHeight: 360 }}>
       {content}
     </div>
   );

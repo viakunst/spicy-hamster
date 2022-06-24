@@ -4,6 +4,8 @@ namespace App\GraphQL\Mutation;
 
 use App\Entity\Person\Person;
 use App\Entity\Transaction\Transaction;
+use App\Entity\Transaction\TransactionGroup;
+use App\GraphQL\Input\TransactionType;
 use Overblog\GraphQLBundle\Annotation as GQL;
 
 /**
@@ -16,21 +18,37 @@ class TransactionMutation extends AbstractMutation
 {
     /**
      * @GQL\Field(type="String!")
-     * @GQL\Description("Create transaction.")
+     * @GQL\Description("Create transactionGroup.")
      * @GQL\Access("isAuthenticated()")
+     * @GQL\Arg(name="transactionTypeInputs", type="[TransactionTypeInput]")
+     * @GQL\Arg(name="transactionGroupId", type="String!")
+     *
+     * @param TransactionType[] $transactionTypeInputs
      */
-    public function createTransaction(Transaction $transaction): string
+    public function createTransaction($transactionTypeInputs, string $transactionGroupId): string
     {
-        $dbtransaction = new Transaction();
-        $dbtransaction->cloneFrom($transaction);
-
-        // Check validation errors.
-        $msg = $this->validate($dbtransaction);
-        if (null !== $msg) {
-            return $msg;
+        $transactionGroup = $this->em->getRepository(TransactionGroup::class)->findOneBy(['id' => $transactionGroupId]);
+        if (null === $transactionGroup) {
+            return 'failure';
         }
 
-        $this->em->persist($dbtransaction);
+        foreach ($transactionTypeInputs as $inputType) {
+            $dbPerson = $this->em->getRepository(Person::class)->findOneBy(['id' => $inputType->personId]);
+            if (null === $dbPerson) {
+                continue;
+            }
+
+            $dbTransaction = new Transaction();
+            $dbTransaction->setAmount($inputType->amount);
+            $dbTransaction->setTimesReminded($inputType->timesReminded);
+            $dbTransaction->setStatus($inputType->status);
+            $dbTransaction->setPerson($dbPerson);
+            $transactionGroup->addTransaction($dbTransaction);
+
+            $this->em->persist($dbTransaction);
+        }
+
+        $this->em->persist($transactionGroup);
         $this->em->flush();
 
         return 'succes';

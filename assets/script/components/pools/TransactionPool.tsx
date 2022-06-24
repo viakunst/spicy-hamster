@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+
 import {
   Modal, Table, Button, Space, Badge,
 } from 'antd';
@@ -21,6 +21,7 @@ interface TransactionPoolState {
   modelTitle: string,
   modelVisible: boolean,
   modelContent: JSX.Element,
+  modelWidth: string | number,
   selectedTransaction: Transaction | null,
 }
 
@@ -37,6 +38,7 @@ function TransactionPool() {
     modelTitle: 'unknown',
     modelVisible: false,
     modelContent: <>empty</>,
+    modelWidth: '60%',
     selectedTransaction: null,
   });
 
@@ -63,6 +65,7 @@ function TransactionPool() {
   const openModal = async (e: MouseEvent, formType: string, transaction?: Transaction) => {
     let modelTitle = 'unknown';
     let modelContent = <>empty</>;
+    const modelWidth = '60%';
     const modelVisible = true;
 
     switch (formType) {
@@ -112,7 +115,7 @@ function TransactionPool() {
     }
 
     setState({
-      ...state, modelVisible, modelContent, modelTitle,
+      ...state, modelVisible, modelContent, modelTitle, modelWidth,
     });
   };
 
@@ -123,8 +126,9 @@ function TransactionPool() {
   // These are the columns of the table.
   const columns: ColumnsType<Transaction> = [
     { title: 'Titel', dataIndex: 'getTitle', key: 'title' },
-    { title: 'Datum', key: 'date', render: (_, { getDate }) => dateRender(getDate) },
+    { title: 'Datum', key: 'getDate', render: (_, { getDate }) => dateRender(getDate) },
     { title: 'Bedrag', key: 'amount', render: (_, { amount }) => amountRender(amount) },
+    { title: 'Persoon', dataIndex: ['getPerson', 'getName'], key: 'person' },
     { title: 'Bankaccount', dataIndex: ['getTransactionGroup', 'getBankAccount', 'name'], key: 'account' },
     {
       title: 'Status',
@@ -171,7 +175,7 @@ function TransactionPool() {
   ];
 
   const {
-    modelContent, modelTitle, modelVisible, searchAttribute, searchTerm,
+    modelContent, modelTitle, modelVisible, modelWidth, searchAttribute, searchTerm,
   } = state;
 
   let transactions = data.transactions as Transaction[];
@@ -180,7 +184,7 @@ function TransactionPool() {
   const searchConfigAttributes = [
     {
       name: 'Titel activiteit',
-      attribute: 'title',
+      attribute: 'getTitle',
     },
   ];
 
@@ -210,6 +214,7 @@ function TransactionPool() {
           destroyOnClose
           visible={modelVisible}
           onCancel={closeModal}
+          width={modelWidth}
           footer={null}
         >
           { modelContent }

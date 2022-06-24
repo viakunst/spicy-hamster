@@ -183,9 +183,7 @@ function StatementCRUD(props:StatementCRUDProps) {
     ];
 
     content = (
-      <div style={{ padding: 24, background: '#fff', minHeight: 360 }}>
-        <Table dataSource={readData} columns={readColumns} />
-      </div>
+      <Table dataSource={readData} columns={readColumns} />
     );
   }
 
@@ -198,7 +196,7 @@ function StatementCRUD(props:StatementCRUDProps) {
   }
 
   return (
-    <div style={{ padding: 24, background: '#fff', minHeight: 360 }}>
+    <div style={{ padding: 5, background: '#fff' }}>
       {content}
     </div>
   );

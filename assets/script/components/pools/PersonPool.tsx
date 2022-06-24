@@ -20,6 +20,7 @@ interface PersonPoolState {
   searchTerm: string | null,
   modelTitle: string,
   modelVisible: boolean,
+  modelWidth: string | number,
   modelContent: JSX.Element,
   selectedPerson: Person | null,
 }
@@ -36,6 +37,7 @@ function PersonPool() {
     searchTerm: '',
     modelTitle: 'unknown',
     modelVisible: false,
+    modelWidth: '80%',
     modelContent: (<>empty</>),
     selectedPerson: null,
   });
@@ -59,6 +61,7 @@ function PersonPool() {
   const openModal = async (e: MouseEvent, formType: string, person?: Person) => {
     let modelTitle = 'unknown';
     let modelContent = <>empty</>;
+    const modelWidth = '60%';
     const modelVisible = true;
 
     console.log(person);
@@ -109,7 +112,7 @@ function PersonPool() {
     }
 
     setState({
-      ...state, modelVisible, modelContent, modelTitle,
+      ...state, modelVisible, modelContent, modelTitle, modelWidth,
     });
   };
 
@@ -160,7 +163,7 @@ function PersonPool() {
   ];
 
   const {
-    modelContent, modelTitle, modelVisible, searchAttribute, searchTerm,
+    modelContent, modelTitle, modelVisible, modelWidth, searchAttribute, searchTerm,
   } = state;
 
   let persons = data.persons as Person[];
@@ -202,6 +205,7 @@ function PersonPool() {
           destroyOnClose
           visible={modelVisible}
           onCancel={closeModal}
+          width={modelWidth}
           footer={null}
         >
           { modelContent }

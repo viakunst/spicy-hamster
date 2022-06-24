@@ -1,16 +1,18 @@
 import React from 'react';
 
 import {
-  Form, Input, Checkbox, Table, message, InputNumber,
+  Form, Input, Checkbox, Table, message,
 } from 'antd';
 
 import {
-  Transaction, useCreateTransactionMutation, useUpdateTransactionMutation, TransactionInput, useDeleteTransactionMutation,
+  Transaction, useUpdateTransactionMutation, TransactionInput, useDeleteTransactionMutation,
 } from '../../../Api/Backend';
 
 import { FormType, basicForm } from '../FormHelper';
 import GraphqlService from '../../../helpers/GraphqlService';
-import { amountRender, amountInput, parseFloatString } from '../../../helpers/AmountInput';
+import { amountInput, parseFloatString } from '../../../helpers/AmountInput';
+
+import TransactionCreator from '../TransactionCreator';
 
 interface TransactionCRUDprops {
   onAttributesUpdate: () => void;
@@ -21,7 +23,6 @@ interface TransactionCRUDprops {
 function TransactionCRUD(props:TransactionCRUDprops) {
   const [form] = Form.useForm();
 
-  const createMutation = useCreateTransactionMutation(GraphqlService.getClient());
   const updateMutation = useUpdateTransactionMutation(GraphqlService.getClient());
   const deleteMutation = useDeleteTransactionMutation(GraphqlService.getClient());
 
@@ -32,15 +33,10 @@ function TransactionCRUD(props:TransactionCRUDprops) {
   } = props;
 
   let disabled = false;
-  if (createMutation.isLoading || updateMutation.isLoading || deleteMutation.isLoading) {
+  if (updateMutation.isLoading || deleteMutation.isLoading) {
     disabled = true;
   }
 
-  if (createMutation.isSuccess) {
-    createMutation.reset();
-    message.success('Transactie succesvol aangemaakt.');
-    onAttributesUpdate();
-  }
   if (updateMutation.isSuccess) {
     updateMutation.reset();
     message.success('Transactie succesvol geupdated.');
@@ -52,25 +48,11 @@ function TransactionCRUD(props:TransactionCRUDprops) {
     onAttributesUpdate();
   }
 
-  if (createMutation.isError || updateMutation.isError || deleteMutation.isError) {
-    createMutation.reset();
+  if (updateMutation.isError || deleteMutation.isError) {
     updateMutation.reset();
     deleteMutation.reset();
     message.error('Er is iets fout gegaan.');
   }
-
-  const onCreateFinish = async (values: any) => {
-    // Push attributes, that are actually editable, to list.
-    console.log(values);
-
-    const amount = values.amount as string;
-    values.amount = parseInt(parseFloatString(amount.toString()));
-
-    values.timesReminded = parseInt(values.timesReminded);
-    console.log(values);
-    const transactionInput = values as TransactionInput;
-    createMutation.mutate({ transaction: transactionInput });
-  };
 
   const onUpdateFinish = async (values:any) => {
     // Push attributes, that are actually editable, to list.
@@ -141,9 +123,7 @@ function TransactionCRUD(props:TransactionCRUDprops) {
 
   if (formtype === FormType.CREATE && transaction === undefined) {
     content = (
-      <>
-        {basicForm(form, onCreateFinish, 'Maak aan', 'Aanmaken...', disabled, updateCreateFormItems)}
-      </>
+      <TransactionCreator />
     );
   }
 
@@ -167,9 +147,7 @@ function TransactionCRUD(props:TransactionCRUDprops) {
     ];
 
     content = (
-      <div style={{ padding: 24, background: '#fff', minHeight: 360 }}>
-        <Table dataSource={readData} columns={readColumns} />
-      </div>
+      <Table dataSource={readData} columns={readColumns} />
     );
   }
 
@@ -182,7 +160,7 @@ function TransactionCRUD(props:TransactionCRUDprops) {
   }
 
   return (
-    <div style={{ padding: 24, background: '#fff', minHeight: 360 }}>
+    <div style={{ padding: 5, background: '#fff' }}>
       {content}
     </div>
   );
