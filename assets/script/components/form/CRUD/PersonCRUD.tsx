@@ -66,9 +66,10 @@ function PersonCRUD(props:PersonCreateProps) {
   const onUpdateFinish = async (values: any) => {
     // Push attributes, that are actually editable, to list.
     const { admin } = values;
-    delete values.admin;
+    const copyValues = values;
+    delete copyValues.admin;
 
-    const personInput = values as PersonInput;
+    const personInput = copyValues as PersonInput;
     if (admin) {
       personInput.role = 'admin';
     } else {
@@ -160,7 +161,6 @@ function PersonCRUD(props:PersonCreateProps) {
       admin,
     };
 
-    console.log(updateInitial);
     content = (
       <>
         {basicForm(form, onUpdateFinish, 'Opslaan', 'Opslaan...', disabled, updateCreateFormItems, updateInitial)}

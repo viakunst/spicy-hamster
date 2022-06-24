@@ -19,7 +19,7 @@ class TransactionMutation extends AbstractMutation
     /**
      * @GQL\Field(type="String!")
      * @GQL\Description("Create transactionGroup.")
-     * @GQL\Access("isAuthenticated()")
+     * @GQL\Access("hasRole('ROLE_ADMIN')")
      * @GQL\Arg(name="transactionTypeInputs", type="[TransactionTypeInput]")
      * @GQL\Arg(name="transactionGroupId", type="String!")
      *
@@ -57,7 +57,7 @@ class TransactionMutation extends AbstractMutation
     /**
      * @GQL\Field(type="String!")
      * @GQL\Description("Create transaction.")
-     * @GQL\Access("isAuthenticated()")
+     * @GQL\Access("hasRole('ROLE_ADMIN')")
      */
     public function createTransactionWithPerson(Transaction $transaction, string $personId): string
     {
@@ -85,7 +85,7 @@ class TransactionMutation extends AbstractMutation
     /**
      * @GQL\Field(type="String!")
      * @GQL\Description("Update transaction.")
-     * @GQL\Access("isAuthenticated()")
+     * @GQL\Access("hasRole('ROLE_ADMIN')")
      */
     public function updateTransaction(string $id, Transaction $transaction): string
     {
@@ -111,7 +111,7 @@ class TransactionMutation extends AbstractMutation
     /**
      * @GQL\Field(type="String!")
      * @GQL\Description("Switch transaction status.")
-     * @GQL\Access("isAuthenticated()")
+     * @GQL\Access("hasRole('ROLE_ADMIN')")
      */
     public function switchTransactionStatus(string $id): string
     {
@@ -145,7 +145,7 @@ class TransactionMutation extends AbstractMutation
     /**
      * @GQL\Field(type="String!")
      * @GQL\Description("Delete transaction.")
-     * @GQL\Access("isAuthenticated()")
+     * @GQL\Access("hasRole('ROLE_ADMIN')")
      */
     public function deleteTransaction(string $id): string
     {

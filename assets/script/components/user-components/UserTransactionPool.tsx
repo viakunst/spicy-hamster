@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import {
-  Modal, Table, Button, Space, Badge,
+  Table, Space,
 } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 
@@ -12,9 +12,9 @@ import { Transaction, useGetOwnTransactionsQuery } from '../../Api/Backend';
 import GraphqlService from '../../helpers/GraphqlService';
 import { searchFilter, searchSelector } from '../../helpers/SearchHelper';
 import { amountRender } from '../../helpers/AmountHelper';
-import { dateRender } from '../../helpers/DateHelper';
-import { stateRender } from '../../helpers/StateHelper';
-import { capitalize } from '../../helpers/StringHelper';
+import dateRender from '../../helpers/DateHelper';
+import stateRender from '../../helpers/StateHelper';
+import capitalize from '../../helpers/StringHelper';
 
 interface TransactionPoolState {
   searchAttribute: string | Array<string> | null,
@@ -28,7 +28,7 @@ interface TransactionPoolState {
 
 function UserTransactionPool() {
   const {
-    data, isLoading, isError, refetch, isFetching,
+    data, isLoading, isError,
   } = useGetOwnTransactionsQuery(GraphqlService.getClient());
 
   const [state, setState] = useState<TransactionPoolState>({
@@ -44,10 +44,6 @@ function UserTransactionPool() {
   if (isLoading || isError || data === undefined) {
     return <span>Loading...</span>;
   }
-
-  const handleChange = () => {
-    refetch();
-  };
 
   // These are the columns of the table.
   const columns: ColumnsType<Transaction> = [
@@ -83,8 +79,8 @@ function UserTransactionPool() {
             {searchSelector(
               searchConfigAttributes,
               searchAttribute,
-              (searchAttribute:string | Array<string>) => setState({ ...state, searchAttribute }),
-              (searchTerm:string) => setState({ ...state, searchTerm }),
+              (att:string | Array<string>) => setState({ ...state, searchAttribute: att }),
+              (term:string) => setState({ ...state, searchTerm: term }),
             )}
           </Space>
         </div>

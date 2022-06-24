@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import {
   Form, Badge, Table, Button, Divider, message,
@@ -6,7 +6,9 @@ import {
 import { ColumnsType } from 'antd/lib/table';
 
 import {
-  PersonTransactions, Transaction, useGetAllOutstandingTransactionsCoupledWithPersonQuery, useSendAllRemindersMutation,
+  PersonTransactions, Transaction,
+  useGetAllOutstandingTransactionsCoupledWithPersonQuery,
+  useSendAllRemindersMutation,
 } from '../../Api/Backend';
 
 import GraphqlService from '../../helpers/GraphqlService';
@@ -33,7 +35,7 @@ function ReminderForm() {
   const [form] = Form.useForm();
 
   const {
-    data, isLoading, isError, refetch,
+    data, isLoading, isError,
   } = useGetAllOutstandingTransactionsCoupledWithPersonQuery(GraphqlService.getClient());
   const sendMutation = useSendAllRemindersMutation(GraphqlService.getClient());
 
@@ -41,7 +43,12 @@ function ReminderForm() {
     return <span>Loading...</span>;
   }
 
-  let submitButton = (<Button type="primary" style={{ width: '100%' }} htmlType="submit">Verstuur de Betaalherrinneringen!</Button>);
+  let submitButton = (
+    <Button type="primary" style={{ width: '100%' }} htmlType="submit">
+      Verstuur de Betaalherrinneringen!
+    </Button>
+  );
+
   if (sendMutation.isLoading) {
     submitButton = (<Button type="primary" style={{ width: '100%' }} htmlType="submit" disabled>Versturen...</Button>);
   }
@@ -75,8 +82,8 @@ function ReminderForm() {
       },
     ];
 
-    const data = record.transactions as Transaction[];
-    return <Table columns={columns} dataSource={data} pagination={false} />;
+    const transactionData = record.transactions as Transaction[];
+    return <Table columns={columns} dataSource={transactionData} pagination={false} />;
   };
 
   const columns: ColumnsType<PersonTransactions> = [
@@ -85,7 +92,6 @@ function ReminderForm() {
   ];
 
   const personTransactions = data.getAllOutstandingTransactionsCoupledWithPerson as PersonTransactions[];
-  console.log(personTransactions);
 
   let content = (
     <>

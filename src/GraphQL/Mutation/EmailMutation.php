@@ -18,7 +18,7 @@ class EmailMutation extends AbstractMutation
     /**
      * @GQL\Field(type="String!")
      * @GQL\Description("Send transaction reminder.")
-     * @GQL\Access("isAuthenticated()")
+     * @GQL\Access("hasRole('ROLE_ADMIN')")
      */
     public function sendAllReminders(): string
     {
@@ -51,7 +51,7 @@ class EmailMutation extends AbstractMutation
      * @GQL\Field(type="String!")
      * @GQL\Arg(name="ids", type="[String]")
      * @GQL\Description("Send transaction reminder.")
-     * @GQL\Access("isAuthenticated()")
+     * @GQL\Access("hasRole('ROLE_ADMIN')")
      *
      * @param array<string> $ids
      */
@@ -78,7 +78,7 @@ class EmailMutation extends AbstractMutation
     /**
      * @GQL\Field(type="String!")
      * @GQL\Description("Send transaction reminder.")
-     * @GQL\Access("isAuthenticated()")
+     * @GQL\Access("hasRole('ROLE_ADMIN')")
      */
     public function getReminderExampleByPerson(string $id): string
     {
@@ -100,7 +100,7 @@ class EmailMutation extends AbstractMutation
     /**
      * @GQL\Field(type="String!")
      * @GQL\Description("Send transaction reminder.")
-     * @GQL\Access("isAuthenticated()")
+     * @GQL\Access("hasRole('ROLE_ADMIN')")
      */
     public function sendTransactionReminder(string $id): string
     {
@@ -116,7 +116,7 @@ class EmailMutation extends AbstractMutation
     /**
      * @GQL\Field(type="String!")
      * @GQL\Description("Delete mail.")
-     * @GQL\Access("isAuthenticated()")
+     * @GQL\Access("hasRole('ROLE_ADMIN')")
      */
     public function deleteMail(string $id): string
     {

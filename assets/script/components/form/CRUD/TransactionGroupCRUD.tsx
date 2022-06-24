@@ -4,7 +4,8 @@ import {
   Form, Input, Checkbox, Table, message, DatePicker,
 } from 'antd';
 import {
-  TransactionGroup, useDeleteTransactionGroupMutation, useUpdateTransactionGroupMutation, TransactionGroupInput,
+  TransactionGroup, useDeleteTransactionGroupMutation,
+  useUpdateTransactionGroupMutation, TransactionGroupInput,
 } from '../../../Api/Backend';
 
 import { FormType, basicForm } from '../FormHelper';
@@ -55,7 +56,9 @@ function TransactionGroupCRUD(props:TransactionGroupCRUDProps) {
     // Push attributes, that are actually editable, to list.
     const transactionGroupInput = values as TransactionGroupInput;
     if (transactionGroup !== undefined) {
-      updateMutation.mutate({ id: transactionGroup.getId, transactionGroup: transactionGroupInput });
+      updateMutation.mutate(
+        { id: transactionGroup.getId, transactionGroup: transactionGroupInput },
+      );
     }
   };
 

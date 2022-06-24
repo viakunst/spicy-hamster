@@ -40,7 +40,7 @@ class Query
     /**
      * @GQL\Field(type="[Person]")
      * @GQL\Description("All persons stored in the database.")
-     * @GQL\Access("isAuthenticated()")
+     * @GQL\Access("hasRole('ROLE_ADMIN')")
      *
      * @return Person[]
      */
@@ -97,7 +97,7 @@ class Query
     /**
      * @GQL\Field(type="[Person]")
      * @GQL\Description("All persons with outstanding transactions.")
-     * @GQL\Access("isAuthenticated()")
+     * @GQL\Access("hasRole('ROLE_ADMIN')")
      *
      * @return Person[]
      */
@@ -123,7 +123,7 @@ class Query
     /**
      * @GQL\Field(type="[PersonTransactions]")
      * @GQL\Description("All persons with outstanding transactions.")
-     * @GQL\Access("isAuthenticated()")
+     * @GQL\Access("hasRole('ROLE_ADMIN')")
      *
      * @return PersonTransactions[]
      */
@@ -151,7 +151,7 @@ class Query
     /**
      * @GQL\Field(type="[PersonTransactions]")
      * @GQL\Description("All persons with outstanding transactions.")
-     * @GQL\Access("isAuthenticated()")
+     * @GQL\Access("hasRole('ROLE_ADMIN')")
      *
      * @return PersonTransactions[]
      */
@@ -178,7 +178,7 @@ class Query
     /**
      * @GQL\Field(type="[Statement]")
      * @GQL\Description("All statements stored in the database.")
-     * @GQL\Access("isAuthenticated()")
+     * @GQL\Access("hasRole('ROLE_ADMIN')")
      *
      * @return Statement[]
      */
@@ -190,7 +190,7 @@ class Query
     /**
      * @GQL\Field(type="[Mail]")
      * @GQL\Description("All e-mails stored in the database.")
-     * @GQL\Access("isAuthenticated()")
+     * @GQL\Access("hasRole('ROLE_ADMIN')")
      *
      * @return Mail[]
      */
@@ -202,7 +202,7 @@ class Query
     /**
      * @GQL\Field(type="[Recipient]")
      * @GQL\Description("All recipients stored in the database.")
-     * @GQL\Access("isAuthenticated()")
+     * @GQL\Access("hasRole('ROLE_ADMIN')")
      *
      * @return Recipient[]
      */
@@ -214,7 +214,7 @@ class Query
     /**
      * @GQL\Field(type="[BankAccount]")
      * @GQL\Description("All bank accounts stored in the database.")
-     * @GQL\Access("isAuthenticated()")
+     * @GQL\Access("hasRole('ROLE_ADMIN')")
      *
      * @return BankAccount[]
      */
@@ -226,7 +226,7 @@ class Query
     /**
      * @GQL\Field(type="[Transaction]")
      * @GQL\Description("All transactions stored in the database.")
-     * @GQL\Access("isAuthenticated()")
+     * @GQL\Access("hasRole('ROLE_ADMIN')")
      *
      * @return Transaction[]
      */
@@ -238,7 +238,7 @@ class Query
     /**
      * @GQL\Field(type="[TransactionGroup]")
      * @GQL\Description("All transactionGroups stored in the database.")
-     * @GQL\Access("isAuthenticated()")
+     * @GQL\Access("hasRole('ROLE_ADMIN')")
      *
      * @return TransactionGroup[]
      */

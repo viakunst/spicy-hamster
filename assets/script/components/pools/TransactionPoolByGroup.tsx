@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+
 import {
-  Modal, Table, Button, Space, Badge,
+  Modal, Table, Button, Space,
 } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 
@@ -16,9 +16,9 @@ import TransactionCRUD from '../form/CRUD/TransactionCRUD';
 import GraphqlService from '../../helpers/GraphqlService';
 import { searchFilter, searchSelector } from '../../helpers/SearchHelper';
 import { amountRender } from '../../helpers/AmountHelper';
-import { dateRender } from '../../helpers/DateHelper';
-import { stateRender } from '../../helpers/StateHelper';
-import { capitalize } from '../../helpers/StringHelper';
+import dateRender from '../../helpers/DateHelper';
+import stateRender from '../../helpers/StateHelper';
+import capitalize from '../../helpers/StringHelper';
 
 interface TransactionGroupPoolState {
   searchAttribute: string | Array<string> | null,
@@ -215,8 +215,8 @@ function TransactionPoolByGroup() {
       },
     ];
 
-    const data = record.getTransactions as Transaction[];
-    return <Table columns={columns} dataSource={data} pagination={false} />;
+    const tranactionData = record.getTransactions as Transaction[];
+    return <Table columns={columns} dataSource={tranactionData} pagination={false} />;
   };
 
   // These are the columns of the table.
@@ -285,8 +285,8 @@ function TransactionPoolByGroup() {
             {searchSelector(
               searchConfigAttributes,
               searchAttribute,
-              (searchAttribute:string | Array<string>) => setState({ ...state, searchAttribute }),
-              (searchTerm:string) => setState({ ...state, searchTerm }),
+              (att:string | Array<string>) => setState({ ...state, searchAttribute: att }),
+              (term:string) => setState({ ...state, searchTerm: term }),
             )}
             <Button type="primary" onClick={(e) => openModal(e.nativeEvent, FormType.CREATE)}>
               Nieuwe transactie groep

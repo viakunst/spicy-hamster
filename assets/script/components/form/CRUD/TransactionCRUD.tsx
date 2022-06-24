@@ -1,7 +1,7 @@
 import React from 'react';
 
 import {
-  Form, Input, Checkbox, Table, message, Badge,
+  Form, Input, Checkbox, Table, message,
 } from 'antd';
 
 import {
@@ -11,8 +11,8 @@ import {
 import { FormType, basicForm } from '../FormHelper';
 import GraphqlService from '../../../helpers/GraphqlService';
 import { amountRender, amountInput, parseFloatString } from '../../../helpers/AmountHelper';
-import { dateRender } from '../../../helpers/DateHelper';
-import { stateRender } from '../../../helpers/StateHelper';
+import dateRender from '../../../helpers/DateHelper';
+import stateRender from '../../../helpers/StateHelper';
 
 import TransactionCreator from '../TransactionCreator';
 
@@ -60,11 +60,12 @@ function TransactionCRUD(props:TransactionCRUDprops) {
     // Push attributes, that are actually editable, to list.
 
     console.log(values);
-    values.amount = parseInt(parseFloatString(values.amount));
-    values.timesReminded = parseInt(values.timesReminded);
-    console.log(values);
+    const copyValues = values;
+    copyValues.amount = parseInt(parseFloatString(copyValues.amount), 10);
+    copyValues.timesReminded = parseInt(copyValues.timesReminded, 10);
+    console.log(copyValues);
 
-    const transactionInput = values as TransactionInput;
+    const transactionInput = copyValues as TransactionInput;
 
     if (transaction !== undefined) {
       updateMutation.mutate({ id: transaction.getId, transaction: transactionInput });

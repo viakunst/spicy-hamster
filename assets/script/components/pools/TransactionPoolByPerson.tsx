@@ -1,22 +1,24 @@
 import React, { useState } from 'react';
 import {
-  Modal, Table, Button, Space, Badge,
+  Modal, Table, Button, Space,
 } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 
 import 'antd/dist/antd.css';
 
 import {
-  PersonTransactions, Transaction, useGetAllTransactionsCoupledWithPersonQuery, useSwitchTransactionStatusMutation,
+  PersonTransactions, Transaction,
+  useGetAllTransactionsCoupledWithPersonQuery, useSwitchTransactionStatusMutation,
 } from '../../Api/Backend';
+
 import { FormType } from '../form/FormHelper';
 import TransactionCRUD from '../form/CRUD/TransactionCRUD';
 import GraphqlService from '../../helpers/GraphqlService';
 import { searchFilter, searchSelector } from '../../helpers/SearchHelper';
 import { amountRender } from '../../helpers/AmountHelper';
-import { dateRender } from '../../helpers/DateHelper';
-import { stateRender } from '../../helpers/StateHelper';
-import { capitalize } from '../../helpers/StringHelper';
+import dateRender from '../../helpers/DateHelper';
+import stateRender from '../../helpers/StateHelper';
+import capitalize from '../../helpers/StringHelper';
 
 interface TransactionPoolState {
   searchAttribute: string | Array<string> | null,
@@ -156,8 +158,8 @@ function TransactionPoolByPerson() {
       },
     ];
 
-    const data = record.transactions as Transaction[];
-    return <Table columns={columns} dataSource={data} pagination={false} />;
+    const tranactionData = record.transactions as Transaction[];
+    return <Table columns={columns} dataSource={tranactionData} pagination={false} />;
   };
 
   const closeModal = () => {
@@ -203,8 +205,8 @@ function TransactionPoolByPerson() {
             {searchSelector(
               searchConfigAttributes,
               searchAttribute,
-              (searchAttribute:string | Array<string>) => setState({ ...state, searchAttribute }),
-              (searchTerm:string) => setState({ ...state, searchTerm }),
+              (att:string | Array<string>) => setState({ ...state, searchAttribute: att }),
+              (term:string) => setState({ ...state, searchTerm: term }),
             )}
             <Button type="primary" onClick={(e) => openModal(e.nativeEvent, FormType.CREATE)}>
               Nieuwe transactie

@@ -12,7 +12,7 @@ import { FormType } from '../form/FormHelper';
 import PersonCRUD from '../form/CRUD/PersonCRUD';
 import GraphqlService from '../../helpers/GraphqlService';
 import { searchFilter, searchSelector } from '../../helpers/SearchHelper';
-import { capitalize } from '../../helpers/StringHelper';
+import capitalize from '../../helpers/StringHelper';
 
 import OidcService from '../../helpers/OidcService';
 
@@ -187,8 +187,8 @@ function PersonPool() {
             {searchSelector(
               searchConfigAttributes,
               searchAttribute,
-              (searchAttribute:string | Array<string>) => setState({ ...state, searchAttribute }),
-              (searchTerm:string) => setState({ ...state, searchTerm }),
+              (att:string | Array<string>) => setState({ ...state, searchAttribute: att }),
+              (term:string) => setState({ ...state, searchTerm: term }),
             )}
             <Button type="primary" onClick={(e) => openModal(e.nativeEvent, FormType.CREATE)}>
               Nieuw persoon

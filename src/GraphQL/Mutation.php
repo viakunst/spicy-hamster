@@ -61,7 +61,7 @@ class Mutation
     /**
      * @GQL\Field(type="PersonMutation")
      * @GQL\Description("All persons mutations.")
-     * @GQL\Access("isAuthenticated()")
+     * @GQL\Access("hasRole('ROLE_ADMIN')")
      *
      * @return PersonMutation
      */
@@ -73,7 +73,7 @@ class Mutation
     /**
      * @GQL\Field(type="EmailMutation")
      * @GQL\Description("All email mutations.")
-     * @GQL\Access("isAuthenticated()")
+     * @GQL\Access("hasRole('ROLE_ADMIN')")
      *
      * @return EmailMutation
      */
@@ -85,7 +85,7 @@ class Mutation
     /**
      * @GQL\Field(type="BankAccountMutation")
      * @GQL\Description("All bank account mutations.")
-     * @GQL\Access("isAuthenticated()")
+     * @GQL\Access("hasRole('ROLE_ADMIN')")
      *
      * @return BankAccountMutation
      */
@@ -97,7 +97,7 @@ class Mutation
     /**
      * @GQL\Field(type="StatementMutation")
      * @GQL\Description("All transactions stored in the database.")
-     * @GQL\Access("isAuthenticated()")
+     * @GQL\Access("hasRole('ROLE_ADMIN')")
      *
      * @return StatementMutation
      */
@@ -109,7 +109,7 @@ class Mutation
     /**
      * @GQL\Field(type="TransactionMutation")
      * @GQL\Description("All transactions stored in the database.")
-     * @GQL\Access("isAuthenticated()")
+     * @GQL\Access("hasRole('ROLE_ADMIN')")
      *
      * @return TransactionMutation
      */
@@ -121,7 +121,7 @@ class Mutation
     /**
      * @GQL\Field(type="TransactionGroupMutation")
      * @GQL\Description("All transactions stored in the database.")
-     * @GQL\Access("isAuthenticated()")
+     * @GQL\Access("hasRole('ROLE_ADMIN')")
      *
      * @return TransactionGroupMutation
      */
@@ -133,7 +133,7 @@ class Mutation
     /**
      * @GQL\Field(type="String!")
      * @GQL\Description("Imports persons from the identity provider.")
-     * @GQL\Access("isAuthenticated()")
+     * @GQL\Access("hasRole('ROLE_ADMIN')")
      */
     public function importPerson(string $token): string
     {

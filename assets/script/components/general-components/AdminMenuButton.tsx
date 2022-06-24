@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
 import { Link } from 'react-router-dom';
 import {
@@ -8,13 +8,9 @@ import { useGetOwnRolesQuery } from '../../Api/Backend';
 import GraphqlService from '../../helpers/GraphqlService';
 
 export default function AdminMenuButton() {
-  const [state, setState] = useState({
-    admin: 'user',
-  });
-
   console.log('start');
   const {
-    data, isLoading, isError, refetch,
+    data, isLoading, isError,
   } = useGetOwnRolesQuery(GraphqlService.getClient());
 
   console.log(isLoading);

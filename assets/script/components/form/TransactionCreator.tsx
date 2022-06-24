@@ -9,12 +9,15 @@ import type { CustomTagProps } from 'rc-select/lib/BaseSelect';
 
 import FormItem from 'antd/lib/form/FormItem';
 import {
-  Person, TransactionGroup, useGetPersonsQuery, useCreateTransactionMutation, useGetTransactionGroupsQuery, TransactionTypeInput,
+  Person, TransactionGroup, useGetPersonsQuery,
+  useCreateTransactionMutation, useGetTransactionGroupsQuery, TransactionTypeInput,
 } from '../../Api/Backend';
 
 import GraphqlService from '../../helpers/GraphqlService';
 
 import { amountInput, parseFloatString } from '../../helpers/AmountHelper';
+
+type TagProps = CustomTagProps;
 
 const { Option } = Select;
 
@@ -48,7 +51,8 @@ function TransactionCreator() {
 
   const createMutation = useCreateTransactionMutation(GraphqlService.getClient());
 
-  if (isLoading1 || isError1 || data1 === undefined || isLoading2 || isError2 || data2 === undefined) {
+  if (isLoading1 || isError1 || data1 === undefined
+    || isLoading2 || isError2 || data2 === undefined) {
     return <span>Loading...</span>;
   }
 
@@ -74,7 +78,7 @@ function TransactionCreator() {
     const transactionGroupId = values.group;
 
     values.fields.forEach((val:any) => {
-      const parsedAmount = parseInt(parseFloatString(val.amount));
+      const parsedAmount = parseInt(parseFloatString(val.amount), 10);
       val.person.forEach((person:any) => {
         const transaction = {
           amount: parsedAmount,
@@ -92,8 +96,6 @@ function TransactionCreator() {
     createMutation.mutate({ transactionTypeInputs: transactions, transactionGroupId });
   };
 
-  const content = (<>Loading</>);
-
   const personOptions = (
     <>
       {persons.map((person) => (
@@ -110,9 +112,9 @@ function TransactionCreator() {
     </>
   );
 
-  const tagRender = (props: CustomTagProps) => {
+  const tagRender = (props: TagProps) => {
     const {
-      label, value, closable, onClose,
+      label, closable, onClose,
     } = props;
     const onPreventMouseDown = (event: React.MouseEvent<HTMLSpanElement>) => {
       event.preventDefault();
@@ -140,11 +142,12 @@ function TransactionCreator() {
             if (!fields || fields.length < 1) {
               return Promise.reject(new Error('Op zijn minst 1 persoon.'));
             }
+            return Promise.resolve();
           },
         },
       ]}
     >
-      {(fields, { add, remove }) => (
+      {(fields, { add }) => (
         <div>
           {fields.map((field, index) => (
             <div key={field.key}>

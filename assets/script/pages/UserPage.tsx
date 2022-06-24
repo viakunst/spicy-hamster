@@ -14,7 +14,11 @@ export default function UserPage() {
     <div className="profile card row">
       <QueryClientProvider client={queryClient}>
         <h2>Dit zijn jouw openstaande transacties.</h2>
-        <p> Het kan gebeuren dat de penningmeester de status van jouw transacties nog niet heeft gecheckt en daardoor de status blijft hangen. (Het checken van de status moet helaas nog met de hand.) App de penningmeester als je denkt dat het mis gaat!</p>
+        <p> Het kan gebeuren dat de penningmeester de status van jouw transacties nog
+          niet heeft gecheckt en daardoor de status blijft hangen.
+          (Het checken van de status moet helaas nog met de hand.)
+          App de penningmeester als je denkt dat het mis gaat!
+        </p>
         <UserTransactionPool />
         <br />
 

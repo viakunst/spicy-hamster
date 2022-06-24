@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+
 import {
   Modal, Table, Button, Space,
 } from 'antd';
@@ -11,7 +11,6 @@ import { BankAccount, useGetBankAccountsQuery } from '../../Api/Backend';
 import { FormType } from '../form/FormHelper';
 import BankAccountCRUD from '../form/CRUD/BankAccountCRUD';
 import GraphqlService from '../../helpers/GraphqlService';
-import OidcService from '../../helpers/OidcService';
 import { searchFilter, searchSelector } from '../../helpers/SearchHelper';
 
 interface BankAccountPoolState {
@@ -176,8 +175,8 @@ function BankAccountPool() {
             {searchSelector(
               searchConfigAttributes,
               searchAttribute,
-              (searchAttribute:string | Array<string>) => setState({ ...state, searchAttribute }),
-              (searchTerm:string) => setState({ ...state, searchTerm }),
+              (att:string | Array<string>) => setState({ ...state, searchAttribute: att }),
+              (term:string) => setState({ ...state, searchTerm: term }),
             )}
             <Button type="primary" onClick={(e) => openModal(e.nativeEvent, FormType.CREATE)}>
               Nieuwe bankrekening

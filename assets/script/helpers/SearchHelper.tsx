@@ -1,7 +1,7 @@
 import React from 'react';
 
 import {
-  Space, Select, Input,
+  Select, Input,
 } from 'antd';
 
 const { Search } = Input;
@@ -36,7 +36,7 @@ export const searchSelector = (
 ) => {
   // No searchable fields.
   if (searchConfigAttributes.length === 0) {
-    return (<></>);
+    return {};
   }
 
   if (searchAttribute === null) {
@@ -85,7 +85,8 @@ const getNestedValue = (obj:any, keys:Array<string>) : any => {
 };
 
 // Client side filtering.
-export const searchFilter = (array:any[], searchAttribute:string | Array<string> | null, searchTerm:string | null) => array.filter((value:any) => {
+export const searchFilter = (array:any[], searchAttribute:string | Array<string>
+| null, searchTerm:string | null) => array.filter((value:any) => {
   if (searchAttribute !== null && searchTerm !== null) {
     let valueOfKey;
     if (typeof searchAttribute === 'string') {

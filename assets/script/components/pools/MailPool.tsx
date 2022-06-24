@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+
 import {
   Modal, Table, Button, Space,
 } from 'antd';
@@ -12,7 +12,7 @@ import { FormType } from '../form/FormHelper';
 import MailCRUD from '../form/CRUD/MailCRUD';
 import GraphqlService from '../../helpers/GraphqlService';
 import { searchFilter, searchSelector } from '../../helpers/SearchHelper';
-import { dateRender } from '../../helpers/DateHelper';
+import dateRender from '../../helpers/DateHelper';
 
 interface MailPoolState {
   searchAttribute: string | Array<string> | null,
@@ -174,8 +174,8 @@ function MailPool() {
             {searchSelector(
               searchConfigAttributes,
               searchAttribute,
-              (searchAttribute:string | Array<string>) => setState({ ...state, searchAttribute }),
-              (searchTerm:string) => setState({ ...state, searchTerm }),
+              (att:string | Array<string>) => setState({ ...state, searchAttribute: att }),
+              (term:string) => setState({ ...state, searchTerm: term }),
             )}
           </Space>
         </div>

@@ -3,9 +3,10 @@ import React from 'react';
 import {
   Form, Input, Checkbox, Table, message,
 } from 'antd';
-import { GraphQLClient } from 'graphql-request';
+
 import {
-  Statement, useCreateStatementMutation, useUpdateStatementMutation, useDeleteStatementMutation, StatementInput,
+  Statement, useCreateStatementMutation, useUpdateStatementMutation,
+  useDeleteStatementMutation, StatementInput,
 } from '../../../Api/Backend';
 
 import { FormType, basicForm } from '../FormHelper';
@@ -15,13 +16,11 @@ interface StatementCRUDProps {
   onAttributesUpdate: () => void;
   statement? : Statement;
   formtype : FormType;
-  admin? : boolean
 }
 
 function StatementCRUD(props:StatementCRUDProps) {
   const [form] = Form.useForm();
 
-  console.log('statement crud on');
   const createMutation = useCreateStatementMutation(GraphqlService.getClient());
   const updateMutation = useUpdateStatementMutation(GraphqlService.getClient());
   const deleteMutation = useDeleteStatementMutation(GraphqlService.getClient());
@@ -30,7 +29,6 @@ function StatementCRUD(props:StatementCRUDProps) {
     onAttributesUpdate,
     statement,
     formtype,
-    admin,
   } = props;
 
   let disabled = false;

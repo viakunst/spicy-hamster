@@ -20,7 +20,7 @@ class TransactionGroupMutation extends AbstractMutation
     /**
      * @GQL\Field(type="String!")
      * @GQL\Description("Create transactionGroup.")
-     * @GQL\Access("isAuthenticated()")
+     * @GQL\Access("hasRole('ROLE_ADMIN')")
      */
     public function createTransactionGroup(TransactionGroupType $transactionGroupTypeInput): string
     {
@@ -67,7 +67,7 @@ class TransactionGroupMutation extends AbstractMutation
     /**
      * @GQL\Field(type="String!")
      * @GQL\Description("Update transactionGroup.")
-     * @GQL\Access("isAuthenticated()")
+     * @GQL\Access("hasRole('ROLE_ADMIN')")
      */
     public function updateTransactionGroup(string $id, TransactionGroup $transactionGroup): string
     {
@@ -93,7 +93,7 @@ class TransactionGroupMutation extends AbstractMutation
     /**
      * @GQL\Field(type="String!")
      * @GQL\Description("Delete transactionGroup.")
-     * @GQL\Access("isAuthenticated()")
+     * @GQL\Access("hasRole('ROLE_ADMIN')")
      */
     public function deleteTransactionGroup(string $id): string
     {

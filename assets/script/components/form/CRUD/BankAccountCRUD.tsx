@@ -4,7 +4,8 @@ import {
   Form, Input, Checkbox, Table, message,
 } from 'antd';
 import {
-  BankAccount, useCreateBankAccountMutation, useUpdateBankAccountMutation, useDeleteBankAccountMutation, BankAccountInput,
+  BankAccount, useCreateBankAccountMutation,
+  useUpdateBankAccountMutation, useDeleteBankAccountMutation, BankAccountInput,
 } from '../../../Api/Backend';
 
 import GraphqlService from '../../../helpers/GraphqlService';

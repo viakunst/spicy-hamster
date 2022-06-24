@@ -16,7 +16,7 @@ class StatementMutation extends AbstractMutation
     /**
      * @GQL\Field(type="String!")
      * @GQL\Description("Create statement.")
-     * @GQL\Access("isAuthenticated()")
+     * @GQL\Access("hasRole('ROLE_ADMIN')")
      */
     public function createStatement(Statement $statement): string
     {
@@ -38,7 +38,7 @@ class StatementMutation extends AbstractMutation
     /**
      * @GQL\Field(type="String!")
      * @GQL\Description("Update statement.")
-     * @GQL\Access("isAuthenticated()")
+     * @GQL\Access("hasRole('ROLE_ADMIN')")
      */
     public function updateStatement(string $id, Statement $statement): string
     {
@@ -64,7 +64,7 @@ class StatementMutation extends AbstractMutation
     /**
      * @GQL\Field(type="String!")
      * @GQL\Description("Delete statement.")
-     * @GQL\Access("isAuthenticated()")
+     * @GQL\Access("hasRole('ROLE_ADMIN')")
      */
     public function deleteStatement(string $id): string
     {

@@ -9,7 +9,8 @@ import type { CustomTagProps } from 'rc-select/lib/BaseSelect';
 
 import FormItem from 'antd/lib/form/FormItem';
 import {
-  BankAccount, Person, useGetPersonsQuery, useGetBankAccountsQuery, useCreateTransactionGroupMutation, TransactionTypeInput,
+  BankAccount, Person, useGetPersonsQuery, useGetBankAccountsQuery,
+  useCreateTransactionGroupMutation, TransactionTypeInput,
 } from '../../Api/Backend';
 
 import GraphqlService from '../../helpers/GraphqlService';
@@ -48,11 +49,17 @@ function TransactionGroupCreator() {
 
   const createMutation = useCreateTransactionGroupMutation(GraphqlService.getClient());
 
-  if (isLoading1 || isError1 || data1 === undefined || isLoading2 || isError2 || data2 === undefined) {
+  if (isLoading1 || isError1 || data1 === undefined
+    || isLoading2 || isError2 || data2 === undefined) {
     return <span>Loading...</span>;
   }
 
-  let submitButton = (<Button type="primary" htmlType="submit" style={{ width: '100%' }}>Maak deze transacties aan!</Button>);
+  let submitButton = (
+    <Button type="primary" htmlType="submit" style={{ width: '100%' }}>
+      Maak deze transacties aan!
+    </Button>
+  );
+
   if (createMutation.isLoading) {
     submitButton = (<Button type="primary" style={{ width: '100%' }} htmlType="submit" disabled>Aanmaken...</Button>);
   }
@@ -72,7 +79,7 @@ function TransactionGroupCreator() {
     const transactions:TransactionTypeInput[] = [];
 
     values.fields.forEach((val:any) => {
-      const parsedAmount = parseInt(parseFloatString(val.amount));
+      const parsedAmount = parseInt(parseFloatString(val.amount), 10);
       val.person.forEach((person:any) => {
         const transaction = {
           amount: parsedAmount,
@@ -84,7 +91,7 @@ function TransactionGroupCreator() {
         transactions.push(transaction);
       });
     });
-    const { date } = values;
+
     const formattedDate = values.date;
     const createInput = {
       title: values.title,
@@ -95,8 +102,6 @@ function TransactionGroupCreator() {
     };
     createMutation.mutate({ transactionGroupTypeInput: createInput });
   };
-
-  const content = (<>Loading</>);
 
   const personOptions = (
     <>
@@ -116,7 +121,7 @@ function TransactionGroupCreator() {
 
   const tagRender = (props: CustomTagProps) => {
     const {
-      label, value, closable, onClose,
+      label, closable, onClose,
     } = props;
     const onPreventMouseDown = (event: React.MouseEvent<HTMLSpanElement>) => {
       event.preventDefault();
@@ -144,11 +149,12 @@ function TransactionGroupCreator() {
             if (!fields || fields.length < 1) {
               return Promise.reject(new Error('Op zijn minst 1 persoon.'));
             }
+            Promise.resolve();
           },
         },
       ]}
     >
-      {(fields, { add, remove }) => (
+      {(fields, { add }) => (
         <div>
           {fields.map((field, index) => (
             <div key={field.key}>

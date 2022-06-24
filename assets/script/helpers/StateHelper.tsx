@@ -4,15 +4,17 @@ import {
   Badge,
 } from 'antd';
 
-export const stateRender = (state:any) => {
-  if (status === 'Openstaand') {
+const stateRender = (state:any) => {
+  if (state === 'Openstaand') {
     return (<span><Badge status="error" />Openstaand</span>);
   }
-  if (status === 'Loading') {
+  if (state === 'Loading') {
     return (<span><Badge status="warning" />Laden</span>);
   }
-  if (status === 'Voldaan') {
+  if (state === 'Voldaan') {
     return (<span><Badge status="success" />Voldaan</span>);
   }
   return (<span><Badge status="warning" />Onbekend</span>);
 };
+
+export default stateRender;

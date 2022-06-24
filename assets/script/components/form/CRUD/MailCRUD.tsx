@@ -1,9 +1,9 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import HtmlParser from 'react-html-parser';
 
 import {
-  Form, Checkbox, Table, message, Space, Divider,
+  Form, Checkbox, Table, message,
 } from 'antd';
 import { Mail, useDeleteMailMutation } from '../../../Api/Backend';
 
@@ -62,16 +62,6 @@ function MailCRUD(props:MailCRUDProps) {
       title: 'Waarde',
       dataIndex: 'value',
       key: 'age',
-      onCell: (record:any, rowIndex:any) => {
-        console.log(record);
-        if (record.value.html !== undefined) {
-          const html_content = record.value.html.match(/<body>*>((.|\n)*?)<\/body>/)[0].replace(/<[\/]?body>/g, '');
-          console.log(html_content);
-          record.value = (<>{HtmlParser(html_content)}</>);
-          return record;
-        }
-        return record;
-      },
     },
   ];
 
@@ -99,12 +89,14 @@ function MailCRUD(props:MailCRUDProps) {
       sendTo = mail.recipients[0].person.getName;
     }
 
-    const parsed_content = JSON.parse(mail.content);
+    const parsedContent = JSON.parse(mail.content);
+    const htmlContent = parsedContent.html.match(/<body>*>((.|\n)*?)<\/body>/)[0].replace(/<[\/]?body>/g, '');
+
     const readData = [
       { key: 'Titel', value: mail.title },
       { key: 'verzonden naar', value: sendTo },
       { key: 'verzonden door', value: mail.sendBy },
-      { key: 'Content', value: parsed_content },
+      { key: 'Content', value: (<>{HtmlParser(htmlContent)}</>) },
     ];
 
     content = (

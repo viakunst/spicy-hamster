@@ -13,10 +13,10 @@ export const parseFloatString = (value:any) => {
   if (indexpoint === -1) {
     return `${val.replace('.', '')}00`;
   }
-  if (val.length - indexpoint == 2) {
+  if (val.length - indexpoint === 2) {
     return `${val.replace('.', '')}0`;
   }
-  if (val.length - indexpoint == 3) {
+  if (val.length - indexpoint === 3) {
     return val.replace('.', '');
   }
 

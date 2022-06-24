@@ -14,7 +14,6 @@ import AdminTransactionPool from '../components/admin-components/AdminTransactio
 import AdminMailPool from '../components/admin-components/AdminMailPool';
 import AdminPersonPool from '../components/admin-components/AdminPersonPool';
 import AdminStatementPool from '../components/admin-components/AdminStatementPool';
-import TransactionCreator from '../components/form/TransactionGroupCreator';
 import AdminBankAccountPool from '../components/admin-components/AdminBankAccountPool';
 import ReminderForm from '../components/form/ReminderForm';
 
@@ -68,7 +67,7 @@ export default function AdminPage() {
   const history = useHistory();
 
   const onClick = ({
-    item, key, keyPath, domEvent,
+    key,
   }: any) => {
     if (key === 'back') {
       history.push('/');

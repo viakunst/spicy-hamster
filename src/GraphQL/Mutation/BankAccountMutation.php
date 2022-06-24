@@ -16,7 +16,7 @@ class BankAccountMutation extends AbstractMutation
     /**
      * @GQL\Field(type="String!")
      * @GQL\Description("Create bankaccount.")
-     * @GQL\Access("isAuthenticated()")
+     * @GQL\Access("hasRole('ROLE_ADMIN')")
      */
     public function createBankAccount(BankAccount $bankaccount): string
     {
@@ -38,7 +38,7 @@ class BankAccountMutation extends AbstractMutation
     /**
      * @GQL\Field(type="String!")
      * @GQL\Description("Update bankaccount.")
-     * @GQL\Access("isAuthenticated()")
+     * @GQL\Access("hasRole('ROLE_ADMIN')")
      */
     public function updateBankAccount(string $id, BankAccount $bankaccount): string
     {
@@ -64,7 +64,7 @@ class BankAccountMutation extends AbstractMutation
     /**
      * @GQL\Field(type="String!")
      * @GQL\Description("Delete bankaccount.")
-     * @GQL\Access("isAuthenticated()")
+     * @GQL\Access("hasRole('ROLE_ADMIN')")
      */
     public function deleteBankAccount(string $id): string
     {
