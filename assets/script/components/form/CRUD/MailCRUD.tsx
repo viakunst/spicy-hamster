@@ -1,3 +1,6 @@
+// I do not trust eslint on this matter.
+/* eslint-disable no-useless-escape */
+
 import React from 'react';
 
 import HtmlParser from 'react-html-parser';

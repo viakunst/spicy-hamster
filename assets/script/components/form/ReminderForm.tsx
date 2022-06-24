@@ -1,3 +1,5 @@
+// Auto generated code has too long variable name.
+/* eslint-disable max-len */
 import React from 'react';
 
 import {

@@ -1,3 +1,8 @@
+// This rule is broken for an imported types.
+/* eslint-disable react/prop-types */
+
+/* eslint-disable max-len */
+
 import React from 'react';
 
 import { PlusOutlined } from '@ant-design/icons';
@@ -149,7 +154,7 @@ function TransactionGroupCreator() {
             if (!fields || fields.length < 1) {
               return Promise.reject(new Error('Op zijn minst 1 persoon.'));
             }
-            Promise.resolve();
+            return Promise.resolve();
           },
         },
       ]}
