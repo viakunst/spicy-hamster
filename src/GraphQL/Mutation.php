@@ -133,7 +133,7 @@ class Mutation
     /**
      * @GQL\Field(type="String!")
      * @GQL\Description("Imports persons from the identity provider.")
-     * @GQL\Access("hasRole('ROLE_ADMIN')")
+     * @GQL\Access("isAuthenticated()")
      */
     public function importPerson(string $token): string
     {

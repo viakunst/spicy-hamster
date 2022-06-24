@@ -4,30 +4,43 @@ import { Link } from 'react-router-dom';
 import {
   Button,
 } from 'antd';
-import { useGetOwnRolesQuery } from '../../Api/Backend';
+
+import { useGetOwnRolesQuery, useImportPersonMutation } from '../../Api/Backend';
 import GraphqlService from '../../helpers/GraphqlService';
+import OidcService from '../../helpers/OidcService';
 
 export default function AdminMenuButton() {
-  console.log('start');
   const {
-    data, isLoading, isError,
+    data, isLoading, isError, refetch,
   } = useGetOwnRolesQuery(GraphqlService.getClient());
 
-  console.log(isLoading);
+  const importMutation = useImportPersonMutation(GraphqlService.getClient());
+
   if (isLoading || isError || data === undefined) {
     return null;
   }
 
-  console.log(data);
   const roles = data.getOwnRoles as string[];
-  console.log(roles);
 
   let admin = false;
+
   roles.forEach((role) => {
     if (role === 'ROLE_ADMIN') {
       admin = true;
     }
+    if (role === 'noAdmin') {
+      const tok = OidcService.getIdToken();
+      if (tok !== null && importMutation.isLoading === false && importMutation.isSuccess === false) {
+        importMutation.mutate({ token: tok });
+      }
+    }
   });
+
+  if (importMutation.isSuccess && admin === false) {
+    if (importMutation.data.importPerson === 'success') {
+      refetch();
+    }
+  }
 
   if (admin) {
     return (

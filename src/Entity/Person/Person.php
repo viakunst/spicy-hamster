@@ -14,7 +14,7 @@ use Overblog\GraphQLBundle\Annotation as GQL;
 class Person
 {
     public const ADMIN_ROLE = 'admin';
-    public const NO_ROLE = 'user';
+    public const USER_ROLE = 'gebruiker';
 
     /**
      * @ORM\Id()

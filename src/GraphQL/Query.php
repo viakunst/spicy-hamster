@@ -11,6 +11,7 @@ use App\Entity\Transaction\Transaction;
 use App\Entity\Transaction\TransactionGroup;
 use App\GraphQL\Types\PersonTransactions;
 use App\Security\TokenUser;
+use App\Service\CognitoService;
 use Doctrine\ORM\EntityManagerInterface;
 use Overblog\GraphQLBundle\Annotation as GQL;
 use Symfony\Component\Security\Core\Security;
@@ -31,10 +32,16 @@ class Query
      */
     private $security;
 
-    public function __construct(EntityManagerInterface $em, Security $security)
+    /**
+     * @var CognitoService
+     */
+    protected $cognito;
+
+    public function __construct(EntityManagerInterface $em, Security $security, CognitoService $cognito)
     {
         $this->em = $em;
         $this->security = $security;
+        $this->cognito = $cognito;
     }
 
     /**
@@ -61,6 +68,25 @@ class Query
         $user = $this->security->getUser();
         if (is_null($user)) {
             return ['notFound'];
+        }
+
+        $admin = $this->em->getRepository(Person::class)->findOneBy(['role' => 'admin']);
+
+        if (is_null($admin) || 'admin' == $admin->getId()) {
+            // No admin in system. make current user admin.
+
+            if (($user instanceof TokenUser) && !is_null($user->getSub())) {
+                $person = $this->em->getRepository(Person::class)->findOneBy(['sub' => $user->getSub()]);
+                if (is_null($person)) {
+                    return ['noAdmin'];
+                }
+
+                $person->setRole('admin');
+                $this->em->persist($person);
+                $this->em->flush();
+
+                return $user->getRoles();
+            }
         }
 
         return $user->getRoles();

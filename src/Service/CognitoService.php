@@ -154,6 +154,7 @@ class CognitoService
                 $person->setGivenName($givenName);
                 $person->setFamilyName($familyName);
                 $person->setAddress($address);
+                $person->setRole(Person::USER_ROLE);
                 $this->em->persist($person);
                 $this->em->flush();
             }

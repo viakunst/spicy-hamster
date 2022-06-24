@@ -2,7 +2,7 @@
 
 namespace App\Tests\Security;
 
-use App\Entity\Admin;
+use App\Entity\Person\Person;
 use App\Security\TokenUser;
 use App\Security\UserProvider;
 use App\Tests\AuthWebTestCase;
@@ -49,7 +49,7 @@ class UserProviderTest extends AuthWebTestCase
                 })
             );
 
-        $this->provider = new UserProvider($oidcStub, $this->em->getRepository(Admin::class));
+        $this->provider = new UserProvider($oidcStub, $this->em->getRepository(Person::class));
     }
 
     /**
