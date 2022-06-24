@@ -14,7 +14,7 @@ import {
 
 import GraphqlService from '../../helpers/GraphqlService';
 
-import { amountInput, parseFloatString } from '../../helpers/AmountInput';
+import { amountInput, parseFloatString } from '../../helpers/AmountHelper';
 
 const { Option } = Select;
 

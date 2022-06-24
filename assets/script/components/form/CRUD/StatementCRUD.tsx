@@ -172,14 +172,14 @@ function StatementCRUD(props:StatementCRUDProps) {
 
   if (formtype === FormType.READ && statement !== undefined) {
     const readData = [
-      { key: 'IBAN', value: statement.IBAN },
+      { key: 'naam', value: statement.name },
       { key: 'Bedrag', value: statement.amount },
+      { key: 'email', value: statement.mail },
+      { key: 'IBAN', value: statement.IBAN },
+      { key: 'status', value: statement.status },
       { key: 'Opmerking', value: statement.comment },
       { key: 'Feedback', value: statement.feedback },
-      { key: 'email', value: statement.mail },
-      { key: 'naam', value: statement.name },
       { key: 'reden', value: statement.reason },
-      { key: 'status', value: statement.status },
     ];
 
     content = (

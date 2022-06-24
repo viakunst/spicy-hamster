@@ -1,7 +1,7 @@
 import React from 'react';
 
 import {
-  Form, Input, Checkbox, Table, message,
+  Form, Input, Checkbox, Table, message, Badge,
 } from 'antd';
 
 import {
@@ -10,7 +10,9 @@ import {
 
 import { FormType, basicForm } from '../FormHelper';
 import GraphqlService from '../../../helpers/GraphqlService';
-import { amountInput, parseFloatString } from '../../../helpers/AmountInput';
+import { amountRender, amountInput, parseFloatString } from '../../../helpers/AmountHelper';
+import { dateRender } from '../../../helpers/DateHelper';
+import { stateRender } from '../../../helpers/StateHelper';
 
 import TransactionCreator from '../TransactionCreator';
 
@@ -82,7 +84,7 @@ function TransactionCRUD(props:TransactionCRUDprops) {
     {
       title: 'Veld',
       dataIndex: 'key',
-      key: 'name',
+      key: 'title',
     },
     {
       title: 'Waarde',
@@ -93,17 +95,14 @@ function TransactionCRUD(props:TransactionCRUDprops) {
 
   const updateCreateFormItems = (
     <>
+      <Form.Item label="Bedrag" name="amount" rules={[{ required: true }]}>
+        {amountInput()}
+      </Form.Item>
       <Form.Item label="Opmerking" name="comment" rules={[{ required: false }]}>
         <Input />
       </Form.Item>
-      <Form.Item label="Status" name="status" rules={[{ required: true }]}>
+      <Form.Item label="Herrinneringen" name="timesReminded" rules={[{ required: true }]}>
         <Input />
-      </Form.Item>
-      <Form.Item label="Reminders" name="timesReminded" rules={[{ required: true }]}>
-        <Input />
-      </Form.Item>
-      <Form.Item label="Bedrag" name="amount" rules={[{ required: true }]}>
-        {amountInput()}
       </Form.Item>
     </>
   );
@@ -142,8 +141,14 @@ function TransactionCRUD(props:TransactionCRUDprops) {
 
   if (formtype === FormType.READ && transaction !== undefined) {
     const readData = [
-      { key: 'Opmerking', value: transaction.comment },
-      { key: 'Status', value: transaction.status },
+      { title: 'Titel', key: 'title', value: transaction.getTitle },
+      { title: 'Datum', key: 'date', value: dateRender(transaction.getDate) },
+      { title: 'Bedrag', key: 'amount', value: amountRender(transaction.amount) },
+      { title: 'Persoon', key: 'person', value: transaction.getPerson?.getName },
+      { title: 'Bankaccount', key: 'account', value: transaction.getTransactionGroup?.getBankAccount?.name },
+      { title: 'Status', key: 'state', value: stateRender(transaction.status) },
+      { title: 'Opmerking', key: 'comment', value: transaction.comment },
+      { title: 'Herrinneringen', key: 'timesReminded', value: transaction.timesReminded },
     ];
 
     content = (

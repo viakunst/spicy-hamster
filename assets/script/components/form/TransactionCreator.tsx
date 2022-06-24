@@ -2,7 +2,7 @@ import React from 'react';
 
 import { PlusOutlined } from '@ant-design/icons';
 import {
-  Form, Input, DatePicker, Select, Button, Divider, message, Tag,
+  Form, Select, Button, Divider, message, Tag,
 } from 'antd';
 
 import type { CustomTagProps } from 'rc-select/lib/BaseSelect';
@@ -14,7 +14,7 @@ import {
 
 import GraphqlService from '../../helpers/GraphqlService';
 
-import { amountInput, parseFloatString } from '../../helpers/AmountInput';
+import { amountInput, parseFloatString } from '../../helpers/AmountHelper';
 
 const { Option } = Select;
 

@@ -1,10 +1,10 @@
 import React from 'react';
 
 import {
-  Form, Input, Checkbox, Table, message,
+  Form, Input, Checkbox, Table, message, DatePicker,
 } from 'antd';
 import {
-  TransactionGroup, useCreateTransactionGroupMutation, useDeleteTransactionGroupMutation, useUpdateTransactionGroupMutation, TransactionGroupInput,
+  TransactionGroup, useDeleteTransactionGroupMutation, useUpdateTransactionGroupMutation, TransactionGroupInput,
 } from '../../../Api/Backend';
 
 import { FormType, basicForm } from '../FormHelper';
@@ -83,14 +83,28 @@ function TransactionGroupCRUD(props:TransactionGroupCRUDProps) {
 
   const updateCreateFormItems = (
     <>
-      <Form.Item label="IBAN" name="givenName" rules={[{ required: true }]}>
+      <Form.Item
+        label="Titel"
+        name="title"
+        rules={[{ required: true }]}
+      >
         <Input />
       </Form.Item>
-      <Form.Item label="Omschrijving" name="description" rules={[{ required: true, type: 'email' }]}>
+
+      <Form.Item
+        label="Omschrijving"
+        name="description"
+        rules={[{ required: true }]}
+      >
         <Input />
       </Form.Item>
-      <Form.Item label="Naam" name="title" rules={[{ required: true }]}>
-        <Input />
+
+      <Form.Item
+        label="Datum"
+        name="date"
+        rules={[{ required: true }]}
+      >
+        <DatePicker />
       </Form.Item>
     </>
   );
@@ -132,7 +146,7 @@ function TransactionGroupCRUD(props:TransactionGroupCRUDProps) {
 
   if (formtype === FormType.READ && transactionGroup !== undefined) {
     const readData = [
-      { key: 'Title of naam', value: transactionGroup.title },
+      { key: 'Titel', value: transactionGroup.title },
       { key: 'Omschrijving', value: transactionGroup.description },
     ];
 

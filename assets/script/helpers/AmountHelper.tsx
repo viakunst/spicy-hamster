@@ -34,6 +34,10 @@ export const amountInput = () => (
 );
 
 export const amountRender = (amount:any) => {
+  console.log(amount);
+  if (amount instanceof String) {
+    return amount;
+  }
   const euro = amount / 100;
   const euroString = euro.toFixed(2);
   return `€ ${euroString}`;

@@ -35,7 +35,7 @@ function MailCRUD(props:MailCRUDProps) {
 
   if (deleteMutation.isSuccess) {
     deleteMutation.reset();
-    message.success('Persoon succesvol verwijdered.');
+    message.success('Email succesvol verwijdered.');
     onAttributesUpdate();
   }
 

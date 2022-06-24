@@ -15,8 +15,9 @@ import TransactionGroupCRUD from '../form/CRUD/TransactionGroupCRUD';
 import TransactionCRUD from '../form/CRUD/TransactionCRUD';
 import GraphqlService from '../../helpers/GraphqlService';
 import { searchFilter, searchSelector } from '../../helpers/SearchHelper';
-import { amountRender } from '../../helpers/AmountInput';
+import { amountRender } from '../../helpers/AmountHelper';
 import { dateRender } from '../../helpers/DateHelper';
+import { stateRender } from '../../helpers/StateHelper';
 
 interface TransactionGroupPoolState {
   searchAttribute: string | Array<string> | null,
@@ -184,22 +185,7 @@ function TransactionPoolByGroup() {
       { title: 'Persoon', dataIndex: ['getPerson', 'getName'], key: 'name' },
       { title: 'Bedrag', key: 'amount', render: (_, { amount }) => amountRender(amount) },
       { title: 'Opmerking', dataIndex: 'comment', key: 'comment' },
-      {
-        title: 'Status',
-        key: 'state',
-        render: (_, { status }) => {
-          if (status === 'Openstaand') {
-            return (<span><Badge status="error" />Openstaand</span>);
-          }
-          if (status === 'Loading') {
-            return (<span><Badge status="warning" />Laden</span>);
-          }
-          if (status === 'Voldaan') {
-            return (<span><Badge status="success" />Voldaan</span>);
-          }
-          return (<span><Badge status="warning" />Onbekend</span>);
-        },
-      },
+      { title: 'Status', key: 'state', render: (_, { status }) => stateRender(status) },
       {
         title: 'Details',
         key: 'action',
@@ -259,11 +245,6 @@ function TransactionPoolByGroup() {
       key: 'action',
       render: (text, record) => (
         <Space>
-          <Button onClick={
-            (e) => openModal(e.nativeEvent, FormType.READ, record)
-            }
-          >Details
-          </Button>
           <Button onClick={
             (e) => openModal(e.nativeEvent, FormType.UPDATE, record)
             }

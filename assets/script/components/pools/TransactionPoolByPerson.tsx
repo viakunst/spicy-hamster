@@ -13,8 +13,9 @@ import { FormType } from '../form/FormHelper';
 import TransactionCRUD from '../form/CRUD/TransactionCRUD';
 import GraphqlService from '../../helpers/GraphqlService';
 import { searchFilter, searchSelector } from '../../helpers/SearchHelper';
-import { amountRender } from '../../helpers/AmountInput';
+import { amountRender } from '../../helpers/AmountHelper';
 import { dateRender } from '../../helpers/DateHelper';
+import { stateRender } from '../../helpers/StateHelper';
 
 interface TransactionPoolState {
   searchAttribute: string | Array<string> | null,
@@ -125,22 +126,7 @@ function TransactionPoolByPerson() {
       { title: 'Datum', key: 'date', render: (_, { getDate }) => dateRender(getDate) },
       { title: 'Bedrag', key: 'amount', render: (_, { amount }) => amountRender(amount) },
       { title: 'Bankaccount', dataIndex: ['getTransactionGroup', 'getBankAccount', 'name'], key: 'account' },
-      {
-        title: 'Status',
-        key: 'state',
-        render: (_, { status }) => {
-          if (status === 'Openstaand') {
-            return (<span><Badge status="error" />Openstaand</span>);
-          }
-          if (status === 'Loading') {
-            return (<span><Badge status="warning" />Laden</span>);
-          }
-          if (status === 'Voldaan') {
-            return (<span><Badge status="success" />Voldaan</span>);
-          }
-          return (<span><Badge status="warning" />Onbekend</span>);
-        },
-      },
+      { title: 'Status', key: 'state', render: (_, { status }) => stateRender(status) },
       {
         title: 'Details',
         key: 'action',
