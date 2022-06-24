@@ -13,8 +13,8 @@ App\Entity\Person\Person:
   admin_1:
     id: 'admin'
     email: 'admin@hotmail.com'
-    givenName: 'adjong'
-    familyName: 'adgozer'
+    givenName: 'admin'
+    familyName: 'admin'
     sub: '1111-2223'
     address: 'straat ergens 2, utrecht'
     role: 'admin'

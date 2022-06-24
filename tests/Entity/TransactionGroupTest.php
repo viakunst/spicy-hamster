@@ -125,7 +125,7 @@ class TransactionGroupTest extends TestCase
     {
         $expected = $this->createMock(BankAccount::class);
         $property = (new ReflectionClass(TransactionGroup::class))
-            ->getProperty('account');
+            ->getProperty('bankAccount');
         $property->setAccessible(true);
         $property->setValue($this->transactionGroup, $expected);
         $this::assertSame($expected, $this->transactionGroup->getBankAccount());
@@ -135,7 +135,7 @@ class TransactionGroupTest extends TestCase
     {
         $expected = $this->createMock(BankAccount::class);
         $property = (new ReflectionClass(TransactionGroup::class))
-            ->getProperty('IBAN');
+            ->getProperty('bankAccount');
         $property->setAccessible(true);
         $this->transactionGroup->setBankAccount($expected);
         $this::assertSame($expected, $property->getValue($this->transactionGroup));

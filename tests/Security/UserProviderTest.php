@@ -6,7 +6,6 @@ use App\Repository\PersonRepository;
 use App\Security\TokenUser;
 use App\Security\UserProvider;
 use App\Tests\AuthWebTestCase;
-use Doctrine\ORM\EntityManagerInterface;
 use Jumbojett\OpenIDConnectClient;
 
 /**
@@ -16,8 +15,6 @@ use Jumbojett\OpenIDConnectClient;
  */
 class UserProviderTest extends AuthWebTestCase
 {
-    private EntityManagerInterface $em;
-
     /**
      * @var UserProvider
      */
@@ -29,7 +26,6 @@ class UserProviderTest extends AuthWebTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->em = $this->client->getContainer()->get(EntityManagerInterface::class);
 
         $oidcStub = $this->createPartialMock(OpenIDConnectClient::class, ['requestUserInfo']);
 
@@ -39,7 +35,7 @@ class UserProviderTest extends AuthWebTestCase
             ->will(
                 $this::returnCallback(function ($arg) use ($oidcStub) {
                     if ('token1' == $oidcStub->getAccessToken()) {
-                        return json_decode('{"sub":"1111-2222","name":"jong gozer","email":"person@hotmail.com"}');
+                        return json_decode('{"sub":"1111-2223","name":"admin admin","email":"admin@hotmail.com"}');
                     }
                     if ('token2' == $oidcStub->getAccessToken()) {
                         return json_decode('{"sub":"submock","name":"username","email":"mail@domain.com"}');
@@ -71,9 +67,9 @@ class UserProviderTest extends AuthWebTestCase
         $this::assertSame(['ROLE_ADMIN', 'ROLE_USER'], $user->getRoles());
 
         if ($user instanceof TokenUser) {
-            $this::assertSame('1111-2222', $user->getSub());
-            $this::assertSame('jong gozer', $user->getName());
-            $this::assertSame('person@hotmail.com', $user->getEmail());
+            $this::assertSame('1111-2223', $user->getSub());
+            $this::assertSame('admin admin', $user->getName());
+            $this::assertSame('admin@hotmail.com', $user->getEmail());
         }
 
         // Test random user.
@@ -96,9 +92,9 @@ class UserProviderTest extends AuthWebTestCase
         $this::assertSame(['ROLE_ADMIN', 'ROLE_USER'], $user->getRoles());
 
         if ($user instanceof TokenUser) {
-            $this::assertSame('1111-2222', $user->getSub());
-            $this::assertSame('jong gozer', $user->getName());
-            $this::assertSame('person@hotmail.com', $user->getEmail());
+            $this::assertSame('1111-2223', $user->getSub());
+            $this::assertSame('admin admin', $user->getName());
+            $this::assertSame('admin@hotmail.com', $user->getEmail());
         }
 
         // Test random user.
@@ -120,9 +116,9 @@ class UserProviderTest extends AuthWebTestCase
         $this::assertSame(['ROLE_ADMIN', 'ROLE_USER'], $user->getRoles());
 
         if ($user instanceof TokenUser) {
-            $this::assertSame('1111-2222', $user->getSub());
-            $this::assertSame('jong gozer', $user->getName());
-            $this::assertSame('person@hotmail.com', $user->getEmail());
+            $this::assertSame('1111-2223', $user->getSub());
+            $this::assertSame('admin admin', $user->getName());
+            $this::assertSame('admin@hotmail.com', $user->getEmail());
 
             // Update the token.
             $user->setToken('token2');
