@@ -7,7 +7,7 @@ use Overblog\GraphQLBundle\Annotation as GQL;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="`BankAccount`")
+ * @ORM\Table(name="`bankaccount`")
  * @GQL\Type
  * @GQL\Input
  * @GQL\Description("Bank account and information")

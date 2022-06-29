@@ -12,7 +12,7 @@ use Overblog\GraphQLBundle\Annotation as GQL;
  * @GQL\Input
  * @GQL\Description("Indiviual Transactions from the organisation.")
  * @ORM\Entity
- * @ORM\Table(name="`Transaction`")
+ * @ORM\Table(name="`transaction`")
  */
 class Transaction
 {
