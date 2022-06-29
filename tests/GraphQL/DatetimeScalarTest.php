@@ -2,20 +2,20 @@
 
 namespace Tests\Unit\GraphQL\Types;
 
-use App\GraphQL\Types\DatetimeScalar;
+use App\GraphQL\Types\DateTimeScalar;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Class DatetimeScalarTest.
+ * Class DateTimeScalarTest.
  *
- * @covers \App\GraphQL\Types\DatetimeScalar
+ * @covers \App\GraphQL\Types\DateTimeScalar
  */
-class DatetimeScalarTest extends TestCase
+class DateTimeScalarTest extends TestCase
 {
     /**
-     * @var DatetimeScalar
+     * @var DateTimeScalar
      */
-    protected $datetimeScalar;
+    protected $dateTimeScalar;
 
     /**
      * {@inheritdoc}
@@ -25,7 +25,7 @@ class DatetimeScalarTest extends TestCase
         parent::setUp();
 
         /* @todo Correctly instantiate tested object to use it. */
-        $this->datetimeScalar = new DatetimeScalar();
+        $this->dateTimeScalar = new DateTimeScalar();
     }
 
     /**
@@ -35,7 +35,7 @@ class DatetimeScalarTest extends TestCase
     {
         parent::tearDown();
 
-        unset($this->datetimeScalar);
+        unset($this->dateTimeScalar);
     }
 
     public function testSerialize(): void

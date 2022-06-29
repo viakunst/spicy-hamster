@@ -2,6 +2,7 @@
 
 namespace App\Tests\Entity;
 
+use App\Entity\BankAccount\BankAccount;
 use App\Entity\Transaction\TransactionGroup;
 use DateTime;
 use Doctrine\Common\Collections\Collection;
@@ -120,23 +121,23 @@ class TransactionGroupTest extends TestCase
         $this::assertSame($expected, $property->getValue($this->transactionGroup));
     }
 
-    public function testGetIBAN(): void
+    public function testGetBankAccount(): void
     {
-        $expected = '32';
+        $expected = $this->createMock(BankAccount::class);
         $property = (new ReflectionClass(TransactionGroup::class))
-            ->getProperty('IBAN');
+            ->getProperty('bankAccount');
         $property->setAccessible(true);
         $property->setValue($this->transactionGroup, $expected);
-        $this::assertSame($expected, $this->transactionGroup->getIBAN());
+        $this::assertSame($expected, $this->transactionGroup->getBankAccount());
     }
 
-    public function testSetIBAN(): void
+    public function testSetBankAccount(): void
     {
-        $expected = '42';
+        $expected = $this->createMock(BankAccount::class);
         $property = (new ReflectionClass(TransactionGroup::class))
-            ->getProperty('IBAN');
+            ->getProperty('bankAccount');
         $property->setAccessible(true);
-        $this->transactionGroup->setIBAN($expected);
+        $this->transactionGroup->setBankAccount($expected);
         $this::assertSame($expected, $property->getValue($this->transactionGroup));
     }
 

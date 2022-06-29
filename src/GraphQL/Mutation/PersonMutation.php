@@ -17,7 +17,7 @@ class PersonMutation extends AbstractMutation
     /**
      * @GQL\Field(type="String!")
      * @GQL\Description("Create person.")
-     * @GQL\Access("isAuthenticated()")
+     * @GQL\Access("hasRole('ROLE_ADMIN')")
      */
     public function createPerson(Person $person): string
     {
@@ -39,7 +39,7 @@ class PersonMutation extends AbstractMutation
     /**
      * @GQL\Field(type="String!")
      * @GQL\Description("Update person.")
-     * @GQL\Access("isAuthenticated()")
+     * @GQL\Access("hasRole('ROLE_ADMIN')")
      */
     public function updatePerson(string $id, Person $person): string
     {
@@ -65,7 +65,7 @@ class PersonMutation extends AbstractMutation
     /**
      * @GQL\Field(type="String!")
      * @GQL\Description("Delete person.")
-     * @GQL\Access("isAuthenticated()")
+     * @GQL\Access("hasRole('ROLE_ADMIN')")
      */
     public function deletePerson(string $id): string
     {

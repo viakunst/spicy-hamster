@@ -80,7 +80,7 @@ class MailService
             ->setSender($from)
             ->setSendBy($this->getUserIdentifier())
             ->setTitle($title)
-            ->setSentAt(new \DateTime())
+            ->setSendAt(new \DateTime())
         ;
         if (is_string($content)) {
             $dbMail->setContent($content);
@@ -110,7 +110,7 @@ class MailService
     {
         $user = $this->security->getUser();
         if (is_null($user)) {
-            return 'unknown user sender';
+            return 'null user sender';
         }
 
         if ($user instanceof TokenUser) {

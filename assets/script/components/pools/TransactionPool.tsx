@@ -1,35 +1,46 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+
 import {
-  Modal, Table, Button,
+  Modal, Table, Button, Space,
 } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 
 import 'antd/dist/antd.css';
 
-import { Transaction, useGetTransactionsQuery } from '../../Api/Backend';
+import { Transaction, useGetTransactionsQuery, useSwitchTransactionStatusMutation } from '../../Api/Backend';
 import { FormType } from '../form/FormHelper';
-import TransactionCRUD from '../form/TransactionCRUD';
+import TransactionCRUD from '../form/CRUD/TransactionCRUD';
 import GraphqlService from '../../helpers/GraphqlService';
+import { searchFilter, searchSelector } from '../../helpers/SearchHelper';
+import { amountRender } from '../../helpers/AmountHelper';
+import dateRender from '../../helpers/DateHelper';
+import stateRender from '../../helpers/StateHelper';
+import capitalize from '../../helpers/StringHelper';
 
 interface TransactionPoolState {
-  searchAttribute: string | null,
+  searchAttribute: string | Array<string> | null,
+  searchTerm: string | null,
   modelTitle: string,
   modelVisible: boolean,
   modelContent: JSX.Element,
+  modelWidth: string | number,
   selectedTransaction: Transaction | null,
 }
 
 function TransactionPool() {
   const {
-    data, isLoading, isError, refetch,
+    data, isLoading, isError, refetch, isFetching,
   } = useGetTransactionsQuery(GraphqlService.getClient());
 
+  const switchStatusMutation = useSwitchTransactionStatusMutation(GraphqlService.getClient());
+
   const [state, setState] = useState<TransactionPoolState>({
-    searchAttribute: '',
+    searchAttribute: null,
+    searchTerm: '',
     modelTitle: 'unknown',
     modelVisible: false,
     modelContent: <>empty</>,
+    modelWidth: '60%',
     selectedTransaction: null,
   });
 
@@ -37,13 +48,26 @@ function TransactionPool() {
     return <span>Loading...</span>;
   }
 
-  const handleChange = async () => {
+  const handleChange = () => {
     refetch();
+  };
+
+  if (switchStatusMutation.isSuccess) {
+    switchStatusMutation.reset();
+    refetch();
+  }
+
+  const onSwitchStatus = async (transaction : any) => {
+    if (transaction.status !== 'Loading' && switchStatusMutation.isLoading === false && isFetching === false) {
+      switchStatusMutation.mutate({ id: transaction.getId });
+      transaction.status = 'Loading';
+    }
   };
 
   const openModal = async (e: MouseEvent, formType: string, transaction?: Transaction) => {
     let modelTitle = 'unknown';
     let modelContent = <>empty</>;
+    const modelWidth = '60%';
     const modelVisible = true;
 
     switch (formType) {
@@ -93,7 +117,7 @@ function TransactionPool() {
     }
 
     setState({
-      ...state, modelVisible, modelContent, modelTitle,
+      ...state, modelVisible, modelContent, modelTitle, modelWidth,
     });
   };
 
@@ -103,68 +127,71 @@ function TransactionPool() {
 
   // These are the columns of the table.
   const columns: ColumnsType<Transaction> = [
-    {
-      title: 'Opmerking',
-      dataIndex: 'comment',
-      key: 'comment',
-    },
-    {
-      title: 'Status',
-      dataIndex: 'status',
-      key: 'status',
-    },
+    { title: 'Titel', dataIndex: 'getTitle', key: 'title' },
+    { title: 'Datum', key: 'getDate', render: (_, { getDate }) => dateRender(getDate) },
+    { title: 'Bedrag', key: 'amount', render: (_, { amount }) => amountRender(amount) },
+    { title: 'Persoon', dataIndex: ['getPerson', 'getName'], key: 'person' },
+    { title: 'Bankaccount', key: 'account', render: (_, { getTransactionGroup }) => capitalize(getTransactionGroup?.getBankAccount?.name) },
+    { title: 'Status', key: 'state', render: (_, { status }) => stateRender(status) },
     {
       title: 'Details',
       key: 'action',
-      render: (text, record) => (
-        <>
-          <span>
-            <Button onClick={
-              (e) => openModal(e.nativeEvent, FormType.READ, record)
-              }
-            >Details
-            </Button>
-          </span>
-          <span>
-            <Button onClick={
-              (e) => openModal(e.nativeEvent, FormType.UPDATE, record)
-              }
-            >Bewerken
-            </Button>
-          </span>
-          <span>
-            <Button onClick={
-              (e) => openModal(e.nativeEvent, FormType.DELETE, record)
-              }
-            >verwijderen
-            </Button>
-          </span>
-
-        </>
+      render: (text, transactionRecord) => (
+        <Space>
+          <Button onClick={
+            (e) => openModal(e.nativeEvent, FormType.READ, transactionRecord)
+            }
+          >Details
+          </Button>
+          <Button onClick={() => onSwitchStatus(transactionRecord)}>
+            Switch status
+          </Button>
+          <Button onClick={
+            (e) => openModal(e.nativeEvent, FormType.UPDATE, transactionRecord)
+            }
+          >Bewerken
+          </Button>
+          <Button onClick={
+            (e) => openModal(e.nativeEvent, FormType.DELETE, transactionRecord)
+            }
+          >verwijderen
+          </Button>
+        </Space>
       ),
     },
   ];
 
   const {
-    modelContent, modelTitle, modelVisible,
+    modelContent, modelTitle, modelVisible, modelWidth, searchAttribute, searchTerm,
   } = state;
 
-  const transactions = data.transactions as Transaction[];
+  let transactions = data.transactions as Transaction[];
+  transactions = searchFilter(transactions, searchAttribute, searchTerm);
+
+  const searchConfigAttributes = [
+    {
+      name: 'Titel activiteit',
+      attribute: 'getTitle',
+    },
+  ];
 
   return (
     <div>
 
       <div style={{ padding: 24, background: '#fff', minHeight: 360 }}>
 
-        <div className="row">
-          <Button type="primary" onClick={(e) => openModal(e.nativeEvent, FormType.CREATE)}>
-            Nieuw persoon
-          </Button> | {' '}
-          <Link to="/">
-            <Button>
-              Ga terug
+        <div style={{ padding: 5, background: '#fff' }}>
+          <Space>
+            {searchSelector(
+              searchConfigAttributes,
+              searchAttribute,
+              (att:string | Array<string>) => setState({ ...state, searchAttribute: att }),
+              (term:string) => setState({ ...state, searchTerm: term }),
+            )}
+            <Button type="primary" onClick={(e) => openModal(e.nativeEvent, FormType.CREATE)}>
+              Nieuwe transactie
             </Button>
-          </Link>
+          </Space>
         </div>
 
         <Table pagination={false} columns={columns} rowKey="id" dataSource={transactions} />
@@ -174,6 +201,7 @@ function TransactionPool() {
           destroyOnClose
           visible={modelVisible}
           onCancel={closeModal}
+          width={modelWidth}
           footer={null}
         >
           { modelContent }

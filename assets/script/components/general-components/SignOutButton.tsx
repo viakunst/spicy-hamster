@@ -21,11 +21,9 @@ function SignOutButton() {
   };
 
   return (
-    <> | {' '}
-      <Button type="primary" onClick={() => signOut()}>
-        Log uit
-      </Button>
-    </>
+    <Button type="primary" onClick={() => signOut()}>
+      Log uit
+    </Button>
   );
 }
 

@@ -7,7 +7,12 @@ query GetPersons {
     givenName
     familyName
     address
+    role
   }
+}
+
+query GetOwnRoles {
+  getOwnRoles
 }
 
 mutation ImportPerson($token : String!) {

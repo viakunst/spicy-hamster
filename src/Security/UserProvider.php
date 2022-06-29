@@ -2,7 +2,8 @@
 
 namespace App\Security;
 
-use App\Repository\AdminRepository;
+use App\Entity\Person\Person;
+use App\Repository\PersonRepository;
 use Jumbojett\OpenIDConnectClient;
 use Jumbojett\OpenIDConnectClientException;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
@@ -15,13 +16,13 @@ class UserProvider implements UserProviderInterface
     /** @var OpenIDConnectClient */
     private $client;
 
-    /** @var AdminRepository */
-    private $adminRepository;
+    /** @var PersonRepository */
+    private $personRepository;
 
-    public function __construct(OpenIDConnectClient $client, AdminRepository $adminRepository)
+    public function __construct(OpenIDConnectClient $client, PersonRepository $personRepository)
     {
         $this->client = $client;
-        $this->adminRepository = $adminRepository;
+        $this->personRepository = $personRepository;
     }
 
     /**
@@ -55,7 +56,18 @@ class UserProvider implements UserProviderInterface
 
         if (property_exists($info, 'sub')) {
             $user->setSub($info->sub);
-            if (null != $this->adminRepository->find($info->sub)) {
+            $person = $this->personRepository->findOneBy(['sub' => $info->sub]);
+
+            if (null != $person) {
+                if (null != $person->getName()) {
+                    $user->setName($person->getName());
+                }
+                if (null != $person->getEmail()) {
+                    $user->setName($person->getEmail());
+                }
+            }
+
+            if (null != $person && Person::ADMIN_ROLE == $person->getRole()) {
                 $user->setRoles(['ROLE_ADMIN']);
             }
         }

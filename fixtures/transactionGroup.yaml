@@ -6,5 +6,5 @@ App\Entity\Transaction\TransactionGroup:
     title: 'betaal'
     description: 3
     date: <dateTimeBetween('1980-10-10', '1980-10-10')>
-    IBAN: 'INGB 1111 1111 1111'
+    bankAccount: '@account_1'
     

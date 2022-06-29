@@ -1,6 +1,0 @@
-# fixtures/admin
-
-App\Entity\Admin:
-  admin_1:
-    oidc: '1111-2222'
-

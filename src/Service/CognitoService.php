@@ -36,7 +36,7 @@ class CognitoService
         $this->logger = $logger;
     }
 
-    public function listAllUser(string $token): string
+    public function importAllPersons(string $token): string
     {
         $cognitoClient = $this->getCognitoClient($token);
 
@@ -154,6 +154,7 @@ class CognitoService
                 $person->setGivenName($givenName);
                 $person->setFamilyName($familyName);
                 $person->setAddress($address);
+                $person->setRole(Person::USER_ROLE);
                 $this->em->persist($person);
                 $this->em->flush();
             }
