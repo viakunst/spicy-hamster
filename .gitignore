@@ -43,3 +43,4 @@ Thumbs.db
 npm-debug.log
 yarn-error.log
 ###< symfony/webpack-encore-bundle ###
+assets/script/config/graphqlConfig.ts

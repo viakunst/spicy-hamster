@@ -38,6 +38,7 @@ class CognitoService
 
     public function importAllPersons(string $token): string
     {
+        $this->logger->info('importing Users');
         $cognitoClient = $this->getCognitoClient($token);
 
         // First request.
@@ -73,7 +74,7 @@ class CognitoService
         }
         $this->handleUsers($users);
 
-        return 'suc';
+        return 'succes';
     }
 
     /**

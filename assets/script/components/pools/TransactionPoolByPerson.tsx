@@ -74,7 +74,7 @@ function TransactionPoolByPerson() {
 
     switch (formType) {
       case FormType.CREATE:
-        modelTitle = 'Maak nieuw persoon aan.';
+        modelTitle = 'Maak nieuw transactie aan';
         modelContent = (
           <TransactionCRUD
             formtype={FormType.CREATE}
@@ -84,7 +84,7 @@ function TransactionPoolByPerson() {
         );
         break;
       case FormType.READ:
-        modelTitle = 'Details van persoon';
+        modelTitle = 'Details van transactie';
         modelContent = (
           <TransactionCRUD
             formtype={FormType.READ}
@@ -94,7 +94,7 @@ function TransactionPoolByPerson() {
         );
         break;
       case FormType.UPDATE:
-        modelTitle = 'Bewerk persoon';
+        modelTitle = 'Bewerken van transactie';
         modelContent = (
           <TransactionCRUD
             formtype={FormType.UPDATE}
@@ -104,7 +104,7 @@ function TransactionPoolByPerson() {
         );
         break;
       case FormType.DELETE:
-        modelTitle = 'Verwijder persoon';
+        modelTitle = 'Verwijderen van transactie';
         modelContent = (
           <TransactionCRUD
             formtype={FormType.DELETE}

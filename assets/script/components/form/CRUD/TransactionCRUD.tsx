@@ -117,7 +117,7 @@ function TransactionCRUD(props:TransactionCRUDprops) {
         sm: { span: 16, offset: 4 },
       }}
     >
-      <Checkbox>Ja, ik wil dit account echt verwijderen.</Checkbox>
+      <Checkbox>Ja, ik wil deze transactie echt verwijderen.</Checkbox>
     </Form.Item>
   );
 
