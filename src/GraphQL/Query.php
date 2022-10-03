@@ -121,6 +121,62 @@ class Query
     }
 
     /**
+     * @GQL\Field(type="[Transaction]")
+     * @GQL\Description("Own transactions.")
+     * @GQL\Access("isAuthenticated()")
+     *
+     * @return Transaction[]
+     */
+    public function getOwnOutstandingTransactions()
+    {
+        $user = $this->security->getUser();
+        if (is_null($user)) {
+            return [];
+        }
+        if (!($user instanceof TokenUser)) {
+            return [];
+        }
+        if (is_null($user->getSub())) {
+            return [];
+        }
+
+        $person = $this->em->getRepository(Person::class)->findOneBy(['sub' => $user->getSub()]);
+        if (is_null($person)) {
+            return [];
+        }
+
+        return $this->em->getRepository(Transaction::class)->findBy(['person' => $person->getId(), 'status' => 'Openstaand']);
+    }
+
+    /**
+     * @GQL\Field(type="[Transaction]")
+     * @GQL\Description("Owns transactions.")
+     * @GQL\Access("isAuthenticated()")
+     *
+     * @return Transaction[]
+     */
+    public function getOwnPaidTransactions()
+    {
+        $user = $this->security->getUser();
+        if (is_null($user)) {
+            return [];
+        }
+        if (!($user instanceof TokenUser)) {
+            return [];
+        }
+        if (is_null($user->getSub())) {
+            return [];
+        }
+
+        $person = $this->em->getRepository(Person::class)->findOneBy(['sub' => $user->getSub()]);
+        if (is_null($person)) {
+            return [];
+        }
+
+        return $this->em->getRepository(Transaction::class)->findBy(['person' => $person->getId(), 'status' => 'Voldaan']);
+    }
+
+    /**
      * @GQL\Field(type="[Person]")
      * @GQL\Description("All persons with outstanding transactions.")
      * @GQL\Access("hasRole('ROLE_ADMIN')")

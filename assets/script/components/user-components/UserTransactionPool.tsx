@@ -7,7 +7,7 @@ import { ColumnsType } from 'antd/lib/table';
 
 import 'antd/dist/antd.css';
 
-import { Transaction, useGetOwnTransactionsQuery } from '../../Api/Backend';
+import { Transaction, useGetOwnOutstandingTransactionsQuery, useGetOwnTransactionsQuery } from '../../Api/Backend';
 
 import GraphqlService from '../../helpers/GraphqlService';
 import { searchFilter, searchSelector } from '../../helpers/SearchHelper';
@@ -29,7 +29,7 @@ interface TransactionPoolState {
 function UserTransactionPool() {
   const {
     data, isLoading, isError,
-  } = useGetOwnTransactionsQuery(GraphqlService.getClient());
+  } = useGetOwnOutstandingTransactionsQuery(GraphqlService.getClient());
 
   const [state, setState] = useState<TransactionPoolState>({
     searchAttribute: null,
@@ -59,7 +59,7 @@ function UserTransactionPool() {
     searchAttribute, searchTerm,
   } = state;
 
-  let transactions = data.getOwnTransactions as Transaction[];
+  let transactions = data.getOwnOutstandingTransactions as Transaction[];
   transactions = searchFilter(transactions, searchAttribute, searchTerm);
 
   const searchConfigAttributes = [

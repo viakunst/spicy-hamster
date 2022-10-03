@@ -42,6 +42,47 @@ query GetOwnTransactions {
   }
 }
 
+query GetOwnOutstandingTransactions {
+  getOwnOutstandingTransactions {
+    getId
+    comment
+    status
+    amount
+    getTitle
+    getDate
+    getPerson {
+      getId
+      getName
+    }
+    getTransactionGroup {
+      getId
+      getBankAccount {
+        name
+      }
+    }
+  }
+}
+
+query GetOwnPaidTransactions {
+  getOwnPaidTransactions {
+    getId
+    comment
+    status
+    amount
+    getTitle
+    getDate
+    getPerson {
+      getId
+      getName
+    }
+    getTransactionGroup {
+      getId
+      getBankAccount {
+        name
+      }
+    }
+  }
+}
 
 query GetAllTransactionsCoupledWithPerson {
   getAllTransactionsCoupledWithPerson {
