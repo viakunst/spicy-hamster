@@ -42,8 +42,14 @@ const buttonLayout = {
   },
 };
 
-function TransactionGroupCreator() {
+interface TransactionGroupCreatorProps {
+  onAttributesUpdate: () => void;
+}
+
+function TransactionGroupCreator(props:TransactionGroupCreatorProps) {
   const [form] = Form.useForm();
+  const { onAttributesUpdate } = props;
+
   const {
     data: data1, isLoading: isLoading1, isError: isError1,
   } = useGetPersonsQuery(GraphqlService.getClient());
@@ -71,10 +77,12 @@ function TransactionGroupCreator() {
   if (createMutation.isSuccess) {
     createMutation.reset();
     message.success('Transactie succesful aangemaakt!');
+    onAttributesUpdate();
   }
   if (createMutation.isError) {
     createMutation.reset();
     message.error('Er is iets fout gegaan.');
+    onAttributesUpdate();
   }
 
   const persons = data1.persons as Person[];

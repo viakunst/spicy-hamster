@@ -66,10 +66,9 @@ function TransactionPoolByGroup() {
     }
   };
 
-  const openModal = async (
+  const openTransactionModal = async (
     e: MouseEvent,
     formType: string,
-    transactionGroup?: TransactionGroup,
     transaction?: Transaction,
   ) => {
     let modelTitle = 'unknown';
@@ -80,7 +79,7 @@ function TransactionPoolByGroup() {
     if (transaction !== null) {
       switch (formType) {
         case FormType.CREATE:
-          modelTitle = 'Maak nieuw persoon aan.';
+          modelTitle = 'Maak nieuwe transactie aan.';
           modelContent = (
             <TransactionCRUD
               formtype={FormType.CREATE}
@@ -90,7 +89,7 @@ function TransactionPoolByGroup() {
           );
           break;
         case FormType.READ:
-          modelTitle = 'Details van persoon';
+          modelTitle = 'Details van een transactie';
           modelContent = (
             <TransactionCRUD
               formtype={FormType.READ}
@@ -100,7 +99,7 @@ function TransactionPoolByGroup() {
           );
           break;
         case FormType.UPDATE:
-          modelTitle = 'Bewerk persoon';
+          modelTitle = 'Bewerken van een transactie';
           modelContent = (
             <TransactionCRUD
               formtype={FormType.UPDATE}
@@ -110,7 +109,7 @@ function TransactionPoolByGroup() {
           );
           break;
         case FormType.DELETE:
-          modelTitle = 'Verwijder persoon';
+          modelTitle = 'Verwijderen van een transactie';
           modelContent = (
             <TransactionCRUD
               formtype={FormType.DELETE}
@@ -124,10 +123,26 @@ function TransactionPoolByGroup() {
           break;
       }
     }
+
+    setState({
+      ...state, modelVisible, modelContent, modelTitle, modelWidth,
+    });
+  };
+
+  const openTransactionGroupModal = async (
+    e: MouseEvent,
+    formType: string,
+    transactionGroup?: TransactionGroup,
+  ) => {
+    let modelTitle = 'unknown';
+    let modelContent = <>empty</>;
+    const modelWidth = '60%';
+    const modelVisible = true;
+
     if (transactionGroup !== null) {
       switch (formType) {
         case FormType.CREATE:
-          modelTitle = 'Maak nieuwe transactie aan';
+          modelTitle = 'Maak nieuwe transactie groep aan';
           modelContent = (
             <TransactionGroupCRUD
               formtype={FormType.CREATE}
@@ -137,7 +152,7 @@ function TransactionPoolByGroup() {
           );
           break;
         case FormType.READ:
-          modelTitle = 'Details van transactie';
+          modelTitle = 'Details van een transactie groep';
           modelContent = (
             <TransactionGroupCRUD
               formtype={FormType.READ}
@@ -147,7 +162,7 @@ function TransactionPoolByGroup() {
           );
           break;
         case FormType.UPDATE:
-          modelTitle = 'Bewerken van transactie';
+          modelTitle = 'Bewerken van een transactie groep';
           modelContent = (
             <TransactionGroupCRUD
               formtype={FormType.UPDATE}
@@ -157,7 +172,7 @@ function TransactionPoolByGroup() {
           );
           break;
         case FormType.DELETE:
-          modelTitle = 'Verwijderen van transactie';
+          modelTitle = 'Verwijderen van een transactie groep';
           modelContent = (
             <TransactionGroupCRUD
               formtype={FormType.DELETE}
@@ -193,7 +208,7 @@ function TransactionPoolByGroup() {
         render: (text, transactionRecord) => (
           <Space>
             <Button onClick={
-              (e) => openModal(e.nativeEvent, FormType.READ, undefined, transactionRecord)
+              (e) => openTransactionModal(e.nativeEvent, FormType.READ, transactionRecord)
               }
             >Details
             </Button>
@@ -201,12 +216,12 @@ function TransactionPoolByGroup() {
               Switch Status
             </Button>
             <Button onClick={
-              (e) => openModal(e.nativeEvent, FormType.UPDATE, undefined, transactionRecord)
+              (e) => openTransactionModal(e.nativeEvent, FormType.UPDATE, transactionRecord)
               }
             >Bewerken
             </Button>
             <Button onClick={
-              (e) => openModal(e.nativeEvent, FormType.DELETE, undefined, transactionRecord)
+              (e) => openTransactionModal(e.nativeEvent, FormType.DELETE, transactionRecord)
               }
             >verwijderen
             </Button>
@@ -247,12 +262,12 @@ function TransactionPoolByGroup() {
       render: (text, record) => (
         <Space>
           <Button onClick={
-            (e) => openModal(e.nativeEvent, FormType.UPDATE, record)
+            (e) => openTransactionGroupModal(e.nativeEvent, FormType.UPDATE, record)
             }
           >Bewerken
           </Button>
           <Button onClick={
-            (e) => openModal(e.nativeEvent, FormType.DELETE, record)
+            (e) => openTransactionGroupModal(e.nativeEvent, FormType.DELETE, record)
             }
           >verwijderen
           </Button>
@@ -288,8 +303,11 @@ function TransactionPoolByGroup() {
               (att:string | Array<string>) => setState({ ...state, searchAttribute: att }),
               (term:string) => setState({ ...state, searchTerm: term }),
             )}
-            <Button type="primary" onClick={(e) => openModal(e.nativeEvent, FormType.CREATE)}>
+            <Button type="primary" onClick={(e) => openTransactionGroupModal(e.nativeEvent, FormType.CREATE)}>
               Nieuwe transactie groep
+            </Button>
+            <Button type="primary" onClick={(e) => openTransactionModal(e.nativeEvent, FormType.CREATE)}>
+              Nieuwe transactie
             </Button>
           </Space>
         </div>

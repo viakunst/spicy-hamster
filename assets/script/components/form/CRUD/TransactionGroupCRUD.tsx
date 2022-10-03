@@ -130,7 +130,7 @@ function TransactionGroupCRUD(props:TransactionGroupCRUDProps) {
 
   if (formtype === FormType.CREATE && transactionGroup === undefined) {
     content = (
-      <TransactionGroupCreator />
+      <TransactionGroupCreator onAttributesUpdate={onAttributesUpdate} />
     );
   }
 

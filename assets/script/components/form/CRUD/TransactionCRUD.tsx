@@ -123,7 +123,7 @@ function TransactionCRUD(props:TransactionCRUDprops) {
 
   if (formtype === FormType.CREATE && transaction === undefined) {
     content = (
-      <TransactionCreator />
+      <TransactionCreator onAttributesUpdate={onAttributesUpdate} />
     );
   }
 

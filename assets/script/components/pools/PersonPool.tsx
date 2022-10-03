@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import {
-  Modal, Table, Button, Space,
+  Modal, Table, Button, Space, message,
 } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 
@@ -45,6 +45,22 @@ function PersonPool() {
 
   if (isLoading || isError || data === undefined) {
     return <span>Loading...</span>;
+  }
+
+  let disabled = false;
+  if (importMutation.isLoading || importMutation.isLoading) {
+    disabled = true;
+  }
+
+  if (importMutation.isSuccess) {
+    importMutation.reset();
+    message.success('Import van personen succesvol.');
+    refetch();
+  }
+
+  if (importMutation.isError) {
+    importMutation.reset();
+    message.error('Er is iets fout gegaan.');
   }
 
   const handleChange = () => {
