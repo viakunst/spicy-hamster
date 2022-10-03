@@ -51,6 +51,7 @@ function TransactionPoolByGroup() {
   }
 
   const handleChange = () => {
+    closeModal();
     refetch();
   };
 

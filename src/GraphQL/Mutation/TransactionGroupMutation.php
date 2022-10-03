@@ -99,6 +99,12 @@ class TransactionGroupMutation extends AbstractMutation
     {
         $dbtransactionGroup = $this->em->getRepository(TransactionGroup::class)->findOneBy(['id' => $id]);
         if (null !== $dbtransactionGroup) {
+            $transactions = $this->em->getRepository(Transaction::class)->findBy(['transactionGroup' => $dbtransactionGroup]);
+
+            foreach ($transactions as $transaction) {
+                $this->em->remove($transaction);
+            }
+
             $this->em->remove($dbtransactionGroup);
             $this->em->flush();
 

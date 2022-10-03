@@ -41,8 +41,9 @@ function TransactionCRUD(props:TransactionCRUDprops) {
 
   if (updateMutation.isSuccess) {
     updateMutation.reset();
-    message.success('Transactie succesvol geupdated.');
+    console.log('update');
     onAttributesUpdate();
+    message.success('Transactie succesvol geupdated.');
   }
   if (deleteMutation.isSuccess) {
     deleteMutation.reset();

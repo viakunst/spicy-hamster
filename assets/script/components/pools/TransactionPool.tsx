@@ -52,6 +52,7 @@ function TransactionPool() {
   }
 
   const handleChange = () => {
+    closeModal();
     refetch();
   };
 

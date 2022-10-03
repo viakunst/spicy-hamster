@@ -52,6 +52,7 @@ function TransactionPoolByPerson() {
   }
 
   const handleChange = () => {
+    closeModal();
     refetch();
   };
 

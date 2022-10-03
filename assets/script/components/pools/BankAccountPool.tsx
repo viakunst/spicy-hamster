@@ -43,10 +43,8 @@ function BankAccountPool() {
   }
 
   const handleChange = () => {
-    console.log('refetching');
+    closeModal();
     refetch();
-
-    setState({ ...state, modelVisible: false });
   };
 
   const openModal = async (e: MouseEvent, formType: string, bankaccount?: BankAccount) => {

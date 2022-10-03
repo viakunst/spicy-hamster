@@ -64,6 +64,7 @@ function PersonPool() {
   }
 
   const handleChange = () => {
+    closeModal();
     refetch();
   };
 
