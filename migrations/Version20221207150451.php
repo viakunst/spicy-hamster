@@ -14,7 +14,7 @@ final class Version20221207150451 extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return '';
+        return 'Changed a entity field name';
     }
 
     public function up(Schema $schema): void
