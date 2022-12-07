@@ -51,6 +51,10 @@ function TransactionPool() {
     return <span>Loading...</span>;
   }
 
+  const closeModal = () => {
+    setState({ ...state, modelVisible: false });
+  };
+
   const handleChange = () => {
     closeModal();
     refetch();
@@ -192,10 +196,6 @@ function TransactionPool() {
     setState({
       ...state, modelVisible, modelContent, modelTitle, modelWidth,
     });
-  };
-
-  const closeModal = () => {
-    setState({ ...state, modelVisible: false });
   };
 
   // These are the columns of the table.

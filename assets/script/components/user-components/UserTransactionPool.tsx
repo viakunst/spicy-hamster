@@ -7,7 +7,7 @@ import { ColumnsType } from 'antd/lib/table';
 
 import 'antd/dist/antd.css';
 
-import { Transaction, useGetOwnOutstandingTransactionsQuery, useGetOwnTransactionsQuery } from '../../Api/Backend';
+import { Transaction, useGetOwnOutstandingTransactionsQuery } from '../../Api/Backend';
 
 import GraphqlService from '../../helpers/GraphqlService';
 import { searchFilter, searchSelector } from '../../helpers/SearchHelper';

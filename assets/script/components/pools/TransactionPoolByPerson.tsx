@@ -51,6 +51,10 @@ function TransactionPoolByPerson() {
     return <span>Loading...</span>;
   }
 
+  const closeModal = () => {
+    setState({ ...state, modelVisible: false });
+  };
+
   const handleChange = () => {
     closeModal();
     refetch();
@@ -192,10 +196,6 @@ function TransactionPoolByPerson() {
     setState({
       ...state, modelVisible, modelContent, modelTitle, modelWidth,
     });
-  };
-
-  const closeModal = () => {
-    setState({ ...state, modelVisible: false });
   };
 
   const expandedRowRender = (record:PersonTransactions) => {

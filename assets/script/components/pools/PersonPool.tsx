@@ -47,11 +47,6 @@ function PersonPool() {
     return <span>Loading...</span>;
   }
 
-  let disabled = false;
-  if (importMutation.isLoading || importMutation.isLoading) {
-    disabled = true;
-  }
-
   if (importMutation.isSuccess) {
     importMutation.reset();
     message.success('Import van personen succesvol.');
@@ -62,6 +57,10 @@ function PersonPool() {
     importMutation.reset();
     message.error('Er is iets fout gegaan.');
   }
+
+  const closeModal = () => {
+    setState({ ...state, modelVisible: false });
+  };
 
   const handleChange = () => {
     closeModal();
@@ -132,10 +131,6 @@ function PersonPool() {
     setState({
       ...state, modelVisible, modelContent, modelTitle, modelWidth,
     });
-  };
-
-  const closeModal = () => {
-    setState({ ...state, modelVisible: false });
   };
 
   // These are the columns of the table.

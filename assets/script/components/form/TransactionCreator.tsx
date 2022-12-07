@@ -125,10 +125,10 @@ function TransactionCreator(props:TransactionCreatorProps) {
     </>
   );
 
-  const tagRender = (props: TagProps) => {
+  const tagRender = (tagProps: TagProps) => {
     const {
       label, closable, onClose,
-    } = props;
+    } = tagProps;
     const onPreventMouseDown = (event: React.MouseEvent<HTMLSpanElement>) => {
       event.preventDefault();
       event.stopPropagation();

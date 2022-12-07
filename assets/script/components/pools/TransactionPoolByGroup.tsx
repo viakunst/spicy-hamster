@@ -50,6 +50,10 @@ function TransactionPoolByGroup() {
     return <span>Loading...</span>;
   }
 
+  const closeModal = () => {
+    setState({ ...state, modelVisible: false });
+  };
+
   const handleChange = () => {
     closeModal();
     refetch();
@@ -191,10 +195,6 @@ function TransactionPoolByGroup() {
     setState({
       ...state, modelVisible, modelContent, modelTitle, modelWidth,
     });
-  };
-
-  const closeModal = () => {
-    setState({ ...state, modelVisible: false });
   };
 
   const expandedRowRender = (record:TransactionGroup) => {

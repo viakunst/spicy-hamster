@@ -132,10 +132,10 @@ function TransactionGroupCreator(props:TransactionGroupCreatorProps) {
     </>
   );
 
-  const tagRender = (props: CustomTagProps) => {
+  const tagRender = (tagProps: CustomTagProps) => {
     const {
       label, closable, onClose,
-    } = props;
+    } = tagProps;
     const onPreventMouseDown = (event: React.MouseEvent<HTMLSpanElement>) => {
       event.preventDefault();
       event.stopPropagation();
