@@ -44,12 +44,13 @@ jobs:
         return array (
             'APP_DEBUG' => '0',
             'APP_ENV' => 'dev',
+            'USERPROVIDER_KEY' => 'ThisIsNotSoSecret',
             'DATABASE_URL' => 'mysql://root:${DBPASS}@127.0.0.1:3306/hamster',
             'MAILER_URL' => 'null://localhost',
             'DEFAULT_FROM' => 'foo@bar.com',
         );
         EOL
-      
+        
     - name: Create database
       run: php bin/console doctrine:database:create -n
 
