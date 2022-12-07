@@ -37,6 +37,8 @@ jobs:
       run: |
         mv  ./assets/script/config/awsConfig.sample.ts  ./assets/script/config/awsConfig.ts
         mv  ./assets/script/config/userManagerConfig.sample.ts  ./assets/script/config/userManagerConfig.ts 
+        mv  ./assets/script/config/graphqlConfig.sample.ts  ./assets/script/config/graphqlConfig.ts 
+
   
     - name: Install dependencies
       run: composer install --prefer-dist --no-progress --optimize-autoloader
