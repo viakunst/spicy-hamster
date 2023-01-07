@@ -4,7 +4,7 @@
     "minimum-stability": "stable",
     "prefer-stable": true,
     "require": {
-        "php": ">=7.2.5",
+        "php": ">=8.1",
         "ext-ctype": "*",
         "ext-iconv": "*",
         "aws/aws-sdk-php-symfony": "^2.5",
@@ -12,7 +12,7 @@
         "doctrine/annotations": "^1.0",
         "doctrine/dbal": "2.13.*",
         "doctrine/doctrine-bundle": "^2.4",
-        "doctrine/doctrine-migrations-bundle": "3.*",
+        "doctrine/doctrine-migrations-bundle": "^3.2",
         "doctrine/orm": "^2.10",
         "jumbojett/openid-connect-php": "^0.9.5",
         "overblog/graphql-bundle": "*",

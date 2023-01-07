@@ -2,6 +2,7 @@
 
 namespace App\Entity\Transaction;
 
+use App\Entity\BankAccount\BankAccount;
 use App\Entity\Person\Person;
 use Doctrine\ORM\Mapping as ORM;
 use Overblog\GraphQLBundle\Annotation as GQL;
@@ -11,10 +12,13 @@ use Overblog\GraphQLBundle\Annotation as GQL;
  * @GQL\Input
  * @GQL\Description("Indiviual Transactions from the organisation.")
  * @ORM\Entity
- * @ORM\Table(name="`Transaction`")
+ * @ORM\Table(name="`transaction`")
  */
 class Transaction
 {
+    public const PAID = 'Voldaan';
+    public const OUTSTANDING = 'Openstaand';
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue(strategy="UUID")
@@ -153,6 +157,70 @@ class Transaction
         $this->comment = $comment;
 
         return $this;
+    }
+
+    // Utility functions
+
+    /**
+     * @GQL\Field(type="String")
+     */
+    public function getTitle(): ?string
+    {
+        $transactionGroup = $this->getTransactionGroup();
+        if (null !== $transactionGroup) {
+            return $transactionGroup->getTitle();
+        }
+
+        return null;
+    }
+
+    /**
+     * @GQL\Field(type="String")
+     */
+    public function getDescription(): ?string
+    {
+        $transactionGroup = $this->getTransactionGroup();
+        if (null !== $transactionGroup) {
+            return $transactionGroup->getDescription();
+        }
+
+        return null;
+    }
+
+    /**
+     * @GQL\Field(type="DateTimeScalar")
+     */
+    public function getDate(): ?\DateTimeInterface
+    {
+        $transactionGroup = $this->getTransactionGroup();
+        if (null !== $transactionGroup) {
+            return $transactionGroup->getDate();
+        }
+
+        return null;
+    }
+
+    public function getBankAccount(): ?BankAccount
+    {
+        $transactionGroup = $this->getTransactionGroup();
+        if (null !== $transactionGroup) {
+            return $transactionGroup->getBankAccount();
+        }
+
+        return null;
+    }
+
+    /**
+     * @GQL\Field(type="String")
+     */
+    public function getBankAccountName(): ?string
+    {
+        $transactionGroup = $this->getTransactionGroup();
+        if (null !== $transactionGroup) {
+            return $transactionGroup->getBankAccountName();
+        }
+
+        return null;
     }
 
     public function cloneFrom(Transaction $transaction): void

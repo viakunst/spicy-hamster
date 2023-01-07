@@ -2,19 +2,28 @@
 query GetTransactionGroups {
   transactionGroups {
     getId
-    IBAN
     description
+    date
     title
     getTransactions {
       getId
+      getPerson {
+        getName
+      }
+      amount
+      comment
+      status
+    }
+    getBankAccount {
+      name
     }
   }
 }
 
 
-mutation CreateTransactionGroup($transactionGroup: TransactionGroupInput!) {
+mutation CreateTransactionGroup($transactionGroupTypeInput: TransactionGroupTypeInput!) {
   transactionGroupMutation {
-    createTransactionGroup(transactionGroup: $transactionGroup)
+    createTransactionGroup(transactionGroupTypeInput: $transactionGroupTypeInput)
   }
 } 
 

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+
 import {
-  Modal, Table, Button,
+  Modal, Table, Button, Space, message,
 } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 
@@ -9,14 +9,19 @@ import 'antd/dist/antd.css';
 
 import { Person, useGetPersonsQuery, useImportPersonMutation } from '../../Api/Backend';
 import { FormType } from '../form/FormHelper';
-import PersonCRUD from '../form/PersonCRUD';
+import PersonCRUD from '../form/CRUD/PersonCRUD';
 import GraphqlService from '../../helpers/GraphqlService';
+import { searchFilter, searchSelector } from '../../helpers/SearchHelper';
+import capitalize from '../../helpers/StringHelper';
+
 import OidcService from '../../helpers/OidcService';
 
 interface PersonPoolState {
-  searchAttribute: string | null,
+  searchAttribute: string | Array<string> | null,
+  searchTerm: string | null,
   modelTitle: string,
   modelVisible: boolean,
+  modelWidth: string | number,
   modelContent: JSX.Element,
   selectedPerson: Person | null,
 }
@@ -29,9 +34,11 @@ function PersonPool() {
   const importMutation = useImportPersonMutation(GraphqlService.getClient());
 
   const [state, setState] = useState<PersonPoolState>({
-    searchAttribute: '',
+    searchAttribute: null,
+    searchTerm: '',
     modelTitle: 'unknown',
     modelVisible: false,
+    modelWidth: '80%',
     modelContent: (<>empty</>),
     selectedPerson: null,
   });
@@ -40,7 +47,23 @@ function PersonPool() {
     return <span>Loading...</span>;
   }
 
-  const handleChange = async () => {
+  if (importMutation.isSuccess) {
+    importMutation.reset();
+    message.success('Import van personen succesvol.');
+    refetch();
+  }
+
+  if (importMutation.isError) {
+    importMutation.reset();
+    message.error('Er is iets fout gegaan.');
+  }
+
+  const closeModal = () => {
+    setState({ ...state, modelVisible: false });
+  };
+
+  const handleChange = () => {
+    closeModal();
     refetch();
   };
 
@@ -55,6 +78,7 @@ function PersonPool() {
   const openModal = async (e: MouseEvent, formType: string, person?: Person) => {
     let modelTitle = 'unknown';
     let modelContent = <>empty</>;
+    const modelWidth = '60%';
     const modelVisible = true;
 
     console.log(person);
@@ -105,12 +129,8 @@ function PersonPool() {
     }
 
     setState({
-      ...state, modelVisible, modelContent, modelTitle,
+      ...state, modelVisible, modelContent, modelTitle, modelWidth,
     });
-  };
-
-  const closeModal = () => {
-    setState({ ...state, modelVisible: false });
   };
 
   // These are the columns of the table.
@@ -126,60 +146,69 @@ function PersonPool() {
       key: 'email',
     },
     {
+      title: 'Rol',
+      key: 'role',
+      render: (_, { role }) => capitalize(role),
+    },
+    {
       title: 'Details',
       key: 'action',
       render: (text, record) => (
-        <>
-          <span>
-            <Button onClick={
-              (e) => openModal(e.nativeEvent, FormType.READ, record)
-              }
-            >Details
-            </Button>
-          </span>
-          <span>
-            <Button onClick={
-              (e) => openModal(e.nativeEvent, FormType.UPDATE, record)
-              }
-            >Bewerken
-            </Button>
-          </span>
-          <span>
-            <Button onClick={
-              (e) => openModal(e.nativeEvent, FormType.DELETE, record)
-              }
-            >verwijderen
-            </Button>
-          </span>
-
-        </>
+        <Space>
+          <Button onClick={
+            (e) => openModal(e.nativeEvent, FormType.READ, record)
+            }
+          >Details
+          </Button>
+          <Button onClick={
+            (e) => openModal(e.nativeEvent, FormType.UPDATE, record)
+            }
+          >Bewerken
+          </Button>
+          <Button onClick={
+            (e) => openModal(e.nativeEvent, FormType.DELETE, record)
+            }
+          >verwijderen
+          </Button>
+        </Space>
       ),
     },
   ];
 
   const {
-    modelContent, modelTitle, modelVisible,
+    modelContent, modelTitle, modelVisible, modelWidth, searchAttribute, searchTerm,
   } = state;
-  const persons = data.persons as Person[];
+
+  let persons = data.persons as Person[];
+  persons = searchFilter(persons, searchAttribute, searchTerm);
+
+  const searchConfigAttributes = [
+    {
+      name: 'Volledige naam',
+      attribute: 'getName',
+    },
+  ];
 
   return (
     <div>
 
       <div style={{ padding: 24, background: '#fff', minHeight: 360 }}>
 
-        <div className="row">
-          <Button type="primary" onClick={(e) => openModal(e.nativeEvent, FormType.CREATE)}>
-            Nieuw persoon
-          </Button> | {' '}
-          <Button type="primary" onClick={() => importPerson()}>
-            Importeer
-          </Button> | {' '}
-
-          <Link to="/">
-            <Button>
-              Ga terug
+        <div style={{ padding: 5, background: '#fff' }}>
+          <Space>
+            {searchSelector(
+              searchConfigAttributes,
+              searchAttribute,
+              (att:string | Array<string>) => setState({ ...state, searchAttribute: att }),
+              (term:string) => setState({ ...state, searchTerm: term }),
+            )}
+            <Button type="primary" onClick={(e) => openModal(e.nativeEvent, FormType.CREATE)}>
+              Nieuw persoon
             </Button>
-          </Link>
+            <Button type="primary" onClick={() => importPerson()}>
+              Importeer
+            </Button>
+          </Space>
         </div>
 
         <Table pagination={false} columns={columns} rowKey="id" dataSource={persons} />
@@ -189,6 +218,7 @@ function PersonPool() {
           destroyOnClose
           visible={modelVisible}
           onCancel={closeModal}
+          width={modelWidth}
           footer={null}
         >
           { modelContent }

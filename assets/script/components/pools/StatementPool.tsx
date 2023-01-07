@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
 import {
-  Modal, Table, Button,
+  Modal, Table, Button, Space,
 } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 
@@ -9,14 +8,17 @@ import 'antd/dist/antd.css';
 
 import { Statement, useGetStatementsQuery } from '../../Api/Backend';
 import { FormType } from '../form/FormHelper';
-import StatementCRUD from '../form/StatementCRUD';
+import StatementCRUD from '../form/CRUD/StatementCRUD';
 import GraphqlService from '../../helpers/GraphqlService';
+import { searchFilter, searchSelector } from '../../helpers/SearchHelper';
 
 interface StatementPoolState {
-  searchAttribute: string | null,
+  searchAttribute: string | Array<string> | null,
+  searchTerm: string | null,
   modelTitle: string,
   modelVisible: boolean,
   modelContent: JSX.Element,
+  modelWidth: string | number,
   selectedStatement: Statement | null,
 }
 
@@ -26,9 +28,11 @@ function StatementPool() {
   } = useGetStatementsQuery(GraphqlService.getClient());
 
   const [state, setState] = useState<StatementPoolState>({
-    searchAttribute: '',
+    searchAttribute: null,
+    searchTerm: '',
     modelTitle: 'unknown',
     modelVisible: false,
+    modelWidth: '60%',
     modelContent: (<>empty</>),
     selectedStatement: null,
   });
@@ -37,13 +41,14 @@ function StatementPool() {
     return <span>Loading...</span>;
   }
 
-  const handleChange = async () => {
+  const handleChange = () => {
     refetch();
   };
 
   const openModal = async (e: MouseEvent, formType: string, statement?: Statement) => {
     let modelTitle = 'unknown';
     let modelContent = <>empty</>;
+    const modelWidth = '60%';
     const modelVisible = true;
 
     switch (formType) {
@@ -93,7 +98,7 @@ function StatementPool() {
     }
 
     setState({
-      ...state, modelVisible, modelContent, modelTitle,
+      ...state, modelVisible, modelContent, modelTitle, modelWidth,
     });
   };
 
@@ -127,54 +132,59 @@ function StatementPool() {
       title: 'Details',
       key: 'action',
       render: (text, record) => (
-        <>
-          <span>
-            <Button onClick={
-              (e) => openModal(e.nativeEvent, FormType.READ, record)
-              }
-            >Details
-            </Button>
-          </span>
-          <span>
-            <Button onClick={
-              (e) => openModal(e.nativeEvent, FormType.UPDATE, record)
-              }
-            >Bewerken
-            </Button>
-          </span>
-          <span>
-            <Button onClick={
-              (e) => openModal(e.nativeEvent, FormType.DELETE, record)
-              }
-            >verwijderen
-            </Button>
-          </span>
-
-        </>
+        <Space>
+          <Button onClick={
+            (e) => openModal(e.nativeEvent, FormType.READ, record)
+            }
+          >Details
+          </Button>
+          <Button onClick={
+            (e) => openModal(e.nativeEvent, FormType.UPDATE, record)
+            }
+          >Bewerken
+          </Button>
+          <Button onClick={
+            (e) => openModal(e.nativeEvent, FormType.DELETE, record)
+            }
+          >verwijderen
+          </Button>
+        </Space>
       ),
     },
   ];
 
   const {
-    modelContent, modelTitle, modelVisible,
+    modelContent, modelTitle, modelVisible, modelWidth, searchAttribute, searchTerm,
   } = state;
 
-  const statements = data.statements as Statement[];
+  let statements = data.statements as Statement[];
+  statements = searchFilter(statements, searchAttribute, searchTerm);
+
+  const searchConfigAttributes = [
+    {
+      name: 'Titel activiteit',
+      attribute: 'title',
+    },
+  ];
 
   return (
     <div>
 
       <div style={{ padding: 24, background: '#fff', minHeight: 360 }}>
 
-        <div className="row">
-          <Button type="primary" onClick={(e) => openModal(e.nativeEvent, FormType.CREATE)}>
-            Nieuw persoon
-          </Button> | {' '}
-          <Link to="/">
-            <Button>
-              Ga terug
+        <div style={{ padding: 5, background: '#fff' }}>
+
+          <Space>
+            {searchSelector(
+              searchConfigAttributes,
+              searchAttribute,
+              (att:string | Array<string>) => setState({ ...state, searchAttribute: att }),
+              (term:string) => setState({ ...state, searchTerm: term }),
+            )}
+            <Button type="primary" onClick={(e) => openModal(e.nativeEvent, FormType.CREATE)}>
+              Nieuwe declaratie
             </Button>
-          </Link>
+          </Space>
         </div>
 
         <Table pagination={false} columns={columns} rowKey="id" dataSource={statements} />
@@ -183,6 +193,7 @@ function StatementPool() {
           title={modelTitle}
           destroyOnClose
           visible={modelVisible}
+          width={modelWidth}
           onCancel={closeModal}
           footer={null}
         >

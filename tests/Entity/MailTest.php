@@ -137,19 +137,19 @@ class MailTest extends TestCase
     {
         $expected = $this->createMock(DateTime::class);
         $property = (new ReflectionClass(Mail::class))
-            ->getProperty('sentAt');
+            ->getProperty('sendAt');
         $property->setAccessible(true);
         $property->setValue($this->mail, $expected);
-        $this::assertSame($expected, $this->mail->getSentAt());
+        $this::assertSame($expected, $this->mail->getSendAt());
     }
 
     public function testSetSentAt(): void
     {
         $expected = $this->createMock(DateTime::class);
         $property = (new ReflectionClass(Mail::class))
-            ->getProperty('sentAt');
+            ->getProperty('sendAt');
         $property->setAccessible(true);
-        $this->mail->setSentAt($expected);
+        $this->mail->setSendAt($expected);
         $this::assertSame($expected, $property->getValue($this->mail));
     }
 }

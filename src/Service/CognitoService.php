@@ -36,8 +36,9 @@ class CognitoService
         $this->logger = $logger;
     }
 
-    public function listAllUser(string $token): string
+    public function importAllPersons(string $token): string
     {
+        $this->logger->info('importing Users');
         $cognitoClient = $this->getCognitoClient($token);
 
         // First request.
@@ -73,7 +74,7 @@ class CognitoService
         }
         $this->handleUsers($users);
 
-        return 'suc';
+        return 'succes';
     }
 
     /**
@@ -154,6 +155,7 @@ class CognitoService
                 $person->setGivenName($givenName);
                 $person->setFamilyName($familyName);
                 $person->setAddress($address);
+                $person->setRole(Person::USER_ROLE);
                 $this->em->persist($person);
                 $this->em->flush();
             }

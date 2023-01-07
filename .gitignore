@@ -11,6 +11,7 @@
 ###> config for front-end ###
 /assets/script/config/awsConfig.ts
 /assets/script/config/userManagerConfig.ts
+/assets/script/config/graphqlConfig.ts
 ###< config for front-end ###
 
 
@@ -42,3 +43,4 @@ Thumbs.db
 npm-debug.log
 yarn-error.log
 ###< symfony/webpack-encore-bundle ###
+assets/script/config/graphqlConfig.ts

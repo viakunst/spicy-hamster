@@ -7,7 +7,7 @@ use Overblog\GraphQLBundle\Annotation as GQL;
 /**
  * @GQL\Scalar(name="DateTimeScalar")
  */
-class DatetimeScalar
+class DateTimeScalar
 {
     /**
      * @return string

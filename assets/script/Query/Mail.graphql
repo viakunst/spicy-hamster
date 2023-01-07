@@ -4,5 +4,54 @@ query GetMails {
     title
     content
     sender
+    sendAt
+    sendBy
+    recipients {
+      person {
+        getName
+      }
+    }
+  }
+}
+
+query GetAllOutstandingTransactionsCoupledWithPerson {
+  getAllOutstandingTransactionsCoupledWithPerson {
+    person {
+      getId
+      getName
+      email
+    }
+    transactions {
+      getId
+      getTitle
+      getDate
+      amount
+      comment
+    }
+  }
+}
+
+mutation DeleteMail($id: String!) {
+  emailMutation {
+    deleteMail(id: $id)
+  } 
+}
+  
+
+mutation sendAllReminders {
+  emailMutation {
+    sendAllReminders
+  }
+} 
+
+mutation sendAllRemindersByPerson($ids: [String]) {
+  emailMutation {
+    sendAllRemindersByPerson(ids: $ids)
+  }
+} 
+
+mutation GetReminderExampleByPerson($id: String!) {
+  emailMutation {
+    getReminderExampleByPerson(id: $id)
   }
 }

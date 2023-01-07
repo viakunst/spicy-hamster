@@ -19,7 +19,7 @@ jobs:
     - name: Set PHP version
       uses: shivammathur/setup-php@v2
       with:
-        php-version: '7.4'
+        php-version: '8.1'
         extensions: xdebug
 
     - name: Shutdown Ubuntu MySQL (SUDO)
@@ -44,12 +44,18 @@ jobs:
         return array (
             'APP_DEBUG' => '0',
             'APP_ENV' => 'dev',
-            'DATABASE_URL' => 'mysql://root:${DBPASS}@127.0.0.1:3306/testdb?serverVersion=5.7',
+            'USERPROVIDER_KEY' => 'ThisIsNotSoSecret',
+            'DATABASE_URL' => 'mysql://root:${DBPASS}@127.0.0.1:3306/hamster',
+            'MAILER_URL' => 'null://localhost',
+            'DEFAULT_FROM' => 'foo@bar.com',
         );
         EOL
-      
+        
     - name: Create database
       run: php bin/console doctrine:database:create -n
+
+    - name: Run migrations status
+      run: php bin/console doctrine:migrations:status
 
     - name: Run migrations up
       run: php bin/console doctrine:migrations:migrate

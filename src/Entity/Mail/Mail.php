@@ -55,8 +55,9 @@ class Mail
 
     /**
      * @ORM\Column(type="datetime")
+     * @GQL\Field(type="DateTimeScalar!")
      */
-    private DateTime $sentAt;
+    private \DateTime $sendAt;
 
     /**
      * @GQL\Field(type="String!")
@@ -148,14 +149,14 @@ class Mail
         return $this;
     }
 
-    public function getSentAt(): ?\DateTimeInterface
+    public function getSendAt(): ?\DateTimeInterface
     {
-        return $this->sentAt;
+        return $this->sendAt;
     }
 
-    public function setSentAt(DateTime $sentAt): self
+    public function setSendAt(\DateTime $sendAt): self
     {
-        $this->sentAt = $sentAt;
+        $this->sendAt = $sendAt;
 
         return $this;
     }

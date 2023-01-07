@@ -5,21 +5,119 @@ query GetTransactions {
     comment
     status
     amount
+    getTitle
+    getDate
     getPerson {
       getId
       getName
     }
     getTransactionGroup {
       getId
+      getBankAccount {
+        name
+      }
     }
   }
 }
 
-mutation CreateTransaction($transaction: TransactionInput!) {
+
+query GetOwnTransactions {
+  getOwnTransactions {
+    getId
+    comment
+    status
+    amount
+    getTitle
+    getDate
+    getPerson {
+      getId
+      getName
+    }
+    getTransactionGroup {
+      getId
+      getBankAccount {
+        name
+      }
+    }
+  }
+}
+
+query GetOwnOutstandingTransactions {
+  getOwnOutstandingTransactions {
+    getId
+    comment
+    status
+    amount
+    getTitle
+    getDate
+    getPerson {
+      getId
+      getName
+    }
+    getTransactionGroup {
+      getId
+      getBankAccount {
+        name
+      }
+    }
+  }
+}
+
+query GetOwnPaidTransactions {
+  getOwnPaidTransactions {
+    getId
+    comment
+    status
+    amount
+    getTitle
+    getDate
+    getPerson {
+      getId
+      getName
+    }
+    getTransactionGroup {
+      getId
+      getBankAccount {
+        name
+      }
+    }
+  }
+}
+
+query GetAllTransactionsCoupledWithPerson {
+  getAllTransactionsCoupledWithPerson {
+    person {
+      getId
+      getName
+      email
+    }
+    transactions {
+      getId
+      getTitle
+      getDate
+      amount
+      comment
+      status
+      getTransactionGroup {
+        getBankAccount {
+          name
+        }
+      }
+    }
+  }
+}
+
+mutation CreateTransaction($transactionTypeInputs: [TransactionTypeInput], $transactionGroupId: String!) {
   transactionMutation {
-    createTransaction(transaction: $transaction)
+    createTransaction(transactionTypeInputs: $transactionTypeInputs, transactionGroupId: $transactionGroupId)
   }
 } 
+
+mutation SwitchTransactionStatus($id: String!) {
+  transactionMutation {
+    switchTransactionStatus(id: $id)
+  }
+}
 
 mutation UpdateTransaction($id: String!, $transaction: TransactionInput!) {
   transactionMutation {

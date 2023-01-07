@@ -1,0 +1,9 @@
+# fixtures/person
+
+App\Entity\BankAccount\BankAccount:
+  account_1:
+    id: 'id1'
+    IBAN: 'NL50 INGB 0000 0000 0000'
+    name: 'account'
+    manager: 'manager'
+

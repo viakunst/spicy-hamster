@@ -1,35 +1,55 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
 import { Link } from 'react-router-dom';
 import {
   Button,
 } from 'antd';
 
+import { useGetOwnRolesQuery, useImportPersonMutation } from '../../Api/Backend';
+import GraphqlService from '../../helpers/GraphqlService';
+import OidcService from '../../helpers/OidcService';
+
 export default function AdminMenuButton() {
-  const [state, setState] = useState({
-    admin: 'user',
+  const {
+    data, isLoading, isError, refetch,
+  } = useGetOwnRolesQuery(GraphqlService.getClient());
+
+  const importMutation = useImportPersonMutation(GraphqlService.getClient());
+
+  if (isLoading || isError || data === undefined) {
+    return null;
+  }
+
+  const roles = data.getOwnRoles as string[];
+
+  let admin = false;
+
+  roles.forEach((role) => {
+    if (role === 'ROLE_ADMIN') {
+      admin = true;
+    }
+    if (role === 'noAdmin') {
+      const tok = OidcService.getIdToken();
+      if (tok !== null && importMutation.isLoading === false
+        && importMutation.isSuccess === false) {
+        importMutation.mutate({ token: tok });
+      }
+    }
   });
 
-  // componentDidMount
-  useEffect(() => {
-    // TO-DO: check if Mighty-Eagly has determined if admin.
-    // For now always assume this.
-    setState({ admin: 'admin' });
-  }, []);
+  if (importMutation.isSuccess && admin === false) {
+    if (importMutation.data.importPerson === 'success') {
+      refetch();
+    }
+  }
 
-  const {
-    admin,
-  } = state;
-
-  if (admin === 'admin') {
+  if (admin) {
     return (
-      <>
-        <Link to="/admin">
-          <Button>
-            Beheer
-          </Button>
-        </Link> | {' '}
-      </>
+      <Link to="/admin">
+        <Button>
+          Beheer
+        </Button>
+      </Link>
     );
   }
 
