@@ -20,8 +20,8 @@ final class Version20221207150451 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE transaction RENAME INDEX idx_f4ab8a06217bbb47 TO IDX_723705D1217BBB47');
-        $this->addSql('ALTER TABLE transaction RENAME INDEX idx_f4ab8a06b026f02f TO IDX_723705D1B026F02F');
+        $this->addSql('ALTER TABLE `transaction` RENAME INDEX idx_f4ab8a06217bbb47 TO IDX_723705D1217BBB47');
+        $this->addSql('ALTER TABLE `transaction` RENAME INDEX idx_f4ab8a06b026f02f TO IDX_723705D1B026F02F');
     }
 
     public function down(Schema $schema): void
