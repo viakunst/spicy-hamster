@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useReducer } from 'react';
 import {
   Modal, Table, Button, Space,
 } from 'antd';
@@ -18,7 +18,7 @@ import GraphqlService from '../../helpers/GraphqlService';
 import { searchFilter, searchSelector } from '../../helpers/SearchHelper';
 import { amountRender } from '../../helpers/AmountHelper';
 import dateRender from '../../helpers/DateHelper';
-import stateRender from '../../helpers/StateHelper';
+import stateRender, { switchState, LOADING, transactionIsLoading } from '../../helpers/StateHelper';
 import capitalize from '../../helpers/StringHelper';
 
 interface TransactionPoolState {
@@ -46,6 +46,7 @@ function TransactionPoolByPerson() {
     modelWidth: '60%',
     selectedTransaction: null,
   });
+  const [, forceUpdate] = useReducer((x) => x + 1, 0);
 
   if (isLoading || isError || data === undefined) {
     return <span>Loading...</span>;
@@ -215,7 +216,7 @@ function TransactionPoolByPerson() {
               }
             >Details
             </Button>
-            <Button onClick={() => onSwitchStatus(transactionRecord)}>
+            <Button onClick={() => onSwitchStatus(transactionRecord)} disabled={transactionIsLoading(transactionRecord.status)}>
               Switch status
             </Button>
             <Button onClick={
