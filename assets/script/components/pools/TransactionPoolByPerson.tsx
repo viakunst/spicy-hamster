@@ -61,15 +61,22 @@ function TransactionPoolByPerson() {
     refetch();
   };
 
-  if (switchStatusMutation.isSuccess) {
-    switchStatusMutation.reset();
-    refetch();
-  }
-
   const onSwitchStatus = async (transaction : any) => {
-    if (transaction.status !== 'Loading' && switchStatusMutation.isLoading === false && isFetching === false) {
-      switchStatusMutation.mutate({ id: transaction.getId });
-      transaction.status = 'Loading';
+    const oldStatus = transaction.status;
+    const succesStatus = switchState(oldStatus);
+    if (!transactionIsLoading(transaction)) {
+      try {
+        transaction.status = LOADING;
+        forceUpdate();
+        await switchStatusMutation.mutateAsync({ id: transaction.getId });
+      } catch (error) {
+        console.error(error);
+        transaction.status = oldStatus;
+        forceUpdate();
+      } finally {
+        transaction.status = succesStatus;
+        forceUpdate();
+      }
     }
   };
 

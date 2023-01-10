@@ -16,7 +16,7 @@ import TransactionCRUD from '../form/CRUD/TransactionCRUD';
 import GraphqlService from '../../helpers/GraphqlService';
 import { searchFilter, searchSelector } from '../../helpers/SearchHelper';
 import { amountRender } from '../../helpers/AmountHelper';
-import dateRender from '../../helpers/DateHelper';
+import dateRender, { dateSort } from '../../helpers/DateHelper';
 import stateRender, { switchState, LOADING, transactionIsLoading } from '../../helpers/StateHelper';
 import capitalize from '../../helpers/StringHelper';
 
@@ -78,6 +78,7 @@ function TransactionPoolByGroup() {
       }
     }
   };
+
   const openTransactionModal = async (
     e: MouseEvent,
     formType: string,
@@ -258,6 +259,8 @@ function TransactionPoolByGroup() {
       title: 'Datum',
       key: 'date',
       render: (_, { date }) => dateRender(date),
+      sorter: (a, b) => dateSort(a.date, b.date),
+      defaultSortOrder: 'descend',
     },
     {
       title: 'Bankrekening',
