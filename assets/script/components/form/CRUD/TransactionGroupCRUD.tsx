@@ -1,5 +1,6 @@
 import React from 'react';
 
+import moment from 'moment';
 import {
   Form, Input, Checkbox, Table, message, DatePicker,
 } from 'antd';
@@ -125,9 +126,6 @@ function TransactionGroupCRUD(props:TransactionGroupCRUDProps) {
     </Form.Item>
   );
 
-  console.log(formtype);
-  console.log(transactionGroup);
-
   if (formtype === FormType.CREATE && transactionGroup === undefined) {
     content = (
       <TransactionGroupCreator onAttributesUpdate={onAttributesUpdate} />
@@ -138,6 +136,7 @@ function TransactionGroupCRUD(props:TransactionGroupCRUDProps) {
     const updateInitial = {
       description: transactionGroup.description,
       title: transactionGroup.title,
+      date: moment(transactionGroup.date),
     };
 
     content = (

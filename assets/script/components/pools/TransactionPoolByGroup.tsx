@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useReducer } from 'react';
 
 import {
   Modal, Table, Button, Space,
@@ -16,8 +16,8 @@ import TransactionCRUD from '../form/CRUD/TransactionCRUD';
 import GraphqlService from '../../helpers/GraphqlService';
 import { searchFilter, searchSelector } from '../../helpers/SearchHelper';
 import { amountRender } from '../../helpers/AmountHelper';
-import dateRender from '../../helpers/DateHelper';
-import stateRender from '../../helpers/StateHelper';
+import dateRender, { dateSort } from '../../helpers/DateHelper';
+import stateRender, { switchState, LOADING, transactionIsLoading } from '../../helpers/StateHelper';
 import capitalize from '../../helpers/StringHelper';
 
 interface TransactionGroupPoolState {
@@ -32,7 +32,7 @@ interface TransactionGroupPoolState {
 
 function TransactionPoolByGroup() {
   const {
-    data, isLoading, isError, refetch, isFetching,
+    data, isLoading, isError, refetch,
   } = useGetTransactionGroupsQuery(GraphqlService.getClient());
 
   const switchStatusMutation = useSwitchTransactionStatusMutation(GraphqlService.getClient());
@@ -45,6 +45,7 @@ function TransactionPoolByGroup() {
     modelWidth: '60%',
     selectedTransactionGroup: null,
   });
+  const [, forceUpdate] = useReducer((x) => x + 1, 0);
 
   if (isLoading || isError || data === undefined) {
     return <span>Loading...</span>;
@@ -59,15 +60,22 @@ function TransactionPoolByGroup() {
     refetch();
   };
 
-  if (switchStatusMutation.isSuccess) {
-    switchStatusMutation.reset();
-    refetch();
-  }
-
   const onSwitchStatus = async (transaction : any) => {
-    if (transaction.status !== 'Loading' && switchStatusMutation.isLoading === false && isFetching === false) {
-      switchStatusMutation.mutate({ id: transaction.getId });
-      transaction.status = 'Loading';
+    const oldStatus = transaction.status;
+    const succesStatus = switchState(oldStatus);
+    if (!transactionIsLoading(transaction)) {
+      try {
+        transaction.status = LOADING;
+        forceUpdate();
+        await switchStatusMutation.mutateAsync({ id: transaction.getId });
+      } catch (error) {
+        console.error(error);
+        transaction.status = oldStatus;
+        forceUpdate();
+      } finally {
+        transaction.status = succesStatus;
+        forceUpdate();
+      }
     }
   };
 
@@ -213,8 +221,13 @@ function TransactionPoolByGroup() {
               }
             >Details
             </Button>
-            <Button onClick={() => onSwitchStatus(transactionRecord)}>
-              Switch Status
+            <Button
+              onClick={
+              () => onSwitchStatus(transactionRecord)
+}
+              disabled={transactionIsLoading(transactionRecord.status)}
+            >
+              Switch status
             </Button>
             <Button onClick={
               (e) => openTransactionModal(e.nativeEvent, FormType.UPDATE, transactionRecord)
@@ -251,6 +264,8 @@ function TransactionPoolByGroup() {
       title: 'Datum',
       key: 'date',
       render: (_, { date }) => dateRender(date),
+      sorter: (a, b) => dateSort(a.date, b.date),
+      defaultSortOrder: 'descend',
     },
     {
       title: 'Bankrekening',

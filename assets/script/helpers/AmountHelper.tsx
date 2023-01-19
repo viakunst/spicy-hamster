@@ -34,7 +34,6 @@ export const amountInput = () => (
 );
 
 export const amountRender = (amount:any) => {
-  console.log(amount);
   if (amount instanceof String) {
     return amount;
   }

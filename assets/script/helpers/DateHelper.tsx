@@ -5,4 +5,6 @@ const dateRender = (dateString:any) => {
   return formattedDateString;
 };
 
+export const dateSort = (dateA:any, dateB:any) => moment(dateA).diff(moment(dateB), 'days');
+
 export default dateRender;

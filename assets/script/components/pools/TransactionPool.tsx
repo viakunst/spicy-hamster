@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useReducer } from 'react';
 
 import {
   Modal, Table, Button, Space,
@@ -17,7 +17,7 @@ import GraphqlService from '../../helpers/GraphqlService';
 import { searchFilter, searchSelector } from '../../helpers/SearchHelper';
 import { amountRender } from '../../helpers/AmountHelper';
 import dateRender from '../../helpers/DateHelper';
-import stateRender from '../../helpers/StateHelper';
+import stateRender, { switchState, LOADING, transactionIsLoading } from '../../helpers/StateHelper';
 import capitalize from '../../helpers/StringHelper';
 
 interface TransactionPoolState {
@@ -32,7 +32,7 @@ interface TransactionPoolState {
 
 function TransactionPool() {
   const {
-    data, isLoading, isError, refetch, isFetching,
+    data, isLoading, isError, refetch,
   } = useGetTransactionsQuery(GraphqlService.getClient());
 
   const switchStatusMutation = useSwitchTransactionStatusMutation(GraphqlService.getClient());
@@ -46,6 +46,7 @@ function TransactionPool() {
     modelWidth: '60%',
     selectedTransaction: null,
   });
+  const [, forceUpdate] = useReducer((x) => x + 1, 0);
 
   if (isLoading || isError || data === undefined) {
     return <span>Loading...</span>;
@@ -60,15 +61,22 @@ function TransactionPool() {
     refetch();
   };
 
-  if (switchStatusMutation.isSuccess) {
-    switchStatusMutation.reset();
-    refetch();
-  }
-
   const onSwitchStatus = async (transaction : any) => {
-    if (transaction.status !== 'Loading' && switchStatusMutation.isLoading === false && isFetching === false) {
-      switchStatusMutation.mutate({ id: transaction.getId });
-      transaction.status = 'Loading';
+    const oldStatus = transaction.status;
+    const succesStatus = switchState(oldStatus);
+    if (!transactionIsLoading(transaction)) {
+      try {
+        transaction.status = LOADING;
+        forceUpdate();
+        await switchStatusMutation.mutateAsync({ id: transaction.getId });
+      } catch (error) {
+        console.error(error);
+        transaction.status = oldStatus;
+        forceUpdate();
+      } finally {
+        transaction.status = succesStatus;
+        forceUpdate();
+      }
     }
   };
 
@@ -205,7 +213,9 @@ function TransactionPool() {
     { title: 'Bedrag', key: 'amount', render: (_, { amount }) => amountRender(amount) },
     { title: 'Persoon', dataIndex: ['getPerson', 'getName'], key: 'person' },
     { title: 'Bankaccount', key: 'account', render: (_, { getTransactionGroup }) => capitalize(getTransactionGroup?.getBankAccount?.name) },
-    { title: 'Status', key: 'state', render: (_, { status }) => stateRender(status) },
+    {
+      title: 'Status', key: 'state', width: '10%', render: (_, { status }) => stateRender(status),
+    },
     {
       title: 'Details',
       key: 'action',
@@ -216,7 +226,10 @@ function TransactionPool() {
             }
           >Details
           </Button>
-          <Button onClick={() => onSwitchStatus(transactionRecord)}>
+          <Button
+            onClick={() => onSwitchStatus(transactionRecord)}
+            disabled={transactionIsLoading(transactionRecord.status)}
+          >
             Switch status
           </Button>
           <Button onClick={
