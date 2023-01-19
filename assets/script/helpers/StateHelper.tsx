@@ -22,6 +22,7 @@ export const switchState = (state:any) => {
   if (state === 'Voldaan') {
     return 'Openstaand';
   }
+  return 'Error: State unknown';
 };
 
 const stateRender = (state:any) => {

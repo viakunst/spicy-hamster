@@ -33,7 +33,7 @@ interface TransactionPoolState {
 
 function TransactionPoolByPerson() {
   const {
-    data, isLoading, isError, refetch, isFetching,
+    data, isLoading, isError, refetch,
   } = useGetAllTransactionsCoupledWithPersonQuery(GraphqlService.getClient());
   const switchStatusMutation = useSwitchTransactionStatusMutation(GraphqlService.getClient());
 
@@ -223,7 +223,12 @@ function TransactionPoolByPerson() {
               }
             >Details
             </Button>
-            <Button onClick={() => onSwitchStatus(transactionRecord)} disabled={transactionIsLoading(transactionRecord.status)}>
+            <Button
+              onClick={
+              () => onSwitchStatus(transactionRecord)
+}
+              disabled={transactionIsLoading(transactionRecord.status)}
+            >
               Switch status
             </Button>
             <Button onClick={

@@ -221,7 +221,12 @@ function TransactionPoolByGroup() {
               }
             >Details
             </Button>
-            <Button onClick={() => onSwitchStatus(transactionRecord)} disabled={transactionIsLoading(transactionRecord.status)}>
+            <Button
+              onClick={
+              () => onSwitchStatus(transactionRecord)
+}
+              disabled={transactionIsLoading(transactionRecord.status)}
+            >
               Switch status
             </Button>
             <Button onClick={

@@ -36,7 +36,6 @@ function TransactionPool() {
   } = useGetTransactionsQuery(GraphqlService.getClient());
 
   const switchStatusMutation = useSwitchTransactionStatusMutation(GraphqlService.getClient());
-  const switchStatusMutations = {};
 
   const [state, setState] = useState<TransactionPoolState>({
     searchAttribute: null,
@@ -227,7 +226,10 @@ function TransactionPool() {
             }
           >Details
           </Button>
-          <Button onClick={() => onSwitchStatus(transactionRecord)} disabled={transactionIsLoading(transactionRecord.status)}>
+          <Button
+            onClick={() => onSwitchStatus(transactionRecord)}
+            disabled={transactionIsLoading(transactionRecord.status)}
+          >
             Switch status
           </Button>
           <Button onClick={

@@ -55,9 +55,7 @@ function TransactionGroupCRUD(props:TransactionGroupCRUDProps) {
 
   const onUpdateFinish = async (values: any) => {
     // Push attributes, that are actually editable, to list.
-    console.log(values);
     const transactionGroupInput = values as TransactionGroupInput;
-    console.log(transactionGroupInput);
     if (transactionGroup !== undefined) {
       updateMutation.mutate(
         { id: transactionGroup.getId, transactionGroup: transactionGroupInput },
